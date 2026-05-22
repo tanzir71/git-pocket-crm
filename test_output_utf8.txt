@@ -1,0 +1,3 @@
+﻿00:00 +0: loading C:/Users/tanzir/Desktop/pocket-crm/test/widget_test.dart
+00:00 +0: PocketCRMApp smoke test
+00:01 +1: All tests passed!
