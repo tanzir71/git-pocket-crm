@@ -1,9 +1,12 @@
+import 'package:flutter/foundation.dart';
 import 'package:material_ui/material_ui.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'core/theme/app_theme.dart';
+import 'dev/gallery_screen.dart';
 import 'screens/home_screen.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
+  AppTheme.registerFontLicenses();
   runApp(const PocketCRMApp());
 }
 
@@ -19,20 +22,21 @@ class PocketCRMApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         useMaterial3: true,
+        fontFamily: AppTheme.fontFamily,
         colorScheme: ColorScheme.fromSeed(
           seedColor: primaryColor,
           primary: primaryColor,
           secondary: const Color(0xFF4F46E5),
           surface: const Color(0xFFF9FAFB),
         ),
-        textTheme: Theme.of(context).textTheme.apply(
-          fontFamily: GoogleFonts.inter().fontFamily,
-        ),
         appBarTheme: const AppBarTheme(
           surfaceTintColor: Colors.transparent,
           elevation: 0,
         ),
       ),
+      routes: {
+        if (kDebugMode) '/dev/gallery': (_) => const GalleryScreen(),
+      },
       home: const HomeScreen(),
     );
   }

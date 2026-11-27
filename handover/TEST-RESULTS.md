@@ -14,3 +14,9 @@ Record of automated test runs and Android emulator verification runs (date, imag
 - **Command:** `dart run build_runner build --delete-conflicting-outputs` && `bash tool/verify.sh`
 - **Outcome:** PASSED. 0 `openDatabase` references in `lib/`; `flutter analyze` reported 0 issues; all 21 tests passed (v4->v5 migration with safety copy, all 7 payment prefixes, duration backfill, duplicate `native_message_id` dedup, orphan removal, 9 indexes, FTS5; v1->v5 migration; cascading deletes; balance formula; search; legacy tests; smoke test); `assembleDebug` and `check_manifest.sh` passed.
 
+## 2026-11-27 — Spec 03
+
+- **Environment:** Host Windows 11, Flutter 3.50.1, Dart 3.14.0
+- **Command:** `bash tool/verify.sh`
+- **Outcome:** PASSED. `flutter analyze` reported 0 issues; all 31 tests passed (lint guard, component measurements, 4 Inter-rendered golden tests at width 412 in light/dark 1.0x & 1.3x, plus all Spec 01 & 02 tests); `assembleDebug` and `check_manifest.sh` passed.
+

@@ -18,3 +18,9 @@ Log of technical, dependency, and design choices made during implementation wher
 - **Single SQLite connection:** `DatabaseHelper` now returns `LegacyDb` backed by the single Drift `AppDatabase` (`NativeDatabase.createInBackground`). `sqflite` is imported only for `getDatabasesPath()`, `ConflictAlgorithm`, and legacy `Sqflite.firstIntValue`; `openDatabase` is no longer called anywhere in `lib/`.
 - **Full-text search:** Created `contacts_fts` using SQLite FTS5 over `display_name`, `company`, `phones`, `about`, and `notes`, with automatic fallback to `LIKE` if FTS5 is unavailable on a host runtime.
 
+## Spec 03 — Theme and components (2026-11-27)
+
+- **Bundled font:** Downloaded official Inter v4.1 (`Inter-Regular.ttf`, `Inter-Medium.ttf`, `Inter-SemiBold.ttf`, and SIL Open Font License `OFL.txt`) from `rsms/inter` GitHub releases into `assets/fonts/` and registered `OFL.txt` via `LicenseRegistry` in `AppTheme.registerFontLicenses()`.
+- **Design token enforcement:** Added `AppColors` `ThemeExtension` and `AppTokens` matching every value in `handover/02-design-system.md`, plus `test/lint_guard_test.dart` ensuring zero hardcoded colors, `FontStyle.italic`, `GoogleFonts.`, or `withOpacity(` in `lib/core/widgets` and `lib/features`.
+
+
