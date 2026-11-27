@@ -26,14 +26,21 @@ class SetupScreen extends ConsumerWidget {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               const SizedBox(height: AppTokens.space16),
-              Text(l10n.setupTitle, style: tt.headlineMedium),
-              const SizedBox(height: AppTokens.space16),
-              Expanded(
-                child: EmptyState(
-                  title: l10n.setupTitle,
-                  message: l10n.setupPlaceholder,
-                ),
+              Text(
+                l10n.setupTitle,
+                style: tt.headlineMedium!.copyWith(color: c.textPrimary),
               ),
+              const Spacer(),
+              AppButton(
+                label: l10n.continueLabel,
+                variant: AppButtonVariant.primary,
+                fullWidth: true,
+                onPressed: () {
+                  ref.read(setupDeferredProvider.notifier).defer();
+                  context.go('/people');
+                },
+              ),
+              const SizedBox(height: AppTokens.space8),
               AppButton(
                 label: l10n.doThisLater,
                 variant: AppButtonVariant.quiet,

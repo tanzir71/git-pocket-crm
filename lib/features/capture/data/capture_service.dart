@@ -314,7 +314,7 @@ class CaptureService {
 
         case AddEntryType.payment:
           // Spec 07 step 2: New payment rows store amount, currency, payment_status;
-          // no legacy prefix written into content.
+          // no v1 prefix written into content.
           insertedTimelineId = await _db.into(_db.timelineEntries).insert(
                 TimelineEntriesCompanion.insert(
                   contactId: Value(contactId),

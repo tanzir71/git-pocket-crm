@@ -340,11 +340,14 @@ class SyncService {
       }
 
       if (syncSms) {
-        final userCurrency = await _settings.get('currency');
+        final userCurrency = await _settings.get('currency_code') ?? await _settings.get('currency');
+        final rawOptOut = await _settings.get('opt_out_words');
+        final optOutWords = _parseOptOutWords(rawOptOut);
         smsSynced = await _syncSms(
           region: region,
           lookup: lookup,
           userCurrencyCode: userCurrency,
+          optOutWords: optOutWords,
           onBatch: (totalSms) {
             _emit(
               SyncStatus(
@@ -457,7 +460,7 @@ class SyncService {
     await _syncState.set('phones_migrated_v5', '1');
   }
 
-  /// Rewrites bare numeric legacy SMS IDs to `sms:<id>` once and initializes
+  /// Rewrites bare numeric v1 SMS IDs to `sms:<id>` once and initializes
   /// both watermarks to 0 so messages previously dropped by SpamFilter are recovered.
   Future<bool> _migrateLegacyNativeIdsOnce() async {
     final done = await _syncState.get('native_ids_migrated_v5');
@@ -730,6 +733,7 @@ class SyncService {
     required String region,
     required _PhoneLookup lookup,
     required String? userCurrencyCode,
+    required Set<String> optOutWords,
     required void Function(int totalSms) onBatch,
   }) async {
     int watermark = await _syncState.getInt('last_sms_id') ?? 0;
@@ -769,10 +773,17 @@ class SyncService {
             }
           }
 
-          // Incoming SMS from a saved person: detect monetary amounts as suggestions only
+          // Incoming SMS from a saved person: detect opt-out words and monetary amount suggestions
           double? suggestedAmount;
           String? suggestionState;
+          String? outcome;
           if (!isSent) {
+            final normalizedBody = rec.body.trim().toUpperCase();
+            if (optOutWords.contains(normalizedBody)) {
+              outcome = 'opt_out';
+              await (_db.update(_db.contacts)..where((t) => t.id.equals(contactId)))
+                  .write(const ContactsCompanion(doNotMessage: Value(1)));
+            }
             suggestedAmount = amountParser.extract(
               rec.body,
               extraCode: userCurrencyCode,
@@ -788,6 +799,7 @@ class SyncService {
                   type: type,
                   timestamp: rec.dateMs,
                   content: Value(rec.body),
+                  outcome: Value(outcome),
                   nativeMessageId: Value(nativeId),
                   suggestedAmount: Value(suggestedAmount),
                   suggestionState: Value(suggestionState),
@@ -811,6 +823,18 @@ class SyncService {
     }
 
     return totalInserted;
+  }
+
+  static const Set<String> defaultOptOutWords = {'STOP', 'UNSUBSCRIBE', 'বন্ধ'};
+
+  static Set<String> _parseOptOutWords(String? raw) {
+    if (raw == null || raw.trim().isEmpty) return defaultOptOutWords;
+    final parsed = raw
+        .split(RegExp(r'[,\n]+'))
+        .map((w) => w.trim().toUpperCase())
+        .where((w) => w.isNotEmpty)
+        .toSet();
+    return parsed.isEmpty ? defaultOptOutWords : parsed;
   }
 
   Future<String?> _matchOutboxMessageForOutgoingSms({

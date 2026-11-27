@@ -105,6 +105,9 @@ class FakeOutboxPlatformClient implements OutboxPlatformClient {
   Future<OutboxCapabilities> capabilities() async => caps;
 
   @override
+  Future<void> shareFile(String path, String mimeType, String subject) async {}
+
+  @override
   void listenForChanges(void Function(int latestSeq) onChanged) {
     onChangedCallback = onChanged;
   }

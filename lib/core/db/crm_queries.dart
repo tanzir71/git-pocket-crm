@@ -107,6 +107,43 @@ class ReconnectCandidateRow {
   final String? lastInteractionType;
 }
 
+/// Campaign joined with live recipient status counts.
+class CampaignSummaryRow {
+  const CampaignSummaryRow({
+    required this.campaign,
+    required this.totalCount,
+    required this.sentCount,
+    required this.deliveredCount,
+    required this.failedCount,
+    required this.sendingCount,
+    required this.waitingCount,
+  });
+
+  final Campaign campaign;
+  final int totalCount;
+  final int sentCount;
+  final int deliveredCount;
+  final int failedCount;
+  final int sendingCount;
+  final int waitingCount;
+
+  int get completedCount => sentCount + deliveredCount + failedCount;
+  int get deliveredOrSentCount => sentCount + deliveredCount;
+}
+
+/// Recipient row in a campaign progress screen.
+class CampaignRecipientRow {
+  const CampaignRecipientRow({
+    required this.message,
+    required this.personName,
+    required this.toneIndex,
+  });
+
+  final OutboxMessage message;
+  final String personName;
+  final int toneIndex;
+}
+
 /// Centralizes all custom SQL queries inside `lib/core/db/` so feature
 /// repositories and UI files never embed raw SQL strings.
 class CrmQueries {
@@ -747,9 +784,9 @@ class CrmQueries {
         );
   }
 
-  /// Sync helper: rewrites legacy bare numeric SMS native_message_id rows to `sms:<id>`.
+  /// Sync helper: rewrites v1 bare numeric SMS native_message_id rows to `sms:<id>`.
   Future<void> rewriteLegacyBareSmsIds() async {
-    final legacySms = await _db.customSelect(
+    final oldSms = await _db.customSelect(
       '''
       SELECT id, native_message_id
       FROM timeline
@@ -760,7 +797,7 @@ class CrmQueries {
       ''',
     ).get();
 
-    for (final row in legacySms) {
+    for (final row in oldSms) {
       final id = row.read<int>('id');
       final rawId = row.read<String>('native_message_id').trim();
       if (rawId.isEmpty) continue;
@@ -783,7 +820,7 @@ class CrmQueries {
     }
   }
 
-  /// Sync helper: matches a legacy un-stamped call row and stamps it with `call:<id>`.
+  /// Sync helper: matches a v1 un-stamped call row and stamps it with `call:<id>`.
   /// Returns `true` if an existing row was matched and stamped.
   Future<bool> stampLegacyCallIfPresent({
     required int contactId,
@@ -870,6 +907,193 @@ class CrmQueries {
       'UPDATE outbox_messages SET provider_sms_id = ? WHERE client_id = ?',
       [providerSmsId, clientId],
     );
+  }
+
+  /// Returns positive net balances (`owes me`) for a set of contact IDs.
+  Future<Map<int, double>> getPositiveBalancesForContacts(Set<int> contactIds) async {
+    if (contactIds.isEmpty) return const {};
+    final placeholders = List.filled(contactIds.length, '?').join(', ');
+    final rows = await _db.customSelect(
+      '''
+      SELECT
+        t.contact_id,
+        (
+          SUM(CASE WHEN t.payment_status = 'owed_to_me' THEN COALESCE(t.amount, 0) ELSE 0 END)
+          - SUM(CASE WHEN t.payment_status = 'received' THEN COALESCE(t.amount, 0) ELSE 0 END)
+        ) - (
+          SUM(CASE WHEN t.payment_status = 'i_owe' THEN COALESCE(t.amount, 0) ELSE 0 END)
+          - SUM(CASE WHEN t.payment_status = 'paid' THEN COALESCE(t.amount, 0) ELSE 0 END)
+        ) AS net_balance
+      FROM timeline t
+      WHERE t.contact_id IN ($placeholders)
+        AND t.type = 'payment'
+        AND COALESCE(t.hidden, 0) = 0
+      GROUP BY t.contact_id
+      ''',
+      variables: [for (final id in contactIds) Variable<int>(id)],
+    ).get();
+    final result = <int, double>{};
+    for (final r in rows) {
+      final cid = r.readNullable<int>('contact_id');
+      final net = r.readNullable<double>('net_balance') ?? 0.0;
+      if (cid != null && net > 0.005) {
+        result[cid] = net;
+      }
+    }
+    return result;
+  }
+
+  /// Watches queued/sending single (non-campaign) outbox messages ordered by due_at.
+  Stream<List<OutboxWithPersonRow>> watchQueuedSingleOutbox() {
+    return _db
+        .customSelect(
+          '''
+          SELECT o.*, COALESCE(c.display_name, o.address) AS person_name
+          FROM outbox_messages o
+          LEFT JOIN contacts c ON c.id = o.contact_id
+          WHERE o.campaign_id IS NULL
+            AND o.status IN ('queued', 'sending')
+          ORDER BY o.due_at ASC
+          ''',
+          readsFrom: {_db.outboxMessages, _db.contacts},
+        )
+        .watch()
+        .map(
+          (rows) => rows
+              .map(
+                (r) => OutboxWithPersonRow(
+                  message: _db.outboxMessages.map(r.data),
+                  personName: r.read<String>('person_name'),
+                ),
+              )
+              .toList(),
+        );
+  }
+
+  /// Watches all campaigns newest first with live recipient status counts.
+  Stream<List<CampaignSummaryRow>> watchCampaignSummaries() {
+    return _db
+        .customSelect(
+          '''
+          SELECT
+            cp.*,
+            COUNT(o.client_id) AS total_count,
+            SUM(CASE WHEN o.status = 'sent' THEN 1 ELSE 0 END) AS sent_count,
+            SUM(CASE WHEN o.status = 'delivered' THEN 1 ELSE 0 END) AS delivered_count,
+            SUM(CASE WHEN o.status = 'failed' THEN 1 ELSE 0 END) AS failed_count,
+            SUM(CASE WHEN o.status = 'sending' THEN 1 ELSE 0 END) AS sending_count,
+            SUM(CASE WHEN o.status = 'queued' THEN 1 ELSE 0 END) AS waiting_count
+          FROM campaigns cp
+          LEFT JOIN outbox_messages o ON o.campaign_id = cp.id
+          GROUP BY cp.id
+          ORDER BY COALESCE(cp.created_at, cp.scheduled_at, 0) DESC
+          ''',
+          readsFrom: {_db.campaigns, _db.outboxMessages},
+        )
+        .watch()
+        .map(
+          (rows) => rows
+              .map(
+                (r) => CampaignSummaryRow(
+                  campaign: _db.campaigns.map(r.data),
+                  totalCount: r.readNullable<int>('total_count') ?? 0,
+                  sentCount: r.readNullable<int>('sent_count') ?? 0,
+                  deliveredCount: r.readNullable<int>('delivered_count') ?? 0,
+                  failedCount: r.readNullable<int>('failed_count') ?? 0,
+                  sendingCount: r.readNullable<int>('sending_count') ?? 0,
+                  waitingCount: r.readNullable<int>('waiting_count') ?? 0,
+                ),
+              )
+              .toList(),
+        );
+  }
+
+  /// Watches all recipients of a campaign in order.
+  Stream<List<CampaignRecipientRow>> watchCampaignRecipients(String campaignId) {
+    return _db
+        .customSelect(
+          '''
+          SELECT o.*, COALESCE(c.display_name, o.address) AS person_name,
+                 COALESCE(c.id, 0) AS tone_id
+          FROM outbox_messages o
+          LEFT JOIN contacts c ON c.id = o.contact_id
+          WHERE o.campaign_id = ?
+          ORDER BY
+            CASE o.status
+              WHEN 'failed' THEN 0
+              WHEN 'sending' THEN 1
+              WHEN 'delivered' THEN 2
+              WHEN 'sent' THEN 3
+              WHEN 'queued' THEN 4
+              ELSE 5
+            END,
+            LOWER(COALESCE(c.display_name, o.address)) ASC
+          ''',
+          variables: [Variable<String>(campaignId)],
+          readsFrom: {_db.outboxMessages, _db.contacts},
+        )
+        .watch()
+        .map(
+          (rows) => rows
+              .map(
+                (r) => CampaignRecipientRow(
+                  message: _db.outboxMessages.map(r.data),
+                  personName: r.read<String>('person_name'),
+                  toneIndex: r.readNullable<int>('tone_id') ?? 0,
+                ),
+              )
+              .toList(),
+        );
+  }
+
+  /// Watches sent/delivered/failed/missed outbox messages for the Sent list screen.
+  Stream<List<OutboxWithPersonRow>> watchSentOutbox({String? statusFilter}) {
+    final where = switch (statusFilter) {
+      'delivered' => "o.status = 'delivered'",
+      'sent' => "o.status = 'sent'",
+      'failed' => "o.status IN ('failed', 'missed')",
+      _ => "o.status IN ('sent', 'delivered', 'failed', 'missed')",
+    };
+    return _db
+        .customSelect(
+          '''
+          SELECT o.*, COALESCE(c.display_name, o.address) AS person_name
+          FROM outbox_messages o
+          LEFT JOIN contacts c ON c.id = o.contact_id
+          WHERE $where
+          ORDER BY COALESCE(o.sent_at, o.delivered_at, o.due_at) DESC
+          LIMIT 500
+          ''',
+          readsFrom: {_db.outboxMessages, _db.contacts},
+        )
+        .watch()
+        .map(
+          (rows) => rows
+              .map(
+                (r) => OutboxWithPersonRow(
+                  message: _db.outboxMessages.map(r.data),
+                  personName: r.read<String>('person_name'),
+                ),
+              )
+              .toList(),
+        );
+  }
+
+  /// Watches the count of messages sent or delivered since [sinceMs].
+  Stream<int> watchSentOutboxCountSince(int sinceMs) {
+    return _db
+        .customSelect(
+          '''
+          SELECT COUNT(*) AS cnt
+          FROM outbox_messages
+          WHERE status IN ('sent', 'delivered')
+            AND COALESCE(sent_at, delivered_at, due_at) >= ?
+          ''',
+          variables: [Variable<int>(sinceMs)],
+          readsFrom: {_db.outboxMessages},
+        )
+        .watchSingle()
+        .map((r) => r.readNullable<int>('cnt') ?? 0);
   }
 
   String _buildFtsQuery(String input) {

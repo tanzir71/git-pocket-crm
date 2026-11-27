@@ -41,7 +41,9 @@ void main() {
     // Tap Messages destination
     await tester.tap(find.text('Messages'));
     await tester.pumpAndSettle();
-    expect(find.text('Messages will be built in spec 10.'), findsOneWidget);
+    expect(find.text('Outbox'), findsOneWidget);
+    expect(find.text('Campaigns'), findsOneWidget);
+    expect(find.text('Templates'), findsOneWidget);
 
     // Tap Today destination
     await tester.tap(find.text('Today').last);

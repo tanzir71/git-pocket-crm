@@ -3,7 +3,7 @@ import 'package:drift/drift.dart';
 import 'package:drift/native.dart';
 import 'package:flutter/foundation.dart';
 import 'package:path/path.dart' as p;
-import 'package:sqflite/sqflite.dart' show getDatabasesPath;
+import 'package:path_provider/path_provider.dart';
 
 import 'db_safety_copy.dart';
 import 'migration_helpers.dart';
@@ -473,10 +473,31 @@ class AppDatabase extends _$AppDatabase {
   }
 }
 
+/// Computes the exact SQLite database path matching Android's historical
+/// `sqflite` `getDatabasesPath()` location (`<appDataDir>/databases/pocket_crm.db`)
+/// using `path_provider`'s [documentsDirPath] (`<appDataDir>/app_flutter`).
+String resolvePocketCrmDatabasePath({
+  required String documentsDirPath,
+  required bool isAndroid,
+}) {
+  if (isAndroid) {
+    final appDataDir = p.dirname(documentsDirPath);
+    return p.join(appDataDir, 'databases', 'pocket_crm.db');
+  }
+  return p.join(documentsDirPath, 'pocket_crm.db');
+}
+
 LazyDatabase _openDefaultConnection() {
   return LazyDatabase(() async {
-    final dbFolder = await getDatabasesPath();
-    final filePath = p.join(dbFolder, 'pocket_crm.db');
+    final docsDir = await getApplicationDocumentsDirectory();
+    final filePath = resolvePocketCrmDatabasePath(
+      documentsDirPath: docsDir.path,
+      isAndroid: Platform.isAndroid,
+    );
+    final parentDir = Directory(p.dirname(filePath));
+    if (!parentDir.existsSync()) {
+      await parentDir.create(recursive: true);
+    }
     await ensureV4SafetyCopy(filePath);
     return NativeDatabase.createInBackground(File(filePath));
   });

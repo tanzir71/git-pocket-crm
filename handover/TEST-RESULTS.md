@@ -81,6 +81,18 @@ Record of automated test runs and Android emulator verification runs (date, imag
   - **Check 6 (`content://sms/sent` dedup):** PASSED on A. Confirmed Android 14 writes `sendMultipartTextMessage` messages to `content://sms/sent`; `SyncService` matched each by normalized E.164 + body within 2 minutes, stamped `provider_sms_id` (`sms:6`, `sms:7`, `sms:10`, `sms:12`, `sms:54`), and kept exactly 1 `sms_outgoing` row per message in `timeline`.
   - **Check 7 (40 messages at Fast pace = 5s):** PASSED on A (`Pixel_8` Android 14 API 34). All 40/40 messages (`chk7-fast40`) reached `delivered` and the campaign transitioned to `done`. Android 14 API 34 emulator did not show an `SmsUsageMonitor` sending-limit confirmation dialog for 40 messages at 5s pace.
 
+## 2026-11-27 — Spec 10
+
+- **Environment (host):** Host Windows 11, Flutter 3.50.1, Dart 3.14.0 (v2 default with no `--dart-define`, legacy packages `sqflite`, `flutter_sms_inbox`, `call_log`, `google_fonts` removed)
+- **Command:** `(cd android && ./gradlew :app:testDebugUnitTest) && bash tool/verify.sh`
+- **Outcome:** PASSED. `flutter analyze` reported 0 issues; all 80 Flutter tests passed (including `renderTemplate` across all 5 fields, default/explicit fallbacks, punctuation cleanup, unknown field flagging; `countSms` 160/161 GSM-7, `{` extension double-count, 70/71 Bangla UCS-2, emoji 2-unit UCS-2; Figma `10:498` preview `"Hi Amara, a quick reminder that $240 is due on Friday. Thank you!"`; 24-person list with 2 no-mobile + 1 opted-out -> 21 rendered outbox rows; `STOP` & `বন্ধ` opt-out detection; idempotent v4 `scheduled_sms` + `bulk_sms_jobs` cut-over migration; `resolvePocketCrmDatabasePath` exact Android `databases/pocket_crm.db` match; full-`lib/` design lint guard + zero `"legacy"` references in `lib/`; and 6 visually verified light/dark goldens for Messages, New message, and Campaign progress); Kotlin JUnit passed; `assembleDebug`, `check_manifest.sh` (zero `INTERNET`), and `check_landing.sh` passed.
+- **Environment (emulator):** Android Emulator `Pixel_8` (`android-34`, Android 14, debug APK with v2 default)
+- **Outcome:**
+  - **Pause & Resume mid-run (`s10-pr2`, 10 messages, Fast 4s):** PASSED. Paused at 2/10, verified 0 messages sent over a 12s hold (`t+5s=2/10`, `t+17s=2/10`), resumed and completed `10/10 delivered` (`status='done'`).
+  - **Mid-run `am kill` (`s10-amkill`, 10 messages, Fast 4s):** PASSED. Killed app process mid-run with `adb shell am kill com.pocketcrm.pocket_crm`; `OutboxDrainWorker` completed all `10/10 delivered` with exactly 10 matching rows in `content://sms/sent` (zero duplicates).
+  - **Pacing (`s10-steady` 15s, `s10-careful` 60s):** PASSED. Measured inter-message gaps: Steady `14.9s` (`2/3` within 45s window), Careful `58.3s` (`2/2 delivered`, `status='done'`).
+  - **Database path after `sqflite` removal:** Verified `path_provider` opened `databases/pocket_crm.db` in the exact same Android directory `/data/user/0/com.pocketcrm.pocket_crm/databases/pocket_crm.db`.
+
 
 
 

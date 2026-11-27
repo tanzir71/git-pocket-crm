@@ -1,34 +1,41 @@
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:pocket_crm/core/db/app_database.dart';
-import 'package:pocket_crm/database_helper.dart';
+import 'package:pocket_crm/core/providers.dart';
+import 'package:pocket_crm/features/people/data/people_repository.dart';
 import 'package:pocket_crm/main.dart';
 
 void main() {
-  TestWidgetsFlutterBinding.ensureInitialized();
-
-  setUpAll(() async {
-    // Preload bundled Inter variants into google_fonts' cache so legacy
-    // HomeScreen does not emit an async systemFonts notification after teardown.
-    GoogleFonts.inter();
-    GoogleFonts.inter(fontWeight: FontWeight.w500);
-    GoogleFonts.inter(fontWeight: FontWeight.w600);
-    await GoogleFonts.pendingFonts();
-  });
-
-  testWidgets('PocketCRMApp smoke test', (WidgetTester tester) async {
+  testWidgets('PocketCRMApp defaults to v2 Today screen when contacts exist',
+      (WidgetTester tester) async {
     final db = AppDatabase.inMemory();
-    addTearDown(() async {
-      DatabaseHelper.testAppDatabase = null;
-      await db.close();
+    await tester.runAsync(() async {
+      await PeopleRepository(db).createPerson(
+        displayName: 'Amara Okafor',
+        phoneNumber: '+2348031234567',
+      );
     });
-    DatabaseHelper.testAppDatabase = db;
 
-    await tester.pumpWidget(const PocketCRMApp(useV2: false));
-    expect(find.text('PocketCRM'), findsOneWidget);
+    await tester.pumpWidget(
+      ProviderScope(
+        overrides: [
+          appDatabaseProvider.overrideWithValue(db),
+        ],
+        child: const PocketCRMApp(enableBackgroundSync: false),
+      ),
+    );
+    await tester.runAsync(() => Future<void>.delayed(const Duration(milliseconds: 80)));
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 50));
+
+    // Starts on Today with no --dart-define flag
+    expect(find.text('Today'), findsWidgets);
+    expect(find.text('People'), findsOneWidget);
+    expect(find.text('Messages'), findsOneWidget);
 
     await tester.pumpWidget(const SizedBox.shrink());
-    await tester.pump();
+    await tester.pumpAndSettle();
+    await tester.runAsync(db.close);
   });
 }

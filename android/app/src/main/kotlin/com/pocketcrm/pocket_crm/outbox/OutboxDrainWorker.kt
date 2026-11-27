@@ -72,10 +72,11 @@ class OutboxDrainWorker(
                     val prog = db.getCampaignProgress(campaignId)
                     if (prog != null) {
                         tryPromoteForeground(
-                            prog.name,
-                            "Sending ${prog.finished + 1} of ${prog.total}",
+                            "${prog.name} · ${prog.finished + 1} of ${prog.total}",
+                            "Sending messages",
                             prog.finished,
                             prog.total,
+                            campaignId = campaignId,
                         )
                     }
                 }
@@ -109,6 +110,7 @@ class OutboxDrainWorker(
         body: String,
         progress: Int,
         max: Int,
+        campaignId: String? = null,
     ): Boolean {
         return try {
             setForeground(
@@ -118,6 +120,7 @@ class OutboxDrainWorker(
                     body = body,
                     progress = progress,
                     max = max,
+                    campaignId = campaignId,
                 ),
             )
             true

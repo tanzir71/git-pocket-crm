@@ -199,7 +199,7 @@ class PaymentsRepository {
     );
   }
 
-  /// Confirms a legacy `payment_status = 'unconfirmed'` row by updating its status in place.
+  /// Confirms a v1 `payment_status = 'unconfirmed'` row by updating its status in place.
   Future<void> confirmLegacyUnconfirmedPayment({
     required int timelineId,
     required String paymentStatus,
@@ -214,7 +214,7 @@ class PaymentsRepository {
     );
   }
 
-  /// Dismisses a legacy `payment_status = 'unconfirmed'` row by hiding it.
+  /// Dismisses a v1 `payment_status = 'unconfirmed'` row by hiding it.
   Future<void> dismissLegacyUnconfirmedPayment(int timelineId) async {
     await (_db.update(_db.timelineEntries)..where((t) => t.id.equals(timelineId))).write(
       const TimelineEntriesCompanion(

@@ -459,7 +459,7 @@ class PeopleRepository {
         TasksCompanion(contactId: Value(keepId)),
       );
 
-      // Move outbox messages & legacy scheduled SMS
+      // Move outbox messages & v1 scheduled SMS
       await (_db.update(_db.outboxMessages)..where((t) => t.contactId.equals(dropId))).write(
         OutboxMessagesCompanion(contactId: Value(keepId)),
       );

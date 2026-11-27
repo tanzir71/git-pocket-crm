@@ -599,5 +599,288 @@
     }
   },
   "messageScheduledSnack": "Message scheduled",
-  "messageQueuedSnack": "Sending message"
+  "messageQueuedSnack": "Sending message",
+
+  "messagesViewOutbox": "Outbox",
+  "messagesViewCampaigns": "Campaigns",
+  "messagesViewTemplates": "Templates",
+  "messagesSearchTooltip": "Search messages",
+  "messagesSummaryScheduled": "{count} scheduled",
+  "@messagesSummaryScheduled": {
+    "placeholders": {
+      "count": { "type": "int" }
+    }
+  },
+  "messagesSummaryAttention": "{count} needs attention",
+  "@messagesSummaryAttention": {
+    "placeholders": {
+      "count": { "type": "int" }
+    }
+  },
+  "sectionTomorrow": "Tomorrow",
+  "sectionLater": "Later",
+  "sectionEarlier": "Earlier",
+  "sentThisWeekLabel": "Sent this week",
+  "campaignToNPeople": "{name} to {count} people",
+  "@campaignToNPeople": {
+    "placeholders": {
+      "name": { "type": "String" },
+      "count": { "type": "int" }
+    }
+  },
+  "emptyOutboxTitle": "Nothing scheduled",
+  "emptyOutboxMessage": "Messages you schedule will wait here until they are sent.",
+  "emptyCampaignsTitle": "No campaigns yet",
+  "emptyCampaignsMessage": "Messages sent to a list or multiple people will appear here.",
+  "emptyTemplatesTitle": "No templates yet",
+  "emptyTemplatesMessage": "Create a template to reuse personalised messages.",
+  "newTemplateAction": "New template",
+  "newMessageFabTooltip": "New message",
+
+  "composerToLabel": "To",
+  "composerAddPeople": "Add people",
+  "composerMessageLabel": "Message",
+  "composerPreviewLabel": "Preview",
+  "composerPreviewCounter": "{name} · {index} of {total}",
+  "@composerPreviewCounter": {
+    "placeholders": {
+      "name": { "type": "String" },
+      "index": { "type": "int" },
+      "total": { "type": "int" }
+    }
+  },
+  "composerTemplatesAction": "Templates",
+  "composerSendLabel": "Send",
+  "composerPaceLabel": "Pace",
+  "composerSendWindowCaption": "Sends only between {start} and {end}",
+  "@composerSendWindowCaption": {
+    "placeholders": {
+      "start": { "type": "String" },
+      "end": { "type": "String" }
+    }
+  },
+  "composerScheduleNMessages": "Schedule {count, plural, =1{message} other{{count} messages}}",
+  "@composerScheduleNMessages": {
+    "placeholders": {
+      "count": { "type": "int" }
+    }
+  },
+  "composerSendNMessages": "Send {count, plural, =1{now} other{{count} messages}}",
+  "@composerSendNMessages": {
+    "placeholders": {
+      "count": { "type": "int" }
+    }
+  },
+  "composerCounterSingle": "{segments} SMS · {units} of {limit}",
+  "@composerCounterSingle": {
+    "placeholders": {
+      "segments": { "type": "int" },
+      "units": { "type": "int" },
+      "limit": { "type": "int" }
+    }
+  },
+  "composerCounterRange": "{min} to {max} SMS each",
+  "@composerCounterRange": {
+    "placeholders": {
+      "min": { "type": "int" },
+      "max": { "type": "int" }
+    }
+  },
+  "mergeChipFirstName": "First name",
+  "mergeChipName": "Name",
+  "mergeChipCompany": "Company",
+  "mergeChipAmountDue": "Amount due",
+  "mergeChipMyName": "My name",
+  "skippedNoMobile": "{count} skipped: no mobile number",
+  "@skippedNoMobile": {
+    "placeholders": {
+      "count": { "type": "int" }
+    }
+  },
+  "skippedOptedOut": "{count} skipped: asked not to be messaged",
+  "@skippedOptedOut": {
+    "placeholders": {
+      "count": { "type": "int" }
+    }
+  },
+  "skippedDuplicate": "{count} skipped: duplicate number",
+  "@skippedDuplicate": {
+    "placeholders": {
+      "count": { "type": "int" }
+    }
+  },
+  "unknownMergeFieldsWarning": "Unknown fields will be sent as typed: {fields}",
+  "@unknownMergeFieldsWarning": {
+    "placeholders": {
+      "fields": { "type": "String" }
+    }
+  },
+  "checkTheseRecipients": "Check these ({count}): missing {fields}",
+  "@checkTheseRecipients": {
+    "placeholders": {
+      "count": { "type": "int" },
+      "fields": { "type": "String" }
+    }
+  },
+  "previewMissingFieldWarning": "Missing {fields} for this person",
+  "@previewMissingFieldWarning": {
+    "placeholders": {
+      "fields": { "type": "String" }
+    }
+  },
+  "paceFastTitle": "Fast",
+  "paceSteadyTitle": "Steady",
+  "paceCarefulTitle": "Careful",
+  "paceEveryNSeconds": "1 every {seconds} s",
+  "@paceEveryNSeconds": {
+    "placeholders": {
+      "seconds": { "type": "int" }
+    }
+  },
+  "paceOnePerMinute": "1 a minute",
+  "paceWithEstimate": "{pace} · {estimate}",
+  "@paceWithEstimate": {
+    "placeholders": {
+      "pace": { "type": "String" },
+      "estimate": { "type": "String" }
+    }
+  },
+  "aboutSeconds": "about {seconds} s",
+  "@aboutSeconds": {
+    "placeholders": {
+      "seconds": { "type": "int" }
+    }
+  },
+  "aboutMinutes": "about {minutes} min",
+  "@aboutMinutes": {
+    "placeholders": {
+      "minutes": { "type": "int" }
+    }
+  },
+  "aboutSecondsLeft": "About {seconds} seconds left",
+  "@aboutSecondsLeft": {
+    "placeholders": {
+      "seconds": { "type": "int" }
+    }
+  },
+  "aboutMinutesLeft": "About {minutes} min left",
+  "@aboutMinutesLeft": {
+    "placeholders": {
+      "minutes": { "type": "int" }
+    }
+  },
+  "confirmBulkSendTitle": "Send {count} messages from {sim}?",
+  "@confirmBulkSendTitle": {
+    "placeholders": {
+      "count": { "type": "int" },
+      "sim": { "type": "String" }
+    }
+  },
+  "confirmBulkSendBody": "This takes {estimate} and uses your SMS plan.",
+  "@confirmBulkSendBody": {
+    "placeholders": {
+      "estimate": { "type": "String" }
+    }
+  },
+  "sendAction": "Send",
+  "discardDraftTitle": "Discard this message?",
+  "discardDraftBody": "Your message will not be saved.",
+  "discardAction": "Discard",
+  "keepEditingAction": "Keep editing",
+  "defaultSimLabel": "your SIM",
+
+  "campaignStateScheduled": "Scheduled for {time}",
+  "@campaignStateScheduled": {
+    "placeholders": {
+      "time": { "type": "String" }
+    }
+  },
+  "campaignStateSending": "Sending · {done} of {total}",
+  "@campaignStateSending": {
+    "placeholders": {
+      "done": { "type": "int" },
+      "total": { "type": "int" }
+    }
+  },
+  "campaignStatePaused": "Paused · {done} of {total}",
+  "@campaignStatePaused": {
+    "placeholders": {
+      "done": { "type": "int" },
+      "total": { "type": "int" }
+    }
+  },
+  "campaignStateDone": "Done · {sent} sent",
+  "@campaignStateDone": {
+    "placeholders": {
+      "sent": { "type": "int" }
+    }
+  },
+  "campaignStateDoneWithFailed": "Done · {sent} sent · {failed} not sent",
+  "@campaignStateDoneWithFailed": {
+    "placeholders": {
+      "sent": { "type": "int" },
+      "failed": { "type": "int" }
+    }
+  },
+  "campaignStateStopped": "Stopped · {done} of {total}",
+  "@campaignStateStopped": {
+    "placeholders": {
+      "done": { "type": "int" },
+      "total": { "type": "int" }
+    }
+  },
+  "campaignPauseAction": "Pause",
+  "campaignResumeAction": "Resume",
+  "campaignStopAction": "Stop",
+  "campaignStopConfirmTitle": "Stop this campaign?",
+  "campaignStopConfirmBody": "Messages already sent cannot be undone. Waiting messages will be cancelled.",
+  "campaignRetryNNotSent": "Retry {count} not sent",
+  "@campaignRetryNNotSent": {
+    "placeholders": {
+      "count": { "type": "int" }
+    }
+  },
+  "campaignStatSent": "Sent",
+  "campaignStatFailed": "Failed",
+  "campaignStatSending": "Sending",
+  "campaignStatWaiting": "Waiting",
+  "campaignSectionRecipients": "Recipients",
+  "campaignMenuDuplicate": "Duplicate",
+  "campaignMenuExport": "Export results",
+  "campaignMenuDelete": "Delete",
+  "campaignExportedSnack": "Results ready to share",
+  "statusSending": "Sending",
+  "statusWaiting": "Waiting",
+  "statusFailed": "Failed",
+  "statusSkipped": "Skipped",
+  "statusCancelled": "Cancelled",
+  "tapToRetryMeta": "{reason} · tap to retry",
+  "@tapToRetryMeta": {
+    "placeholders": {
+      "reason": { "type": "String" }
+    }
+  },
+
+  "sentFilterAll": "All",
+  "sentFilterDelivered": "Delivered",
+  "sentFilterSent": "Sent",
+  "sentFilterNotSent": "Not sent",
+  "sentListEmpty": "No sent messages yet",
+
+  "templateNameLabel": "Template name",
+  "templateNameHint": "Payment reminder",
+  "templateBodyLabel": "Message",
+  "templateSaveAction": "Save template",
+  "templateDeleteAction": "Delete template",
+  "templateSamplePreview": "Sample preview",
+  "templateValidationName": "Add a template name",
+  "templateValidationBody": "Add a message",
+
+  "recipientPickerTitle": "Choose recipients",
+  "recipientPickerDone": "Done ({count})",
+  "@recipientPickerDone": {
+    "placeholders": {
+      "count": { "type": "int" }
+    }
+  }
 }

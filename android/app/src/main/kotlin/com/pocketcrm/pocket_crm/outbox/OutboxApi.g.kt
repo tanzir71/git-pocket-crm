@@ -571,6 +571,7 @@ interface OutboxApi {
   fun changesSince(seq: Long): ChangeSet
   fun sims(): List<SimInfo>
   fun capabilities(): OutboxCapabilities
+  fun shareFile(path: String, mimeType: String, subject: String)
 
   companion object {
     /** The codec used by OutboxApi. */
@@ -745,6 +746,26 @@ interface OutboxApi {
           channel.setMessageHandler { _, reply ->
             val wrapped: List<Any?> = try {
               listOf(api.capabilities())
+            } catch (exception: Throwable) {
+              OutboxApiPigeonUtils.wrapError(exception)
+            }
+            reply.reply(wrapped)
+          }
+        } else {
+          channel.setMessageHandler(null)
+        }
+      }
+      run {
+        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.pocket_crm.OutboxApi.shareFile$separatedMessageChannelSuffix", codec)
+        if (api != null) {
+          channel.setMessageHandler { message, reply ->
+            val args = message as List<Any?>
+            val pathArg = args[0] as String
+            val mimeTypeArg = args[1] as String
+            val subjectArg = args[2] as String
+            val wrapped: List<Any?> = try {
+              api.shareFile(pathArg, mimeTypeArg, subjectArg)
+              listOf(null)
             } catch (exception: Throwable) {
               OutboxApiPigeonUtils.wrapError(exception)
             }

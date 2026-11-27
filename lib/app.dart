@@ -40,7 +40,13 @@ class _PocketCrmV2AppState extends ConsumerState<PocketCrmV2App>
         );
         final outbox = ref.read(outboxRepositoryProvider);
         outbox.startListening();
-        unawaited(outbox.reconcile());
+        unawaited(
+          ref
+              .read(scheduledSmsMigratorProvider)
+              .migrateOnce()
+              .then((_) => outbox.reconcile()),
+        );
+        unawaited(ref.read(templatesRepositoryProvider).seedDefaultsIfEmpty());
       });
     }
   }

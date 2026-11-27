@@ -294,7 +294,7 @@ class NotificationsService {
     await backend.cancelAllPending();
 
     // 1. Schedule every open follow-up with a future reminder_time (or due_date).
-    // Also covers legacy tasks with a future reminder_time (Spec 08 step 7).
+    // Also covers v1 tasks with a future reminder_time (Spec 08 step 7).
     final openTasks = await _followUps.watchAllOpen().first;
     for (final item in openTasks) {
       final fireAtMs = item.task.reminderTime ?? item.task.dueDate;

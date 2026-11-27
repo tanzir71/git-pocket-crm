@@ -56,6 +56,7 @@ abstract class OutboxPlatformClient {
   Future<ChangeSet> changesSince(int seq);
   Future<List<SimInfo>> sims();
   Future<OutboxCapabilities> capabilities();
+  Future<void> shareFile(String path, String mimeType, String subject);
   void listenForChanges(void Function(int latestSeq) onChanged);
 }
 
@@ -154,6 +155,14 @@ class PigeonOutboxPlatformClient implements OutboxPlatformClient {
         smsPermission: false,
       );
     }
+  }
+
+  @override
+  Future<void> shareFile(String path, String mimeType, String subject) async {
+    if (!Platform.isAndroid) return;
+    try {
+      await _api.shareFile(path, mimeType, subject);
+    } catch (_) {}
   }
 
   @override
@@ -519,4 +528,7 @@ class OutboxRepository {
   Future<List<SimInfo>> sims() => client.sims();
 
   Future<OutboxCapabilities> capabilities() => client.capabilities();
+
+  Future<void> shareFile(String path, String mimeType, String subject) =>
+      client.shareFile(path, mimeType, subject);
 }

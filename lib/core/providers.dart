@@ -3,11 +3,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:material_ui/material_ui.dart';
 
-import '../database_helper.dart';
 import '../features/capture/data/capture_service.dart';
 import '../features/followups/data/followups_repository.dart';
 import '../features/history/data/history_repository.dart';
+import '../features/messages/data/campaigns_repository.dart';
 import '../features/messages/data/outbox_repository.dart';
+import '../features/messages/data/scheduled_sms_migrator.dart';
 import '../features/messages/data/templates_repository.dart';
 import '../features/payments/data/payments_repository.dart';
 import '../features/people/data/lists_repository.dart';
@@ -29,7 +30,9 @@ final clockProvider = Provider<Clock>((ref) => DateTime.now);
 
 /// Single Drift database instance for the entire process.
 final appDatabaseProvider = Provider<AppDatabase>((ref) {
-  return DatabaseHelper.instance.appDatabase;
+  final db = AppDatabase.openDefault();
+  ref.onDispose(db.close);
+  return db;
 });
 
 final peopleRepositoryProvider = Provider<PeopleRepository>((ref) {
@@ -236,6 +239,23 @@ final outboxRepositoryProvider = Provider<OutboxRepository>((ref) {
   return OutboxRepository(
     db: ref.watch(appDatabaseProvider),
     client: ref.watch(outboxPlatformClientProvider),
+    clock: ref.watch(clockProvider),
+  );
+});
+
+final campaignsRepositoryProvider = Provider<CampaignsRepository>((ref) {
+  return CampaignsRepository(
+    db: ref.watch(appDatabaseProvider),
+    outbox: ref.watch(outboxRepositoryProvider),
+    phoneService: ref.watch(phoneServiceProvider),
+    clock: ref.watch(clockProvider),
+  );
+});
+
+final scheduledSmsMigratorProvider = Provider<ScheduledSmsMigrator>((ref) {
+  return ScheduledSmsMigrator(
+    db: ref.watch(appDatabaseProvider),
+    outbox: ref.watch(outboxRepositoryProvider),
     clock: ref.watch(clockProvider),
   );
 });

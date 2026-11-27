@@ -1,3 +1,2 @@
-/// Feature flag controlling whether the v2 interface is active.
-/// Spec 10 flips the default to `true` and deletes `lib/legacy/`.
-const bool kV2 = bool.fromEnvironment('V2', defaultValue: false);
+/// Feature flag kept for compatibility; v2 is now the default interface.
+const bool kV2 = true;

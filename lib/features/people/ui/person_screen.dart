@@ -1067,13 +1067,8 @@ class _PersonScreenState extends ConsumerState<PersonScreen> {
                 fullWidth: true,
                 onPressed: () {
                   Navigator.of(ctx).pop();
-                  final firstName = contact.displayName.split(RegExp(r'\s+')).first;
-                  unawaited(
-                    _messagePerson(
-                      contact,
-                      phones,
-                      body: 'Hi $firstName, a quick reminder that $amountText is due. Thank you.',
-                    ),
+                  context.push(
+                    '/messages/new?contactId=${contact.id}&template=${Uri.encodeQueryComponent('Payment reminder')}',
                   );
                 },
               ),
@@ -1225,12 +1220,13 @@ class _PersonScreenState extends ConsumerState<PersonScreen> {
         final isExpanded = _expandedMessages.contains(entry.id);
         final title =
             entry.type == 'sms_outgoing' ? l10n.messageSent : l10n.messageReceived;
+        final isOptOut = entry.type == 'sms_incoming' && entry.outcome == 'opt_out';
         return EventRow(
           icon: Icons.chat_bubble_outline,
           title: title,
           body: entry.content,
           maxBodyLines: isExpanded ? 100 : 3,
-          timeLine: timeStr,
+          timeLine: isOptOut ? '$timeStr · ${l10n.askedNotToBeMessaged}' : timeStr,
           onTap: () => setState(() {
             if (isExpanded) {
               _expandedMessages.remove(entry.id);

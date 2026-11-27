@@ -7,18 +7,19 @@ class TemplatesRepository {
 
   final AppDatabase _db;
 
+  /// Exact Spec 10 first-run templates.
   static const defaultTemplates = <(String name, String body)>[
     (
       'Payment reminder',
-      'Hi {first_name}, a quick reminder that {amount_due} is due. Thank you!',
+      'Hi {first name}, a quick reminder that {amount due} is due. Thank you. {my name}',
     ),
     (
       'Thank you after a visit',
-      'Hi {first_name}, thank you for taking the time to meet today. Speak soon, {my_name}.',
+      'Hi {first name}, thank you for your time today. I will follow up shortly. {my name}',
     ),
     (
       'Checking in',
-      'Hi {first_name}, just checking in to see how things are going. Best, {my_name}.',
+      'Hi {first name}, it has been a while. How are you?',
     ),
   ];
 
@@ -28,6 +29,14 @@ class TemplatesRepository {
 
   Future<List<Template>> getAll() {
     return (_db.select(_db.templates)..orderBy([(t) => OrderingTerm(expression: t.name)])).get();
+  }
+
+  Future<Template?> getById(int id) {
+    return (_db.select(_db.templates)..where((t) => t.id.equals(id))).getSingleOrNull();
+  }
+
+  Future<Template?> getByName(String name) {
+    return (_db.select(_db.templates)..where((t) => t.name.equals(name))).getSingleOrNull();
   }
 
   Future<void> seedDefaultsIfEmpty() async {

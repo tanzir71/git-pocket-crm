@@ -1000,4 +1000,393 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get messageQueuedSnack => 'Sending message';
+
+  @override
+  String get messagesViewOutbox => 'Outbox';
+
+  @override
+  String get messagesViewCampaigns => 'Campaigns';
+
+  @override
+  String get messagesViewTemplates => 'Templates';
+
+  @override
+  String get messagesSearchTooltip => 'Search messages';
+
+  @override
+  String messagesSummaryScheduled(int count) {
+    return '$count scheduled';
+  }
+
+  @override
+  String messagesSummaryAttention(int count) {
+    return '$count needs attention';
+  }
+
+  @override
+  String get sectionTomorrow => 'Tomorrow';
+
+  @override
+  String get sectionLater => 'Later';
+
+  @override
+  String get sectionEarlier => 'Earlier';
+
+  @override
+  String get sentThisWeekLabel => 'Sent this week';
+
+  @override
+  String campaignToNPeople(String name, int count) {
+    return '$name to $count people';
+  }
+
+  @override
+  String get emptyOutboxTitle => 'Nothing scheduled';
+
+  @override
+  String get emptyOutboxMessage =>
+      'Messages you schedule will wait here until they are sent.';
+
+  @override
+  String get emptyCampaignsTitle => 'No campaigns yet';
+
+  @override
+  String get emptyCampaignsMessage =>
+      'Messages sent to a list or multiple people will appear here.';
+
+  @override
+  String get emptyTemplatesTitle => 'No templates yet';
+
+  @override
+  String get emptyTemplatesMessage =>
+      'Create a template to reuse personalised messages.';
+
+  @override
+  String get newTemplateAction => 'New template';
+
+  @override
+  String get newMessageFabTooltip => 'New message';
+
+  @override
+  String get composerToLabel => 'To';
+
+  @override
+  String get composerAddPeople => 'Add people';
+
+  @override
+  String get composerMessageLabel => 'Message';
+
+  @override
+  String get composerPreviewLabel => 'Preview';
+
+  @override
+  String composerPreviewCounter(String name, int index, int total) {
+    return '$name · $index of $total';
+  }
+
+  @override
+  String get composerTemplatesAction => 'Templates';
+
+  @override
+  String get composerSendLabel => 'Send';
+
+  @override
+  String get composerPaceLabel => 'Pace';
+
+  @override
+  String composerSendWindowCaption(String start, String end) {
+    return 'Sends only between $start and $end';
+  }
+
+  @override
+  String composerScheduleNMessages(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count messages',
+      one: 'message',
+    );
+    return 'Schedule $_temp0';
+  }
+
+  @override
+  String composerSendNMessages(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count messages',
+      one: 'now',
+    );
+    return 'Send $_temp0';
+  }
+
+  @override
+  String composerCounterSingle(int segments, int units, int limit) {
+    return '$segments SMS · $units of $limit';
+  }
+
+  @override
+  String composerCounterRange(int min, int max) {
+    return '$min to $max SMS each';
+  }
+
+  @override
+  String get mergeChipFirstName => 'First name';
+
+  @override
+  String get mergeChipName => 'Name';
+
+  @override
+  String get mergeChipCompany => 'Company';
+
+  @override
+  String get mergeChipAmountDue => 'Amount due';
+
+  @override
+  String get mergeChipMyName => 'My name';
+
+  @override
+  String skippedNoMobile(int count) {
+    return '$count skipped: no mobile number';
+  }
+
+  @override
+  String skippedOptedOut(int count) {
+    return '$count skipped: asked not to be messaged';
+  }
+
+  @override
+  String skippedDuplicate(int count) {
+    return '$count skipped: duplicate number';
+  }
+
+  @override
+  String unknownMergeFieldsWarning(String fields) {
+    return 'Unknown fields will be sent as typed: $fields';
+  }
+
+  @override
+  String checkTheseRecipients(int count, String fields) {
+    return 'Check these ($count): missing $fields';
+  }
+
+  @override
+  String previewMissingFieldWarning(String fields) {
+    return 'Missing $fields for this person';
+  }
+
+  @override
+  String get paceFastTitle => 'Fast';
+
+  @override
+  String get paceSteadyTitle => 'Steady';
+
+  @override
+  String get paceCarefulTitle => 'Careful';
+
+  @override
+  String paceEveryNSeconds(int seconds) {
+    return '1 every $seconds s';
+  }
+
+  @override
+  String get paceOnePerMinute => '1 a minute';
+
+  @override
+  String paceWithEstimate(String pace, String estimate) {
+    return '$pace · $estimate';
+  }
+
+  @override
+  String aboutSeconds(int seconds) {
+    return 'about $seconds s';
+  }
+
+  @override
+  String aboutMinutes(int minutes) {
+    return 'about $minutes min';
+  }
+
+  @override
+  String aboutSecondsLeft(int seconds) {
+    return 'About $seconds seconds left';
+  }
+
+  @override
+  String aboutMinutesLeft(int minutes) {
+    return 'About $minutes min left';
+  }
+
+  @override
+  String confirmBulkSendTitle(int count, String sim) {
+    return 'Send $count messages from $sim?';
+  }
+
+  @override
+  String confirmBulkSendBody(String estimate) {
+    return 'This takes $estimate and uses your SMS plan.';
+  }
+
+  @override
+  String get sendAction => 'Send';
+
+  @override
+  String get discardDraftTitle => 'Discard this message?';
+
+  @override
+  String get discardDraftBody => 'Your message will not be saved.';
+
+  @override
+  String get discardAction => 'Discard';
+
+  @override
+  String get keepEditingAction => 'Keep editing';
+
+  @override
+  String get defaultSimLabel => 'your SIM';
+
+  @override
+  String campaignStateScheduled(String time) {
+    return 'Scheduled for $time';
+  }
+
+  @override
+  String campaignStateSending(int done, int total) {
+    return 'Sending · $done of $total';
+  }
+
+  @override
+  String campaignStatePaused(int done, int total) {
+    return 'Paused · $done of $total';
+  }
+
+  @override
+  String campaignStateDone(int sent) {
+    return 'Done · $sent sent';
+  }
+
+  @override
+  String campaignStateDoneWithFailed(int sent, int failed) {
+    return 'Done · $sent sent · $failed not sent';
+  }
+
+  @override
+  String campaignStateStopped(int done, int total) {
+    return 'Stopped · $done of $total';
+  }
+
+  @override
+  String get campaignPauseAction => 'Pause';
+
+  @override
+  String get campaignResumeAction => 'Resume';
+
+  @override
+  String get campaignStopAction => 'Stop';
+
+  @override
+  String get campaignStopConfirmTitle => 'Stop this campaign?';
+
+  @override
+  String get campaignStopConfirmBody =>
+      'Messages already sent cannot be undone. Waiting messages will be cancelled.';
+
+  @override
+  String campaignRetryNNotSent(int count) {
+    return 'Retry $count not sent';
+  }
+
+  @override
+  String get campaignStatSent => 'Sent';
+
+  @override
+  String get campaignStatFailed => 'Failed';
+
+  @override
+  String get campaignStatSending => 'Sending';
+
+  @override
+  String get campaignStatWaiting => 'Waiting';
+
+  @override
+  String get campaignSectionRecipients => 'Recipients';
+
+  @override
+  String get campaignMenuDuplicate => 'Duplicate';
+
+  @override
+  String get campaignMenuExport => 'Export results';
+
+  @override
+  String get campaignMenuDelete => 'Delete';
+
+  @override
+  String get campaignExportedSnack => 'Results ready to share';
+
+  @override
+  String get statusSending => 'Sending';
+
+  @override
+  String get statusWaiting => 'Waiting';
+
+  @override
+  String get statusFailed => 'Failed';
+
+  @override
+  String get statusSkipped => 'Skipped';
+
+  @override
+  String get statusCancelled => 'Cancelled';
+
+  @override
+  String tapToRetryMeta(String reason) {
+    return '$reason · tap to retry';
+  }
+
+  @override
+  String get sentFilterAll => 'All';
+
+  @override
+  String get sentFilterDelivered => 'Delivered';
+
+  @override
+  String get sentFilterSent => 'Sent';
+
+  @override
+  String get sentFilterNotSent => 'Not sent';
+
+  @override
+  String get sentListEmpty => 'No sent messages yet';
+
+  @override
+  String get templateNameLabel => 'Template name';
+
+  @override
+  String get templateNameHint => 'Payment reminder';
+
+  @override
+  String get templateBodyLabel => 'Message';
+
+  @override
+  String get templateSaveAction => 'Save template';
+
+  @override
+  String get templateDeleteAction => 'Delete template';
+
+  @override
+  String get templateSamplePreview => 'Sample preview';
+
+  @override
+  String get templateValidationName => 'Add a template name';
+
+  @override
+  String get templateValidationBody => 'Add a message';
+
+  @override
+  String get recipientPickerTitle => 'Choose recipients';
+
+  @override
+  String recipientPickerDone(int count) {
+    return 'Done ($count)';
+  }
 }

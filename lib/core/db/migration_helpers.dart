@@ -1,4 +1,4 @@
-/// Result of parsing a legacy v4 payment `content` prefix.
+/// Result of parsing a v4 payment `content` prefix.
 class ParsedLegacyPayment {
   const ParsedLegacyPayment({required this.status, required this.note});
 
@@ -6,7 +6,7 @@ class ParsedLegacyPayment {
   final String? note;
 }
 
-/// Parses legacy payment prefixes from `timeline.content` without mutating
+/// Parses v4 payment prefixes from `timeline.content` without mutating
 /// the original `content` column.
 ///
 /// Mapping mirrors `thread_screen.dart`:
@@ -45,7 +45,7 @@ ParsedLegacyPayment? parseLegacyPaymentContent(String? content) {
   return null;
 }
 
-/// Parses legacy call duration strings such as:
+/// Parses v4 call duration strings such as:
 /// - `Duration: 2 min 5 sec` -> 125
 /// - `Duration: 40 sec` -> 40
 /// - `Duration: Missed call` -> 0

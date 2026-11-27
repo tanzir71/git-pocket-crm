@@ -4,7 +4,9 @@ import 'package:go_router/go_router.dart';
 import 'package:material_ui/material_ui.dart';
 
 import '../dev/gallery_screen.dart';
+import '../features/messages/ui/campaign_screen.dart';
 import '../features/messages/ui/messages_screen.dart';
+import '../features/messages/ui/new_message_screen.dart';
 import '../features/people/ui/people_screen.dart';
 import '../features/people/ui/person_screen.dart';
 import '../features/settings/ui/settings_screen.dart';
@@ -127,7 +129,27 @@ final goRouterProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: '/messages/new',
         parentNavigatorKey: rootNavigatorKey,
-        builder: (context, state) => const NewMessageScreen(),
+        builder: (context, state) {
+          final qp = state.uri.queryParameters;
+          final contactIds = <int>{};
+          final singleId = int.tryParse(qp['contactId'] ?? '');
+          if (singleId != null) contactIds.add(singleId);
+          final csvIds = qp['contactIds'] ?? '';
+          for (final part in csvIds.split(',')) {
+            final parsed = int.tryParse(part.trim());
+            if (parsed != null) contactIds.add(parsed);
+          }
+          final listIds = <int>{};
+          final listId = int.tryParse(qp['listId'] ?? '');
+          if (listId != null) listIds.add(listId);
+          return NewMessageScreen(
+            initialContactIds: contactIds,
+            initialListIds: listIds,
+            initialTemplateName: qp['template'],
+            initialBody: qp['body'],
+            initialCampaignName: qp['name'],
+          );
+        },
       ),
       GoRoute(
         path: '/messages/campaign/:id',

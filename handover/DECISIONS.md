@@ -63,6 +63,12 @@ Log of technical, dependency, and design choices made during implementation wher
 - **SMS counter:** Placed pure `countSms(text)` (3GPP TS 23.038 GSM-7 basic + extension table 160/153 vs UCS-2 UTF-16 70/67) in `lib/core/messages/sms_counter.dart` so Spec 09's single-message sheet and Spec 10's bulk composer share one implementation.
 - **Airplane mode handling on Android 14:** On Android 14 API 34, `SmsManager.sendMultipartTextMessage` during airplane mode can fail before invoking `SmsResultReceiver`. `SmsSender` checks `Settings.Global.AIRPLANE_MODE_ON` before dispatching and routes through `SmsResultReceiver.recordSyntheticFailure(..., RESULT_ERROR_RADIO_OFF)` so the 1m/5m/15m retry policy triggers reliably.
 
+## Spec 10 — Bulk messages and cut-over (2026-11-27)
+
+- **Native share sheet without extra packages:** Added `OutboxApi.shareFile(path, mimeType, subject)` backed by `androidx.core.content.FileProvider` (`${applicationId}.fileprovider`) and `Intent.createChooser(ACTION_SEND)` so campaign CSV exports (and Spec 12 exports) open the Android share sheet without adding `share_plus`.
+- **Database path without `sqflite`:** Removed `sqflite`, `flutter_sms_inbox`, `call_log`, and `google_fonts`, and replaced `getDatabasesPath()` with `resolvePocketCrmDatabasePath` via `path_provider` (`<appDataDir>/databases/pocket_crm.db` on Android), verified by both unit test and emulator run.
+- **Cut-over & lint guard:** Flipped `kV2` to `true`, deleted `lib/legacy/`, `lib/sms_processor.dart`, `lib/sync_engine.dart`, `lib/spam_filter.dart`, `lib/database_helper.dart`, `lib/core/db/legacy_db.dart`, `MainActivity`'s `sendSms` channel, and legacy tests; extended `test/lint_guard_test.dart` to enforce design tokens across all of `lib/` and zero `"legacy"` references.
+
 
 
 

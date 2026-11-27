@@ -1810,6 +1810,624 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Sending message'**
   String get messageQueuedSnack;
+
+  /// No description provided for @messagesViewOutbox.
+  ///
+  /// In en, this message translates to:
+  /// **'Outbox'**
+  String get messagesViewOutbox;
+
+  /// No description provided for @messagesViewCampaigns.
+  ///
+  /// In en, this message translates to:
+  /// **'Campaigns'**
+  String get messagesViewCampaigns;
+
+  /// No description provided for @messagesViewTemplates.
+  ///
+  /// In en, this message translates to:
+  /// **'Templates'**
+  String get messagesViewTemplates;
+
+  /// No description provided for @messagesSearchTooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'Search messages'**
+  String get messagesSearchTooltip;
+
+  /// No description provided for @messagesSummaryScheduled.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} scheduled'**
+  String messagesSummaryScheduled(int count);
+
+  /// No description provided for @messagesSummaryAttention.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} needs attention'**
+  String messagesSummaryAttention(int count);
+
+  /// No description provided for @sectionTomorrow.
+  ///
+  /// In en, this message translates to:
+  /// **'Tomorrow'**
+  String get sectionTomorrow;
+
+  /// No description provided for @sectionLater.
+  ///
+  /// In en, this message translates to:
+  /// **'Later'**
+  String get sectionLater;
+
+  /// No description provided for @sectionEarlier.
+  ///
+  /// In en, this message translates to:
+  /// **'Earlier'**
+  String get sectionEarlier;
+
+  /// No description provided for @sentThisWeekLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Sent this week'**
+  String get sentThisWeekLabel;
+
+  /// No description provided for @campaignToNPeople.
+  ///
+  /// In en, this message translates to:
+  /// **'{name} to {count} people'**
+  String campaignToNPeople(String name, int count);
+
+  /// No description provided for @emptyOutboxTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Nothing scheduled'**
+  String get emptyOutboxTitle;
+
+  /// No description provided for @emptyOutboxMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Messages you schedule will wait here until they are sent.'**
+  String get emptyOutboxMessage;
+
+  /// No description provided for @emptyCampaignsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'No campaigns yet'**
+  String get emptyCampaignsTitle;
+
+  /// No description provided for @emptyCampaignsMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Messages sent to a list or multiple people will appear here.'**
+  String get emptyCampaignsMessage;
+
+  /// No description provided for @emptyTemplatesTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'No templates yet'**
+  String get emptyTemplatesTitle;
+
+  /// No description provided for @emptyTemplatesMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Create a template to reuse personalised messages.'**
+  String get emptyTemplatesMessage;
+
+  /// No description provided for @newTemplateAction.
+  ///
+  /// In en, this message translates to:
+  /// **'New template'**
+  String get newTemplateAction;
+
+  /// No description provided for @newMessageFabTooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'New message'**
+  String get newMessageFabTooltip;
+
+  /// No description provided for @composerToLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'To'**
+  String get composerToLabel;
+
+  /// No description provided for @composerAddPeople.
+  ///
+  /// In en, this message translates to:
+  /// **'Add people'**
+  String get composerAddPeople;
+
+  /// No description provided for @composerMessageLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Message'**
+  String get composerMessageLabel;
+
+  /// No description provided for @composerPreviewLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Preview'**
+  String get composerPreviewLabel;
+
+  /// No description provided for @composerPreviewCounter.
+  ///
+  /// In en, this message translates to:
+  /// **'{name} · {index} of {total}'**
+  String composerPreviewCounter(String name, int index, int total);
+
+  /// No description provided for @composerTemplatesAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Templates'**
+  String get composerTemplatesAction;
+
+  /// No description provided for @composerSendLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Send'**
+  String get composerSendLabel;
+
+  /// No description provided for @composerPaceLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Pace'**
+  String get composerPaceLabel;
+
+  /// No description provided for @composerSendWindowCaption.
+  ///
+  /// In en, this message translates to:
+  /// **'Sends only between {start} and {end}'**
+  String composerSendWindowCaption(String start, String end);
+
+  /// No description provided for @composerScheduleNMessages.
+  ///
+  /// In en, this message translates to:
+  /// **'Schedule {count, plural, =1{message} other{{count} messages}}'**
+  String composerScheduleNMessages(int count);
+
+  /// No description provided for @composerSendNMessages.
+  ///
+  /// In en, this message translates to:
+  /// **'Send {count, plural, =1{now} other{{count} messages}}'**
+  String composerSendNMessages(int count);
+
+  /// No description provided for @composerCounterSingle.
+  ///
+  /// In en, this message translates to:
+  /// **'{segments} SMS · {units} of {limit}'**
+  String composerCounterSingle(int segments, int units, int limit);
+
+  /// No description provided for @composerCounterRange.
+  ///
+  /// In en, this message translates to:
+  /// **'{min} to {max} SMS each'**
+  String composerCounterRange(int min, int max);
+
+  /// No description provided for @mergeChipFirstName.
+  ///
+  /// In en, this message translates to:
+  /// **'First name'**
+  String get mergeChipFirstName;
+
+  /// No description provided for @mergeChipName.
+  ///
+  /// In en, this message translates to:
+  /// **'Name'**
+  String get mergeChipName;
+
+  /// No description provided for @mergeChipCompany.
+  ///
+  /// In en, this message translates to:
+  /// **'Company'**
+  String get mergeChipCompany;
+
+  /// No description provided for @mergeChipAmountDue.
+  ///
+  /// In en, this message translates to:
+  /// **'Amount due'**
+  String get mergeChipAmountDue;
+
+  /// No description provided for @mergeChipMyName.
+  ///
+  /// In en, this message translates to:
+  /// **'My name'**
+  String get mergeChipMyName;
+
+  /// No description provided for @skippedNoMobile.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} skipped: no mobile number'**
+  String skippedNoMobile(int count);
+
+  /// No description provided for @skippedOptedOut.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} skipped: asked not to be messaged'**
+  String skippedOptedOut(int count);
+
+  /// No description provided for @skippedDuplicate.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} skipped: duplicate number'**
+  String skippedDuplicate(int count);
+
+  /// No description provided for @unknownMergeFieldsWarning.
+  ///
+  /// In en, this message translates to:
+  /// **'Unknown fields will be sent as typed: {fields}'**
+  String unknownMergeFieldsWarning(String fields);
+
+  /// No description provided for @checkTheseRecipients.
+  ///
+  /// In en, this message translates to:
+  /// **'Check these ({count}): missing {fields}'**
+  String checkTheseRecipients(int count, String fields);
+
+  /// No description provided for @previewMissingFieldWarning.
+  ///
+  /// In en, this message translates to:
+  /// **'Missing {fields} for this person'**
+  String previewMissingFieldWarning(String fields);
+
+  /// No description provided for @paceFastTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Fast'**
+  String get paceFastTitle;
+
+  /// No description provided for @paceSteadyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Steady'**
+  String get paceSteadyTitle;
+
+  /// No description provided for @paceCarefulTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Careful'**
+  String get paceCarefulTitle;
+
+  /// No description provided for @paceEveryNSeconds.
+  ///
+  /// In en, this message translates to:
+  /// **'1 every {seconds} s'**
+  String paceEveryNSeconds(int seconds);
+
+  /// No description provided for @paceOnePerMinute.
+  ///
+  /// In en, this message translates to:
+  /// **'1 a minute'**
+  String get paceOnePerMinute;
+
+  /// No description provided for @paceWithEstimate.
+  ///
+  /// In en, this message translates to:
+  /// **'{pace} · {estimate}'**
+  String paceWithEstimate(String pace, String estimate);
+
+  /// No description provided for @aboutSeconds.
+  ///
+  /// In en, this message translates to:
+  /// **'about {seconds} s'**
+  String aboutSeconds(int seconds);
+
+  /// No description provided for @aboutMinutes.
+  ///
+  /// In en, this message translates to:
+  /// **'about {minutes} min'**
+  String aboutMinutes(int minutes);
+
+  /// No description provided for @aboutSecondsLeft.
+  ///
+  /// In en, this message translates to:
+  /// **'About {seconds} seconds left'**
+  String aboutSecondsLeft(int seconds);
+
+  /// No description provided for @aboutMinutesLeft.
+  ///
+  /// In en, this message translates to:
+  /// **'About {minutes} min left'**
+  String aboutMinutesLeft(int minutes);
+
+  /// No description provided for @confirmBulkSendTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Send {count} messages from {sim}?'**
+  String confirmBulkSendTitle(int count, String sim);
+
+  /// No description provided for @confirmBulkSendBody.
+  ///
+  /// In en, this message translates to:
+  /// **'This takes {estimate} and uses your SMS plan.'**
+  String confirmBulkSendBody(String estimate);
+
+  /// No description provided for @sendAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Send'**
+  String get sendAction;
+
+  /// No description provided for @discardDraftTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Discard this message?'**
+  String get discardDraftTitle;
+
+  /// No description provided for @discardDraftBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Your message will not be saved.'**
+  String get discardDraftBody;
+
+  /// No description provided for @discardAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Discard'**
+  String get discardAction;
+
+  /// No description provided for @keepEditingAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Keep editing'**
+  String get keepEditingAction;
+
+  /// No description provided for @defaultSimLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'your SIM'**
+  String get defaultSimLabel;
+
+  /// No description provided for @campaignStateScheduled.
+  ///
+  /// In en, this message translates to:
+  /// **'Scheduled for {time}'**
+  String campaignStateScheduled(String time);
+
+  /// No description provided for @campaignStateSending.
+  ///
+  /// In en, this message translates to:
+  /// **'Sending · {done} of {total}'**
+  String campaignStateSending(int done, int total);
+
+  /// No description provided for @campaignStatePaused.
+  ///
+  /// In en, this message translates to:
+  /// **'Paused · {done} of {total}'**
+  String campaignStatePaused(int done, int total);
+
+  /// No description provided for @campaignStateDone.
+  ///
+  /// In en, this message translates to:
+  /// **'Done · {sent} sent'**
+  String campaignStateDone(int sent);
+
+  /// No description provided for @campaignStateDoneWithFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Done · {sent} sent · {failed} not sent'**
+  String campaignStateDoneWithFailed(int sent, int failed);
+
+  /// No description provided for @campaignStateStopped.
+  ///
+  /// In en, this message translates to:
+  /// **'Stopped · {done} of {total}'**
+  String campaignStateStopped(int done, int total);
+
+  /// No description provided for @campaignPauseAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Pause'**
+  String get campaignPauseAction;
+
+  /// No description provided for @campaignResumeAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Resume'**
+  String get campaignResumeAction;
+
+  /// No description provided for @campaignStopAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Stop'**
+  String get campaignStopAction;
+
+  /// No description provided for @campaignStopConfirmTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Stop this campaign?'**
+  String get campaignStopConfirmTitle;
+
+  /// No description provided for @campaignStopConfirmBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Messages already sent cannot be undone. Waiting messages will be cancelled.'**
+  String get campaignStopConfirmBody;
+
+  /// No description provided for @campaignRetryNNotSent.
+  ///
+  /// In en, this message translates to:
+  /// **'Retry {count} not sent'**
+  String campaignRetryNNotSent(int count);
+
+  /// No description provided for @campaignStatSent.
+  ///
+  /// In en, this message translates to:
+  /// **'Sent'**
+  String get campaignStatSent;
+
+  /// No description provided for @campaignStatFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed'**
+  String get campaignStatFailed;
+
+  /// No description provided for @campaignStatSending.
+  ///
+  /// In en, this message translates to:
+  /// **'Sending'**
+  String get campaignStatSending;
+
+  /// No description provided for @campaignStatWaiting.
+  ///
+  /// In en, this message translates to:
+  /// **'Waiting'**
+  String get campaignStatWaiting;
+
+  /// No description provided for @campaignSectionRecipients.
+  ///
+  /// In en, this message translates to:
+  /// **'Recipients'**
+  String get campaignSectionRecipients;
+
+  /// No description provided for @campaignMenuDuplicate.
+  ///
+  /// In en, this message translates to:
+  /// **'Duplicate'**
+  String get campaignMenuDuplicate;
+
+  /// No description provided for @campaignMenuExport.
+  ///
+  /// In en, this message translates to:
+  /// **'Export results'**
+  String get campaignMenuExport;
+
+  /// No description provided for @campaignMenuDelete.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete'**
+  String get campaignMenuDelete;
+
+  /// No description provided for @campaignExportedSnack.
+  ///
+  /// In en, this message translates to:
+  /// **'Results ready to share'**
+  String get campaignExportedSnack;
+
+  /// No description provided for @statusSending.
+  ///
+  /// In en, this message translates to:
+  /// **'Sending'**
+  String get statusSending;
+
+  /// No description provided for @statusWaiting.
+  ///
+  /// In en, this message translates to:
+  /// **'Waiting'**
+  String get statusWaiting;
+
+  /// No description provided for @statusFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed'**
+  String get statusFailed;
+
+  /// No description provided for @statusSkipped.
+  ///
+  /// In en, this message translates to:
+  /// **'Skipped'**
+  String get statusSkipped;
+
+  /// No description provided for @statusCancelled.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancelled'**
+  String get statusCancelled;
+
+  /// No description provided for @tapToRetryMeta.
+  ///
+  /// In en, this message translates to:
+  /// **'{reason} · tap to retry'**
+  String tapToRetryMeta(String reason);
+
+  /// No description provided for @sentFilterAll.
+  ///
+  /// In en, this message translates to:
+  /// **'All'**
+  String get sentFilterAll;
+
+  /// No description provided for @sentFilterDelivered.
+  ///
+  /// In en, this message translates to:
+  /// **'Delivered'**
+  String get sentFilterDelivered;
+
+  /// No description provided for @sentFilterSent.
+  ///
+  /// In en, this message translates to:
+  /// **'Sent'**
+  String get sentFilterSent;
+
+  /// No description provided for @sentFilterNotSent.
+  ///
+  /// In en, this message translates to:
+  /// **'Not sent'**
+  String get sentFilterNotSent;
+
+  /// No description provided for @sentListEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'No sent messages yet'**
+  String get sentListEmpty;
+
+  /// No description provided for @templateNameLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Template name'**
+  String get templateNameLabel;
+
+  /// No description provided for @templateNameHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Payment reminder'**
+  String get templateNameHint;
+
+  /// No description provided for @templateBodyLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Message'**
+  String get templateBodyLabel;
+
+  /// No description provided for @templateSaveAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Save template'**
+  String get templateSaveAction;
+
+  /// No description provided for @templateDeleteAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete template'**
+  String get templateDeleteAction;
+
+  /// No description provided for @templateSamplePreview.
+  ///
+  /// In en, this message translates to:
+  /// **'Sample preview'**
+  String get templateSamplePreview;
+
+  /// No description provided for @templateValidationName.
+  ///
+  /// In en, this message translates to:
+  /// **'Add a template name'**
+  String get templateValidationName;
+
+  /// No description provided for @templateValidationBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Add a message'**
+  String get templateValidationBody;
+
+  /// No description provided for @recipientPickerTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose recipients'**
+  String get recipientPickerTitle;
+
+  /// No description provided for @recipientPickerDone.
+  ///
+  /// In en, this message translates to:
+  /// **'Done ({count})'**
+  String recipientPickerDone(int count);
 }
 
 class _AppLocalizationsDelegate

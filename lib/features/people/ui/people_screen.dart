@@ -326,6 +326,8 @@ class _PeopleScreenState extends ConsumerState<PeopleScreen> {
                             context,
                             ref,
                             list: summary.list,
+                            onMessageList: () =>
+                                context.push('/messages/new?listId=${summary.list.id}'),
                             onDeleted: () {
                               if (_selectedListId == summary.list.id && mounted) {
                                 setState(() {
@@ -590,8 +592,13 @@ class _PeopleScreenState extends ConsumerState<PeopleScreen> {
                   label: l10n.actionMessage,
                   variant: AppButtonVariant.secondary,
                   size: AppButtonSize.small,
-                  // Enabled in spec 10
-                  onPressed: null,
+                  onPressed: hasSelection
+                      ? () {
+                          final ids = _selectedIds.join(',');
+                          _exitSelectionMode();
+                          context.push('/messages/new?contactIds=$ids');
+                        }
+                      : null,
                 ),
                 AppButton(
                   label: l10n.actionStar,

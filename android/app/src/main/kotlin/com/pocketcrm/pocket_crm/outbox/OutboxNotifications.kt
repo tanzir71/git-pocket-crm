@@ -55,6 +55,7 @@ object OutboxNotifications {
         body: String,
         progress: Int = 0,
         max: Int = 0,
+        campaignId: String? = null,
     ): ForegroundInfo {
         ensureChannel(context)
         val openIntent = Intent(context, MainActivity::class.java).apply {
@@ -75,6 +76,30 @@ object OutboxNotifications {
             .setContentIntent(pi)
         if (max > 0) {
             builder.setProgress(max, progress.coerceIn(0, max), false)
+        }
+        if (campaignId != null) {
+            val pauseIntent = Intent(context, SmsResultReceiver::class.java).apply {
+                action = SmsResultReceiver.ACTION_PAUSE_CAMPAIGN
+                putExtra(SmsResultReceiver.EXTRA_CAMPAIGN_ID, campaignId)
+            }
+            val pausePi = PendingIntent.getBroadcast(
+                context,
+                FG_NOTIFICATION_ID + 10,
+                pauseIntent,
+                PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE,
+            )
+            val stopIntent = Intent(context, SmsResultReceiver::class.java).apply {
+                action = SmsResultReceiver.ACTION_STOP_CAMPAIGN
+                putExtra(SmsResultReceiver.EXTRA_CAMPAIGN_ID, campaignId)
+            }
+            val stopPi = PendingIntent.getBroadcast(
+                context,
+                FG_NOTIFICATION_ID + 11,
+                stopIntent,
+                PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE,
+            )
+            builder.addAction(0, "Pause", pausePi)
+            builder.addAction(0, "Stop", stopPi)
         }
         val notification = builder.build()
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {

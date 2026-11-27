@@ -21,6 +21,18 @@ class SmsResultReceiver : BroadcastReceiver() {
             ACTION_SMS_SENT -> handleSent(context, db, intent)
             ACTION_SMS_DELIVERED -> handleDelivered(db, intent)
             ACTION_RETRY_MESSAGE -> handleRetryAction(context, db, intent)
+            ACTION_PAUSE_CAMPAIGN -> {
+                val cid = intent.getStringExtra(EXTRA_CAMPAIGN_ID) ?: return
+                val seq = db.pauseCampaign(cid)
+                OutboxApiImpl.notifyChanged(seq)
+                OutboxScheduler.scheduleNext(context)
+            }
+            ACTION_STOP_CAMPAIGN -> {
+                val cid = intent.getStringExtra(EXTRA_CAMPAIGN_ID) ?: return
+                val seq = db.stopCampaign(cid)
+                OutboxApiImpl.notifyChanged(seq)
+                OutboxScheduler.scheduleNext(context)
+            }
         }
     }
 
@@ -61,7 +73,10 @@ class SmsResultReceiver : BroadcastReceiver() {
         const val ACTION_SMS_SENT = "com.pocketcrm.pocket_crm.outbox.ACTION_SMS_SENT"
         const val ACTION_SMS_DELIVERED = "com.pocketcrm.pocket_crm.outbox.ACTION_SMS_DELIVERED"
         const val ACTION_RETRY_MESSAGE = "com.pocketcrm.pocket_crm.outbox.ACTION_RETRY_MESSAGE"
+        const val ACTION_PAUSE_CAMPAIGN = "com.pocketcrm.pocket_crm.outbox.ACTION_PAUSE_CAMPAIGN"
+        const val ACTION_STOP_CAMPAIGN = "com.pocketcrm.pocket_crm.outbox.ACTION_STOP_CAMPAIGN"
         const val EXTRA_CLIENT_ID = "client_id"
+        const val EXTRA_CAMPAIGN_ID = "campaign_id"
         const val EXTRA_PART_INDEX = "part_index"
         const val EXTRA_NOTIFICATION_ID = "notification_id"
         private const val TAG = "SmsResultReceiver"

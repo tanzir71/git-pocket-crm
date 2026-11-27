@@ -126,6 +126,8 @@ abstract class OutboxApi {
   List<SimInfo> sims();
 
   OutboxCapabilities capabilities();
+
+  void shareFile(String path, String mimeType, String subject);
 }
 
 @FlutterApi()
