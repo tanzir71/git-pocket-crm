@@ -2,6 +2,16 @@
 
 All notable changes to PocketCRM are documented in this file.
 
+## 2.0.0 (2026-11-27)
+
+- **Automatic history, completely private:** Calls and SMS messages sync automatically per person on your phone, with international phone number matching, zero spam-filter deletion of messages from saved contacts, and zero internet permission in the release build.
+- **Today and reminders:** A single Today screen surfaces recent calls to note, due and overdue follow-ups, people due to reconnect with, scheduled messages going out today, and upcoming birthdays, backed by reliable reminder notifications with Done and Tomorrow actions.
+- **Fast People directory and Person view:** Search thousands of contacts instantly by name, company, number, or note; filter by Starred, Due to reconnect, Owes me, or custom lists; merge duplicate contacts; and track per-currency payment balances.
+- **Quick capture after calls and visits:** Log notes, calls, visits (with photos and optional coarse location), tasks, payments, and files from one unified Add sheet with 5-second Undo, plus an after-call prompt when a call ends.
+- **Reliable scheduled and bulk SMS from your own SIM:** Native Android SMS outbox using exact alarms and WorkManager so scheduled and bulk personalised messages send on time even when the app is closed, idle, or after a restart, with reusable templates, live preview, pacing controls, send window, Pause/Resume/Stop, CSV results export, and automatic opt-out detection.
+- **Encrypted backup and open exports:** Save plain or passphrase-encrypted `.pcrm` backups anywhere via Android's file picker, restore safely with an automatic pre-restore backup, import v1 JSON backups without duplicates, keep weekly automatic local backups, and export People as CSV/vCard or a person's history as CSV.
+- **Built for everyone:** English and Bengali (`বাংলা`), light and dark themes, right-to-left layout support, text scaling up to 200%, TalkBack screen-reader labels, predictive back, and edge-to-edge display.
+
 ## Milestone 4: Backup and global readiness (2026-11-27)
 
 - Full encrypted and plain `.pcrm` backup and restore saved wherever you choose through Android's file picker (with optional passphrase encryption, automatic safety backup before restoring, and weekly automatic local backups keeping the last four).

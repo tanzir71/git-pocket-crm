@@ -1,5 +1,9 @@
 # Unverified
 
+**Summary:** All automated unit, widget, golden, Kotlin JUnit, and Android 14 emulator checks passed, leaving only real-hardware and carrier behaviours unverified on this machine.
+Specifically, live mobile networks, physical dual-SIM hardware, sideloaded Android 13+ restricted settings, OEM battery managers, physical GPU startup/frame timings, and native Bengali copy review cannot be proven on headless emulators.
+Each item below is a plain statement of fact so anyone installing PocketCRM knows what was verified on emulators versus real phones.
+
 Plain statements of fact for behaviours that cannot be verified automatically or on an emulator on this machine.
 
 ## Permanent (cannot be shown on an emulator)

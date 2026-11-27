@@ -1,5 +1,9 @@
 # Progress
 
+**Summary:** Milestones M0 through M4 are shipped, tagged, and published as GitHub pre-releases (`m0`–`m4`), with Milestone M5 (`v2.0.0` release and live Part B landing page) completing the v2 roadmap.
+Every spec (`00`–`15`) was delivered directly on `main`, verified locally with `tool/verify.sh`, automated unit/widget/golden/JUnit tests, and self-driven Android 14 emulator checks.
+The release APK holds zero `INTERNET` permission, preserves all existing user data across migrations, and is signed with the external release keystore.
+
 Milestone-by-milestone log of what shipped, key decisions, and what remains unverified.
 
 ## 2026-11-27 — M0: Open the repository

@@ -1,5 +1,9 @@
 # Test results
 
+**Summary:** Every spec (`01`–`15`) passed `tool/verify.sh` (`flutter analyze` 0 issues, 106 Flutter unit/widget/golden tests, Kotlin JUnit outbox state-machine tests, debug APK, release manifest allow-list with zero `INTERNET`, and landing page checks).
+Android 14 (`Pixel_8` API 34) emulator runs verified live call/SMS/contact sync, after-call notifications, Doze/reboot reminders, all 7 native SMS outbox checks, bulk Pause/Resume/`am kill`/pacing, and the signed R8 release APK Setup + note-capture walkthrough.
+Hardware-only items (live carrier networks, dual-SIM hardware, sideloaded restricted settings, OEM battery screens, physical GPU frame timings) are tracked separately in `handover/UNVERIFIED.md`.
+
 Record of automated test runs and Android emulator verification runs (date, image, command, outcome).
 
 ## 2026-11-27 — Spec 01
@@ -124,6 +128,16 @@ Record of automated test runs and Android emulator verification runs (date, imag
 - **Command:** Installed M4 release APK via `adb install -r --no-streaming build/PocketCRM.apk`; measured 3 cold starts via `adb shell am start -W -n com.pocketcrm.pocket_crm/com.pocketcrm.pocket_crm.MainActivity`.
 - **Outcome:** Cold start `TotalTime` under software-rendered SwiftShader GPU: `[3290 ms, 4161 ms, 3422 ms]` (median `3422 ms`). Hardware-accelerated cold start (<1.5s) and profile-mode 5,000-row scroll frame time (<32ms) on physical hardware are noted in `handover/UNVERIFIED.md` (single-query 5,000-row People directory performance is verified in `test/people/people_and_person_test.dart`).
 - **M4 Signed APK:** `bash tool/build_apk.sh` produced `build/PocketCRM.apk` (`69.0 MB`, `sha256: c92f2f1b640d63ee97b40d22262cb669a87a2a778c9225cddf9706eb3e023c0f`).
+
+## 2026-11-27 — Spec 14
+
+- **Environment (host):** Host Windows 11, Flutter 3.50.1, Dart 3.14.0, Android SDK build-tools `apksigner`
+- **Command:** `bash tool/verify.sh && bash tool/build_apk.sh && apksigner verify --print-certs build/PocketCRM.apk`
+- **Outcome:** PASSED. `flutter analyze` reported 0 issues; all 106 Flutter tests passed; `tool/check_manifest.sh` confirmed zero `INTERNET` and exact match against `tool/allowed_permissions.txt`; `tool/check_landing.sh` passed; `build/PocketCRM.apk` (`2.0.0+200`, `69.0 MB`, `sha256: 4351d91f91f5549ea8150d2139b83002d05780e6c10133b46b08dc1050778170`) verified by `apksigner` with release cert `CN=PocketCRM, OU=Mobile, O=PocketCRM` (`sha256: a95afb89926aabf96904be21dd77f7fefec3e1c5df89fe8d4482cd35e04b5a14`, not Android debug cert).
+- **Environment (emulator):** Android Emulator `Pixel_8` (`android-34`, Android 14, signed R8-minified `2.0.0+200` release APK `build/PocketCRM.apk`)
+- **Command:** Clean install via `adb install -r --no-streaming build/PocketCRM.apk`, `pm clear`, launched `MainActivity` -> verified Setup opened -> granted permissions via `adb` -> verified `5/5 Allowed` -> tapped `Continue` -> created contact `Amara Okafor` -> added note `"Release v2 verified"`.
+- **Outcome:** PASSED. Clean install opened directly to Setup, refreshed all 5 rows to `Allowed`, navigated to People, created contact, and saved/displayed the note cleanly in the R8 release build.
+
 
 
 

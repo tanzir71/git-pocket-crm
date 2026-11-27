@@ -1,0 +1,23 @@
+# Explicit Android permission allow-list for the PocketCRM release APK.
+# Enforced by tool/check_manifest.sh on every build.
+# PocketCRM NEVER holds android.permission.INTERNET.
+
+android.permission.ACCESS_COARSE_LOCATION
+android.permission.ACCESS_NETWORK_STATE
+android.permission.FOREGROUND_SERVICE
+android.permission.FOREGROUND_SERVICE_DATA_SYNC
+android.permission.POST_NOTIFICATIONS
+android.permission.READ_CALL_LOG
+android.permission.READ_CONTACTS
+android.permission.READ_MEDIA_AUDIO
+android.permission.READ_MEDIA_IMAGES
+android.permission.READ_MEDIA_VIDEO
+android.permission.READ_PHONE_STATE
+android.permission.READ_SMS
+android.permission.RECEIVE_BOOT_COMPLETED
+android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS
+android.permission.SCHEDULE_EXACT_ALARM
+android.permission.SEND_SMS
+android.permission.VIBRATE
+android.permission.WAKE_LOCK
+com.pocketcrm.pocket_crm.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION

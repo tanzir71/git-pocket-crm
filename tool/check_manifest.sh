@@ -4,7 +4,13 @@ set -euo pipefail
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "$ROOT_DIR"
 
-echo "==> Checking merged release manifest for INTERNET permission..."
+ALLOW_LIST="tool/allowed_permissions.txt"
+if [ ! -f "$ALLOW_LIST" ]; then
+  echo "ERROR: Permission allow-list not found at $ALLOW_LIST" >&2
+  exit 1
+fi
+
+echo "==> Checking merged release manifest permissions..."
 (
   cd android
   ./gradlew :app:processReleaseMainManifest
@@ -24,4 +30,28 @@ if grep -q 'android\.permission\.INTERNET' "$MANIFEST"; then
   exit 1
 fi
 
-echo "==> OK: No INTERNET permission in release manifest."
+if grep -q '^android\.permission\.INTERNET$' "$ALLOW_LIST"; then
+  echo "ERROR: $ALLOW_LIST must never contain android.permission.INTERNET!" >&2
+  exit 1
+fi
+
+ACTUAL_FILE="$(mktemp)"
+EXPECTED_FILE="$(mktemp)"
+trap 'rm -f "$ACTUAL_FILE" "$EXPECTED_FILE"' EXIT
+
+grep '<uses-permission' "$MANIFEST" \
+  | sed -n 's/.*android:name="\([^"]*\)".*/\1/p' \
+  | tr -d '\r' \
+  | LC_ALL=C sort -u > "$ACTUAL_FILE"
+
+grep -v '^[[:space:]]*#' "$ALLOW_LIST" \
+  | grep -v '^[[:space:]]*$' \
+  | tr -d '\r' \
+  | LC_ALL=C sort -u > "$EXPECTED_FILE"
+
+if ! diff -u "$EXPECTED_FILE" "$ACTUAL_FILE"; then
+  echo "ERROR: Merged release permissions differ from $ALLOW_LIST!" >&2
+  exit 1
+fi
+
+echo "==> OK: No INTERNET permission and merged release permissions exactly match $ALLOW_LIST."

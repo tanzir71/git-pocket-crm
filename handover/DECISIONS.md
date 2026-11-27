@@ -1,5 +1,9 @@
 # Decisions
 
+**Summary:** PocketCRM v2 runs on Flutter 3.50.1 (`material_ui`), Drift v5 on `pocket_crm.db`, Pigeon 30 native Kotlin bridges (sync, SMS outbox, SAF backup), Inter v4.1 bundled offline, and Argon2id + AES-256-GCM encrypted `.pcrm` backups.
+Every dependency is spec-named and pinned; release builds enforce R8 keep rules (`proguard-rules.pro`), an explicit permission allow-list (`tool/allowed_permissions.txt`) with zero `INTERNET`, and external release signing (`~/.pocketcrm/key.properties`).
+Voice input relies on the system keyboard to avoid network permissions, and the Bengali translation (`lib/l10n/app_bn.arb`) is flagged for native speaker review.
+
 Log of technical, dependency, and design choices made during implementation where a spec left room to decide.
 
 ## Spec 01 — Toolchain and safety net (2026-11-27)
@@ -89,6 +93,12 @@ Log of technical, dependency, and design choices made during implementation wher
 - **Adaptive launcher icon (`flutter_launcher_icons: ^0.14.4`):** Added `flutter_launcher_icons` as a dev dependency (spec-named) and generated Android adaptive + monochrome + legacy icons from bundled Inter SemiBold white `"P"` foreground (`assets/icon/icon_foreground.png`) over `accent/default` `#3525CD` background.
 - **WCAG contrast check:** Verified every text foreground/background token pair in both light and dark themes is `>= 4.5:1` (dark `statusDanger` on `statusDangerSoft` is also `>= 4.5:1`; light `statusDangerSoft` is used strictly behind a 16 px graphical icon where WCAG AA requires `>= 3.0:1`, at `4.46:1`). No Figma colour tokens needed changing.
 - **High text-scale layout:** Updated `AppChip` to grow vertically (`minHeight` + `Flexible`), wrapped People sort selector and Campaign status row texts in `Flexible`, and stacked the New message counter below the merge chips when text scale exceeds `1.4x`, ensuring zero overflows across all 9 designed screens at `1.3x` and `2.0x` while preserving 100% pixel fidelity at `1.0x`.
+
+## Spec 14 — Release (2026-11-27)
+
+- **Permission allow-list (`tool/allowed_permissions.txt`):** Locked the merged release manifest to the exact 19 sorted permissions (including AndroidX/WorkManager/notification/picker declarations, with zero `android.permission.INTERNET`) enforced via `diff -u` in `tool/check_manifest.sh`.
+- **Fail-fast release signing:** Added an explicit `GradleException` guard in `android/app/build.gradle.kts` when any `*Release` task runs without `key.properties` so release builds never fall back to a debug key.
+
 
 
 

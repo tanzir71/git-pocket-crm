@@ -41,7 +41,17 @@ android {
 
     signingConfigs {
         create("release") {
-            if (keyPropertiesFile.exists()) {
+            val isReleaseTask = gradle.startParameter.taskNames.any {
+                it.contains("Release", ignoreCase = true)
+            }
+            if (!keyPropertiesFile.exists()) {
+                if (isReleaseTask) {
+                    throw org.gradle.api.GradleException(
+                        "Missing release signing properties at ${keyPropertiesFile.absolutePath}. " +
+                            "Set PCRM_KEY_PROPERTIES or create ~/.pocketcrm/key.properties. Debug fallback is disabled."
+                    )
+                }
+            } else {
                 val storeFilePath = keyProperties.getProperty("storeFile")
                 val resolvedStoreFile = file(storeFilePath)
                 storeFile = if (resolvedStoreFile.isAbsolute) {
