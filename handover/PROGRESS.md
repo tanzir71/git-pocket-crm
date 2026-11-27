@@ -21,4 +21,5 @@ Milestone-by-milestone log of what shipped, key decisions, and what remains unve
 ## In progress — M1: Foundation
 
 - **Spec 01 (2026-11-27):** Upgraded toolchain (Flutter 3.50.1 / Dart 3.14.0, `material_ui`, Gradle 9.5.0, AGP 9.3.1, Kotlin 2.4.20, compileSdk 37), moved browser prototype to `legacy/web-prototype/`, added legacy characterisation tests and SMS stopgap, added `tool/verify.sh`, `tool/check_manifest.sh`, and `tool/build_apk.sh`. Generated release signing key outside the repository at `~/.pocketcrm/pocketcrm-release.jks` with properties at `~/.pocketcrm/key.properties` (password not recorded).
+- **Spec 02 (2026-11-27):** Built Drift v5 data layer (`AppDatabase`) on `pocket_crm.db` with `pocket_crm.v4.bak` safety copy, idempotent v1..v4->v5 migrations, backfill, foreign keys, 9 indexes, FTS5 search, 8 typed repositories, and `LegacyDb` adapter so old screens keep running with zero `openDatabase` calls.
 
