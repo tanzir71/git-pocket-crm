@@ -1,6 +1,6 @@
 # Progress
 
-**Summary:** Milestones M0 through M4 are shipped, tagged, and published as GitHub pre-releases (`m0`–`m4`), with Milestone M5 (`v2.0.0` release and live Part B landing page) completing the v2 roadmap.
+**Summary:** All six milestones (`M0` through `M5`) are shipped and tagged, with full release `v2.0.0` published on GitHub and the Part B landing page live on GitHub Pages.
 Every spec (`00`–`15`) was delivered directly on `main`, verified locally with `tool/verify.sh`, automated unit/widget/golden/JUnit tests, and self-driven Android 14 emulator checks.
 The release APK holds zero `INTERNET` permission, preserves all existing user data across migrations, and is signed with the external release keystore.
 
@@ -88,6 +88,19 @@ Milestone-by-milestone log of what shipped, key decisions, and what remains unve
 
 ### What is in UNVERIFIED.md
 - Permanent device/network items, Spec 09 cross-emulator forwarding, Spec 11 sideloaded restricted settings & OEM battery labels, plus Spec 13 physical-hardware GPU startup (<1.5s) & 5,000-row scroll frame times (<32ms) and native Bengali translation review.
+
+## 2026-11-27 — M5: Release and landing page
+
+### What shipped
+- **Spec 14:** Bumped `pubspec.yaml` to `2.0.0+200`, finalized `CHANGELOG.md` under `2.0.0`, added fail-fast release signing guard in `android/app/build.gradle.kts`, locked merged release permissions in `tool/allowed_permissions.txt` (19 permissions, zero `INTERNET`) enforced by `tool/check_manifest.sh`, added `tool/release.sh`, rewrote `README.md` for v2, added 3-line top summaries to all five handover tracking files, verified the signed R8 release APK via `apksigner` and a clean install + Setup + contact/note walkthrough on Android 14 (`Pixel_8`), and published full GitHub release `v2.0.0` (`PocketCRM.apk`, `sha256: 4351d91f91f5549ea8150d2139b83002d05780e6c10133b46b08dc1050778170`, plus `PocketCRM.apk.sha256`).
+- **Spec 15 part B:** Switched `docs/index.html` and `docs/styles.css` to the v2.0.0 release state (`Download for Android` pointing to `releases/latest/download/PocketCRM.apk`, mobile nav `Download` / desktop nav `GitHub`, `tool/allowed_permissions.txt` link), replaced all three phone screenshots with real-app light and dark captures served via `<picture>` and `prefers-color-scheme: dark`, regenerated `docs/og.png` and Playwright verification screenshots (`154.3 KB` first load, zero external requests, zero overflow at `320px` and `200%` text size), and verified the live GitHub Pages site and APK download SHA-256.
+
+### What was decided
+- Kept the landing page 100% JavaScript-free by toggling `.nav-btn-desktop` (`GitHub`) and `.nav-btn-mobile` (`Download`) via CSS media query at `1039px`.
+- Verified every landing-page statement against the built app and `handover/UNVERIFIED.md` (retained `"at the time you chose"` because scheduled sending was verified on the Android 14 emulator).
+
+### What is in UNVERIFIED.md
+- Unchanged from M4: permanent device/network items (real mobile network behaviour, dual-SIM hardware, sideloaded restricted settings, OEM battery managers), Spec 09 cross-emulator forwarding, Spec 11 OEM battery labels, and Spec 13 physical-GPU timings & native Bengali speaker review.
 
 
 
