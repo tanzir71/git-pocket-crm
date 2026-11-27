@@ -1,6 +1,8 @@
+// legacy: deleted in spec 10
+// ignore_for_file: deprecated_member_use, prefer_const_constructors, prefer_final_locals, unawaited_futures, use_build_context_synchronously, use_super_parameters, prefer_const_literals_to_create_immutables, avoid_print, unnecessary_brace_in_string_interps, prefer_interpolation_to_compose_strings, unused_local_variable, sized_box_for_whitespace
 import 'dart:convert';
 import 'dart:io';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:path_provider/path_provider.dart';
@@ -130,7 +132,7 @@ class _BackupScreenState extends State<BackupScreen> {
         setState(() {
           _statusMessage = "Select destination folder using File Picker...";
         });
-        final selectedDirectory = await FilePicker.platform.getDirectoryPath();
+        final selectedDirectory = await FilePicker.getDirectoryPath();
         if (selectedDirectory == null) {
           // User cancelled the directory picker
           setState(() {
@@ -490,17 +492,17 @@ class _BackupScreenState extends State<BackupScreen> {
         _statusMessage = "Select backup JSON file...";
       });
       try {
-        final result = await FilePicker.platform.pickFiles(
+        final result = await FilePicker.pickFiles(
           type: FileType.custom,
           allowedExtensions: ['json'],
         );
-        if (result == null || result.files.single.path == null) {
+        if (result.isEmpty || result.single.path == null) {
           setState(() {
             _statusMessage = "Import cancelled. No backup file was selected.";
           });
           return;
         }
-        fileToReadPath = result.files.single.path!;
+        fileToReadPath = result.single.path!;
       } catch (e) {
         setState(() {
           _statusMessage = "File selection failed: ${e.toString()}";

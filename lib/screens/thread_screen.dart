@@ -1,6 +1,8 @@
+// legacy: deleted in spec 10
+// ignore_for_file: deprecated_member_use, prefer_const_constructors, prefer_final_locals, unawaited_futures, use_build_context_synchronously, use_super_parameters, prefer_const_literals_to_create_immutables, avoid_print, unnecessary_brace_in_string_interps, prefer_interpolation_to_compose_strings, unused_local_variable, sized_box_for_whitespace, unnecessary_to_list_in_spreads
 import 'dart:async';
 import 'dart:io';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -1088,11 +1090,11 @@ class _ThreadScreenState extends State<ThreadScreen> {
                           height: 58,
                           child: ElevatedButton.icon(
                             onPressed: () async {
-                              final result = await FilePicker.platform.pickFiles(
+                              final result = await FilePicker.pickFiles(
                                 type: mediaType == 'screenshot' ? FileType.image : FileType.any,
                               );
-                              if (result != null && result.files.single.path != null) {
-                                final file = result.files.single;
+                              if (result.isNotEmpty && result.single.path != null) {
+                                final file = result.single;
                                 setDialogState(() {
                                   pickedPath = file.path;
                                   customNameController.text = file.name;

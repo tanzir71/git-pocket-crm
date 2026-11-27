@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'screens/home_screen.dart';
 
@@ -12,7 +12,7 @@ class PocketCRMApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final primaryColor = const Color(0xFF3525CD);
+    const primaryColor = Color(0xFF3525CD);
 
     return MaterialApp(
       title: 'PocketCRM',
@@ -23,10 +23,10 @@ class PocketCRMApp extends StatelessWidget {
           seedColor: primaryColor,
           primary: primaryColor,
           secondary: const Color(0xFF4F46E5),
-          background: const Color(0xFFF9FAFB),
+          surface: const Color(0xFFF9FAFB),
         ),
-        textTheme: GoogleFonts.interTextTheme(
-          Theme.of(context).textTheme,
+        textTheme: Theme.of(context).textTheme.apply(
+          fontFamily: GoogleFonts.inter().fontFamily,
         ),
         appBarTheme: const AppBarTheme(
           surfaceTintColor: Colors.transparent,

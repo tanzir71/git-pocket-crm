@@ -1,5 +1,7 @@
+// legacy: deleted in spec 10
+// ignore_for_file: deprecated_member_use, prefer_const_constructors, prefer_final_locals, unawaited_futures, use_build_context_synchronously, use_super_parameters, prefer_const_literals_to_create_immutables, avoid_print, unnecessary_brace_in_string_interps, prefer_interpolation_to_compose_strings, unused_local_variable, sized_box_for_whitespace
 import 'dart:async';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import '../database_helper.dart';
@@ -295,7 +297,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Future<void> _simulateSendBulkJob(int jobId, String listName, String message) async {
     final db = await DatabaseHelper.instance.database;
-    
+
     final List<Map<String, dynamic>> unsentSms = await db.query(
       'scheduled_sms',
       where: 'bulk_job_id = ? AND is_sent = 0',
@@ -304,51 +306,22 @@ class _HomeScreenState extends State<HomeScreen> {
 
     if (unsentSms.isEmpty) return;
 
-    for (var sms in unsentSms) {
-      final phone = sms['phone_number'] as String;
-      await SmsProcessor.sendNativeSms(phone, message);
-    }
+    final now = DateTime.now().millisecondsSinceEpoch;
+    await db.update(
+      'scheduled_sms',
+      {'scheduled_time': now},
+      where: 'bulk_job_id = ? AND is_sent = 0',
+      whereArgs: [jobId],
+    );
 
-    await db.transaction((txn) async {
-      for (var sms in unsentSms) {
-        final smsId = sms['id'] as int;
-        final contactId = sms['contact_id'] as int;
-
-        await txn.update(
-          'scheduled_sms',
-          {'is_sent': 1},
-          where: 'id = ?',
-          whereArgs: [smsId],
-        );
-
-        await txn.insert('timeline', {
-          'contact_id': contactId,
-          'type': 'sms_outgoing',
-          'timestamp': DateTime.now().millisecondsSinceEpoch,
-          'content': message,
-          'native_message_id': 'scheduled_sent_$smsId',
-        });
-      }
-
-      await txn.update(
-        'bulk_sms_jobs',
-        {'is_sent': 1},
-        where: 'id = ?',
-        whereArgs: [jobId],
-      );
-    });
+    await SmsProcessor.processDueSms(
+      mounted ? context : null,
+      _loadDashboardData,
+    );
 
     if (mounted) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Bulk SMS dispatch completed for $listName (${unsentSms.length} recipients).'),
-          behavior: SnackBarBehavior.floating,
-          backgroundColor: const Color(0xFF10B981),
-        ),
-      );
+      _loadDashboardData();
     }
-
-    _loadDashboardData();
   }
 
   Future<void> _cancelBulkJob(int jobId) async {
@@ -3251,11 +3224,11 @@ class _GlobalCreateBottomSheetState extends State<GlobalCreateBottomSheet> {
                       height: 58,
                       child: ElevatedButton.icon(
                         onPressed: () async {
-                          final result = await FilePicker.platform.pickFiles(
+                          final result = await FilePicker.pickFiles(
                             type: FileType.any,
                           );
-                          if (result != null && result.files.single.path != null) {
-                            final file = result.files.single;
+                          if (result.isNotEmpty && result.single.path != null) {
+                            final file = result.single;
                             setState(() {
                               pickedPath = file.path;
                               attachFilenameController.text = file.name;

@@ -17,3 +17,8 @@ Milestone-by-milestone log of what shipped, key decisions, and what remains unve
 
 ### What is in UNVERIFIED.md
 - Permanent device/network items that cannot be verified on an emulator: real mobile network behaviour, dual-SIM selection, Android "Allow restricted settings" sideload flow, and per-maker battery management.
+
+## In progress — M1: Foundation
+
+- **Spec 01 (2026-11-27):** Upgraded toolchain (Flutter 3.50.1 / Dart 3.14.0, `material_ui`, Gradle 9.5.0, AGP 9.3.1, Kotlin 2.4.20, compileSdk 37), moved browser prototype to `legacy/web-prototype/`, added legacy characterisation tests and SMS stopgap, added `tool/verify.sh`, `tool/check_manifest.sh`, and `tool/build_apk.sh`. Generated release signing key outside the repository at `~/.pocketcrm/pocketcrm-release.jks` with properties at `~/.pocketcrm/key.properties` (password not recorded).
+

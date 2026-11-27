@@ -23,14 +23,14 @@ subprojects {
     if (project.state.executed) {
         if (project.hasProperty("android")) {
             configure<com.android.build.gradle.BaseExtension> {
-                compileSdkVersion(36)
+                compileSdkVersion(37)
             }
         }
     } else {
         afterEvaluate {
             if (project.hasProperty("android")) {
                 configure<com.android.build.gradle.BaseExtension> {
-                    compileSdkVersion(36)
+                    compileSdkVersion(37)
                 }
             }
         }

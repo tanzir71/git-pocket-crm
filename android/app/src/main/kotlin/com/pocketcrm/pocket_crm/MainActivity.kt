@@ -18,7 +18,7 @@ class MainActivity: FlutterActivity() {
 
                 if (phoneNumber != null && message != null) {
                     try {
-                        val smsManager: SmsManager = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                        val smsManager: SmsManager = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
                             context.getSystemService(SmsManager::class.java)
                         } else {
                             @Suppress("DEPRECATION")

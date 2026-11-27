@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:io';
+import 'package:flutter/foundation.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:intl/intl.dart';
@@ -311,7 +312,7 @@ class DatabaseHelper {
       await file.copy(destinationPath);
       return destinationPath;
     } catch (e) {
-      print('Error replicating attachment: $e');
+      debugPrint('Error replicating attachment: $e');
       return sourcePath;
     }
   }

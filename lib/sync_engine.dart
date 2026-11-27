@@ -6,6 +6,26 @@ import 'package:permission_handler/permission_handler.dart';
 import 'database_helper.dart';
 import 'spam_filter.dart';
 
+/// Legacy payment amount extraction from SMS body (unchanged from v1).
+double? parseLegacyPaymentAmount(String body) {
+  if (body.contains('৳') ||
+      body.toLowerCase().contains('tk') ||
+      body.toLowerCase().contains('bdt')) {
+    // Regexp to capture digits after currency signs
+    final match = RegExp(
+      r'(?:৳|tk|bdt)\.?\s*([0-9,]+(?:\.[0-9]+)?)',
+      caseSensitive: false,
+    ).firstMatch(body);
+    if (match != null) {
+      final val = match.group(1)?.replaceAll(',', '');
+      if (val != null) {
+        return double.tryParse(val);
+      }
+    }
+  }
+  return null;
+}
+
 class SyncEngine {
   static final List<String> _indigoColors = [
     '#3525CD', // Deep Indigo
@@ -37,7 +57,7 @@ class SyncEngine {
 
   /// Extracts the last 10 digits of a phone number for robust, format-agnostic matching.
   static String getLast10Digits(String phone) {
-    String cleaned = phone.replaceAll(RegExp(r'[^\d]'), '');
+    final cleaned = phone.replaceAll(RegExp(r'[^\d]'), '');
     if (cleaned.length >= 10) {
       return cleaned.substring(cleaned.length - 10);
     }
@@ -46,7 +66,7 @@ class SyncEngine {
 
   /// Checks and requests all necessary Android permissions
   static Future<bool> requestPermissions() async {
-    Map<Permission, PermissionStatus> statuses = await [
+    final Map<Permission, PermissionStatus> statuses = await [
       Permission.contacts,
       Permission.sms,
       Permission.phone, // For call log access
@@ -63,7 +83,7 @@ class SyncEngine {
     int callsSynced = 0;
     int smsSynced = 0;
 
-    bool hasPermissions = await requestPermissions();
+    final bool hasPermissions = await requestPermissions();
     if (!hasPermissions) {
       throw Exception("Insufficient Android system permissions to execute sync.");
     }
@@ -203,7 +223,7 @@ class SyncEngine {
         final contactId = phoneToIdMap[key]!;
 
         final timestamp = message.date?.millisecondsSinceEpoch ?? DateTime.now().millisecondsSinceEpoch;
-        final nativeId = message.id?.toString() ?? "${contactId}_${timestamp}";
+        final nativeId = message.id?.toString() ?? '${contactId}_$timestamp';
 
         // Check if SMS already stored
         final duplicateCheck = await txn.query(
@@ -217,17 +237,7 @@ class SyncEngine {
           final timelineType = isSent ? 'sms_outgoing' : 'sms_incoming';
 
           // Extract standard payment numbers (e.g. bKash, Tk, ৳)
-          double? paymentAmount;
-          if (body.contains('৳') || body.toLowerCase().contains('tk') || body.toLowerCase().contains('bdt')) {
-            // Regexp to capture digits after currency signs
-            final match = RegExp(r'(?:৳|tk|bdt)\.?\s*([0-9,]+(?:\.[0-9]+)?)', caseSensitive: false).firstMatch(body);
-            if (match != null) {
-              final val = match.group(1)?.replaceAll(',', '');
-              if (val != null) {
-                paymentAmount = double.tryParse(val);
-              }
-            }
-          }
+          final double? paymentAmount = parseLegacyPaymentAmount(body);
 
           await txn.insert('timeline', {
             'contact_id': contactId,
@@ -246,10 +256,10 @@ class SyncEngine {
               'contact_id': contactId,
               'type': 'payment',
               'timestamp': timestamp,
-              'content': "Parsed from SMS: ${body.length > 60 ? body.substring(0, 60) + '...' : body}",
+              'content': 'Parsed from SMS: ${body.length > 60 ? '${body.substring(0, 60)}...' : body}',
               'amount': paymentAmount,
               'attachment_path': null,
-              'native_message_id': "${nativeId}_payment",
+              'native_message_id': '${nativeId}_payment',
             });
           }
         }

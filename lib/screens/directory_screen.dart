@@ -1,4 +1,6 @@
-import 'package:flutter/material.dart';
+// legacy: deleted in spec 10
+// ignore_for_file: deprecated_member_use, prefer_const_constructors, prefer_final_locals, unawaited_futures, use_build_context_synchronously, use_super_parameters, prefer_const_literals_to_create_immutables, avoid_print, unnecessary_brace_in_string_interps, prefer_interpolation_to_compose_strings, unused_local_variable, sized_box_for_whitespace
+import 'package:material_ui/material_ui.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../database_helper.dart';
 import '../sync_engine.dart';
