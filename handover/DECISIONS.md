@@ -35,6 +35,13 @@ Log of technical, dependency, and design choices made during implementation wher
 - **Localization:** Enabled `flutter_localizations` and `flutter gen-l10n` (`l10n.yaml` + `lib/l10n/app_en.arb`) early in Spec 04 so every v2 screen adheres to Hard Rule 8 (no user-facing string literals in widgets) from the start.
 - **V2 feature switch:** `kV2` defaults to `false` until Spec 10; `--dart-define=V2=true` launches `PocketCrmV2App`. Legacy screens moved unchanged to `lib/legacy/`.
 
+## Spec 05 — Sync (2026-11-27)
+
+- **Packages:** Upgraded `flutter_contacts` to `^2.6.0` (using `FlutterContacts.getAll(properties: ContactProperties.allProperties)`), added `phone_numbers_parser: ^9.2.3`, and added dev dependency `pigeon: ^30.0.4`. Added `kotlinx-coroutines-android:1.10.2` in `android/app/build.gradle.kts` for Pigeon 30's Kotlin suspend handlers.
+- **Native batched reader:** Implemented `DeviceApiImpl` in Kotlin reading `CallLog.Calls` and `Telephony.Sms` on `Dispatchers.IO` with `_id > ?` watermarks (`Bundle` query args on API 30+, cursor cap fallback below), plus 2-second debounced `ContentObserver`s.
+- **Spam filter removal from sync:** `SyncService` never calls `SpamFilter`; messages matching any phone of a saved contact are always stored, and incoming monetary amounts become `suggested_amount` / `suggestion_state = 'open'` suggestions rather than auto-created payment rows. Legacy `SyncEngine.syncAll()` now delegates to `SyncService`.
+
+
 
 
 

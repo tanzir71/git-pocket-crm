@@ -1,17 +1,25 @@
 package com.pocketcrm.pocket_crm
 
-import android.telephony.SmsManager
 import android.os.Build
+import android.telephony.SmsManager
 import io.flutter.embedding.android.FlutterActivity
 import io.flutter.embedding.engine.FlutterEngine
 import io.flutter.plugin.common.MethodChannel
 
-class MainActivity: FlutterActivity() {
+class MainActivity : FlutterActivity() {
     private val CHANNEL = "com.pocketcrm.pocket_crm/sms"
+    private var deviceApiImpl: DeviceApiImpl? = null
 
     override fun configureFlutterEngine(flutterEngine: FlutterEngine) {
         super.configureFlutterEngine(flutterEngine)
-        MethodChannel(flutterEngine.dartExecutor.binaryMessenger, CHANNEL).setMethodCallHandler { call, result ->
+
+        val messenger = flutterEngine.dartExecutor.binaryMessenger
+        val deviceEvents = DeviceEvents(messenger)
+        val impl = DeviceApiImpl(applicationContext, deviceEvents)
+        deviceApiImpl = impl
+        DeviceApi.setUp(messenger, impl)
+
+        MethodChannel(messenger, CHANNEL).setMethodCallHandler { call, result ->
             if (call.method == "sendSms") {
                 val phoneNumber = call.argument<String>("phoneNumber")
                 val message = call.argument<String>("message")
@@ -42,5 +50,11 @@ class MainActivity: FlutterActivity() {
                 result.notImplemented()
             }
         }
+    }
+
+    override fun onDestroy() {
+        deviceApiImpl?.dispose()
+        deviceApiImpl = null
+        super.onDestroy()
     }
 }

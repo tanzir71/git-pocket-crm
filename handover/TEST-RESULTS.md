@@ -32,3 +32,13 @@ Record of automated test runs and Android emulator verification runs (date, imag
 - **Command:** `bash tool/verify.sh && flutter test --dart-define=V2=true`
 - **Outcome:** PASSED. `flutter analyze` reported 0 issues; all 34 tests passed in both `V2=false` and `V2=true` modes (including `app_shell_test` tab switching & first-run `/setup` redirect and `mode_switch_test`); `assembleDebug`, `check_manifest.sh`, and `check_landing.sh` passed.
 
+## 2026-11-27 — Spec 05
+
+- **Environment (host):** Host Windows 11, Flutter 3.50.1, Dart 3.14.0, Pigeon 30.0.4, `phone_numbers_parser` 9.2.3, `flutter_contacts` 2.6.0
+- **Command:** `dart run pigeon --input pigeons/device.dart && bash tool/verify.sh && flutter test --dart-define=V2=true`
+- **Outcome:** PASSED. `flutter analyze` reported 0 issues; all 44 tests passed in both `V2=false` and `V2=true` modes (including international phone normalisation across BD/US/GB/IN/NG, amount suggestion extraction across 8 currencies, 20,000 SMS + 5,000 calls batched sync in 500-row batches with zero reads on second sync, invoice SMS preserved without spam filter, multi-number calls, legacy ID dedup, and merge suggestion flagging); `assembleDebug`, `check_manifest.sh`, and `check_landing.sh` passed.
+- **Environment (emulator):** Android Emulator `Pixel_8` (`android-34`, `google_apis_playstore`, `x86_64`, Android 14, debug APK `--dart-define=V2=true`)
+- **Command:** `adb -s emulator-5554 install -r build/app/outputs/flutter-apk/app-debug.apk`, granted `READ_CONTACTS`, `READ_CALL_LOG`, `READ_SMS`, `READ_PHONE_STATE`, inserted contact "Amara Okafor" (`+14155550100`), injected 3 SMS (`adb emu sms send`) and 2 calls (`adb emu gsm call/accept/cancel`), inspected `databases/pocket_crm.db`.
+- **Outcome:** PASSED. Full first sync (cold debug start, 1 contact + 3 SMS + 2 calls) completed cleanly (`contacts`: `Amara Okafor`, `contact_phones`: `+14155550100`, `timeline`: 2 calls `call:1` 6s incoming, `call:2` 0s missed, 3 SMS `sms:1..3`, with `"Please send the invoice and the bill reference"` kept and `"I will pay Tk 500 tomorrow"` stamped `suggested_amount=500.0, suggestion_state='open'` with zero payment rows; cold debug activity launch 11.3s + sync). Live incoming SMS while app open auto-synced via `ContentObserver` (2s debounce + incremental sync; verified `sms:4` in `timeline` within ~3-4s on device, 8.2s including polling overhead). Also verified that keeping `ContentObserver` active across `AppLifecycleState.paused` (only stopping on `detached`) ensures incoming calls (which briefly pause the activity under Android's InCallUI) trigger CallLog sync immediately.
+
+

@@ -9,8 +9,11 @@ import '../features/payments/data/payments_repository.dart';
 import '../features/people/data/lists_repository.dart';
 import '../features/people/data/people_repository.dart';
 import '../features/settings/data/settings_repository.dart';
+import '../features/sync/data/amount_parser.dart';
+import '../features/sync/data/sync_service.dart';
 import '../features/sync/data/sync_state_repository.dart';
 import 'db/app_database.dart';
+import 'phone/phone_service.dart';
 
 typedef Clock = DateTime Function();
 
@@ -52,6 +55,32 @@ final settingsRepositoryProvider = Provider<SettingsRepository>((ref) {
 
 final syncStateRepositoryProvider = Provider<SyncStateRepository>((ref) {
   return SyncStateRepository(ref.watch(appDatabaseProvider));
+});
+
+final phoneServiceProvider = Provider<PhoneService>((ref) => const PhoneService());
+
+final amountParserProvider = Provider<AmountParser>((ref) => const AmountParser());
+
+final deviceDataSourceProvider = Provider<DeviceDataSource>((ref) {
+  return PlatformDeviceDataSource();
+});
+
+final syncServiceProvider = Provider<SyncService>((ref) {
+  final service = SyncService(
+    db: ref.watch(appDatabaseProvider),
+    source: ref.watch(deviceDataSourceProvider),
+    phoneService: ref.watch(phoneServiceProvider),
+    amountParser: ref.watch(amountParserProvider),
+    clock: ref.watch(clockProvider),
+  );
+  ref.onDispose(() {
+    service.dispose();
+  });
+  return service;
+});
+
+final syncStatusProvider = StreamProvider<SyncStatus>((ref) {
+  return ref.watch(syncServiceProvider).statusStream;
 });
 
 /// Watches whether at least one contact exists in the database.
