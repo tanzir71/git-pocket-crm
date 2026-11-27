@@ -29,5 +29,12 @@ Log of technical, dependency, and design choices made during implementation wher
 - **OG image & visual verification:** Generated `docs/og.png` (`1200x630`) from `tool/og/og.html` and captured `handover/design/landing/built-{desktop,mobile,768,1040,dark}.png` via headless Chromium (Playwright) via `tool/og/render_landing.py`.
 - **Design comparison notes:** Built screenshots at `1440px` and `390px` match the Figma frames in layout, colour tokens, type scale, spacing, and section rhythm. Only intentional differences are the Part A "being built" copy/links and the spec's instruction to use 16/24 body copy on web instead of the app's 15/22.
 
+## Spec 04 — App shell (2026-11-27)
+
+- **State & routing:** Added `flutter_riverpod: ^3.5.0` (hand-written providers, no code generation) and `go_router: ^18.1.4` (`StatefulShellRoute.indexedStack`).
+- **Localization:** Enabled `flutter_localizations` and `flutter gen-l10n` (`l10n.yaml` + `lib/l10n/app_en.arb`) early in Spec 04 so every v2 screen adheres to Hard Rule 8 (no user-facing string literals in widgets) from the start.
+- **V2 feature switch:** `kV2` defaults to `false` until Spec 10; `--dart-define=V2=true` launches `PocketCrmV2App`. Legacy screens moved unchanged to `lib/legacy/`.
+
+
 
 

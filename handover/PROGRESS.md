@@ -34,4 +34,8 @@ Milestone-by-milestone log of what shipped, key decisions, and what remains unve
 ### What is in UNVERIFIED.md
 - Permanent device/network items only (real mobile network behaviour, dual-SIM selection, Android "Allow restricted settings" sideload flow, and per-maker battery management).
 
+## In progress — M2: Everyday workflow
+
+- **Spec 04 (2026-11-27):** Added `flutter_riverpod` 3.5.0, `go_router` 18.1.4, and ARB localization (`l10n.yaml`, `app_en.arb`); moved legacy screens to `lib/legacy/`; built three-tab `AppShell` behind `--dart-define=V2=true` with `StatefulShellRoute.indexedStack`, `PopScope` back handling, `pocketcrm://` deep links, first-run `/setup` redirect, and dual-mode tests.
+
 

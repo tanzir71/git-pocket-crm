@@ -1,20 +1,34 @@
 import 'package:flutter/foundation.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:material_ui/material_ui.dart';
+
+import 'app.dart';
+import 'core/config.dart';
 import 'core/theme/app_theme.dart';
 import 'dev/gallery_screen.dart';
-import 'screens/home_screen.dart';
+import 'legacy/home_screen.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   AppTheme.registerFontLicenses();
-  runApp(const PocketCRMApp());
+  runApp(
+    const ProviderScope(
+      child: PocketCRMApp(),
+    ),
+  );
 }
 
 class PocketCRMApp extends StatelessWidget {
-  const PocketCRMApp({super.key});
+  const PocketCRMApp({super.key, this.useV2 = kV2});
+
+  final bool useV2;
 
   @override
   Widget build(BuildContext context) {
+    if (useV2) {
+      return const PocketCrmV2App();
+    }
+
     const primaryColor = Color(0xFF3525CD);
 
     return MaterialApp(

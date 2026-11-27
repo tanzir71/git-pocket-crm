@@ -26,3 +26,9 @@ Record of automated test runs and Android emulator verification runs (date, imag
 - **Command:** `python tool/og/render_landing.py && bash tool/check_landing.sh`
 - **Outcome:** PASSED. 0 external network requests (6 same-origin requests only); 0 horizontal overflow at 320px (`320/320`) and at 200% font size on 390px (`390/390`); first load payload 157.8 KB (< 400 KB); 1 `<h1>`, all `<img>` have `alt`, `width`, `height`; `.nojekyll` present.
 
+## 2026-11-27 — Spec 04
+
+- **Environment:** Host Windows 11, Flutter 3.50.1, Dart 3.14.0
+- **Command:** `bash tool/verify.sh && flutter test --dart-define=V2=true`
+- **Outcome:** PASSED. `flutter analyze` reported 0 issues; all 34 tests passed in both `V2=false` and `V2=true` modes (including `app_shell_test` tab switching & first-run `/setup` redirect and `mode_switch_test`); `assembleDebug`, `check_manifest.sh`, and `check_landing.sh` passed.
+

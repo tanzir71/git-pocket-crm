@@ -25,7 +25,7 @@ void main() {
     });
     DatabaseHelper.testAppDatabase = db;
 
-    await tester.pumpWidget(const PocketCRMApp());
+    await tester.pumpWidget(const PocketCRMApp(useV2: false));
     expect(find.text('PocketCRM'), findsOneWidget);
 
     await tester.pumpWidget(const SizedBox.shrink());
