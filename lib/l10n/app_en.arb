@@ -399,5 +399,82 @@
         "type": "int"
       }
     }
-  }
+  },
+
+  "addSheetTitle": "Add",
+  "editEntryTitle": "Edit entry",
+  "choosePersonLabel": "Choose a person",
+  "validationChoosePerson": "Choose a person",
+  "validationAddAmount": "Add an amount",
+  "validationAddNote": "Add a note",
+  "validationAddTitle": "Add a title",
+  "validationPickFile": "Choose a file",
+  "suggestedLastCall": "Your last call",
+  "suggestedFollowUpAt": "Suggested from your {time} follow-up",
+  "@suggestedFollowUpAt": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "typeNote": "Note",
+  "typeCall": "Call",
+  "typeVisit": "Visit",
+  "typeTask": "Task",
+  "typePayment": "Payment",
+  "typeFile": "File",
+  "directionOutgoing": "Outgoing",
+  "directionIncoming": "Incoming",
+  "outcomeQuestion": "How did it go?",
+  "outcomeSpoke": "Spoke",
+  "outcomeNoAnswer": "No answer",
+  "outcomeLeftMessage": "Left a message",
+  "fieldTime": "Time",
+  "fieldDurationMin": "Duration (minutes)",
+  "fieldPlace": "Place",
+  "currentLocationAction": "Current location",
+  "locationAttached": "Location attached",
+  "locationUnavailable": "Location unavailable",
+  "fieldPhotos": "Photos",
+  "photoCamera": "Camera",
+  "photoGallery": "Gallery",
+  "fieldAmount": "Amount",
+  "fieldDescription": "Description",
+  "fieldDate": "Date",
+  "chooseFileAction": "Choose file",
+  "followUpSectionLabel": "Follow up",
+  "pickDateAction": "Pick date",
+  "followUpDefaultTitle": "Follow up with {firstName}",
+  "@followUpDefaultTitle": {
+    "placeholders": {
+      "firstName": {
+        "type": "String"
+      }
+    }
+  },
+  "callBackDefaultTitle": "Call {firstName} back",
+  "@callBackDefaultTitle": {
+    "placeholders": {
+      "firstName": {
+        "type": "String"
+      }
+    }
+  },
+  "saveCallAction": "Save call",
+  "saveVisitAction": "Save visit",
+  "saveTaskAction": "Save task",
+  "savePaymentAction": "Save payment",
+  "saveFileAction": "Save file",
+  "saveChangesAction": "Save changes",
+  "savedMessage": "Saved",
+  "callWithTitle": "Call with {name}",
+  "@callWithTitle": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "justNowLabel": "just now"
 }

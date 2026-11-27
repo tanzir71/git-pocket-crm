@@ -1210,6 +1210,294 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'{days, plural, =1{overdue by 1 day} other{overdue by {days} days}}'**
   String overdueByDays(int days);
+
+  /// No description provided for @addSheetTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Add'**
+  String get addSheetTitle;
+
+  /// No description provided for @editEntryTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit entry'**
+  String get editEntryTitle;
+
+  /// No description provided for @choosePersonLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose a person'**
+  String get choosePersonLabel;
+
+  /// No description provided for @validationChoosePerson.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose a person'**
+  String get validationChoosePerson;
+
+  /// No description provided for @validationAddAmount.
+  ///
+  /// In en, this message translates to:
+  /// **'Add an amount'**
+  String get validationAddAmount;
+
+  /// No description provided for @validationAddNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Add a note'**
+  String get validationAddNote;
+
+  /// No description provided for @validationAddTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Add a title'**
+  String get validationAddTitle;
+
+  /// No description provided for @validationPickFile.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose a file'**
+  String get validationPickFile;
+
+  /// No description provided for @suggestedLastCall.
+  ///
+  /// In en, this message translates to:
+  /// **'Your last call'**
+  String get suggestedLastCall;
+
+  /// No description provided for @suggestedFollowUpAt.
+  ///
+  /// In en, this message translates to:
+  /// **'Suggested from your {time} follow-up'**
+  String suggestedFollowUpAt(String time);
+
+  /// No description provided for @typeNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Note'**
+  String get typeNote;
+
+  /// No description provided for @typeCall.
+  ///
+  /// In en, this message translates to:
+  /// **'Call'**
+  String get typeCall;
+
+  /// No description provided for @typeVisit.
+  ///
+  /// In en, this message translates to:
+  /// **'Visit'**
+  String get typeVisit;
+
+  /// No description provided for @typeTask.
+  ///
+  /// In en, this message translates to:
+  /// **'Task'**
+  String get typeTask;
+
+  /// No description provided for @typePayment.
+  ///
+  /// In en, this message translates to:
+  /// **'Payment'**
+  String get typePayment;
+
+  /// No description provided for @typeFile.
+  ///
+  /// In en, this message translates to:
+  /// **'File'**
+  String get typeFile;
+
+  /// No description provided for @directionOutgoing.
+  ///
+  /// In en, this message translates to:
+  /// **'Outgoing'**
+  String get directionOutgoing;
+
+  /// No description provided for @directionIncoming.
+  ///
+  /// In en, this message translates to:
+  /// **'Incoming'**
+  String get directionIncoming;
+
+  /// No description provided for @outcomeQuestion.
+  ///
+  /// In en, this message translates to:
+  /// **'How did it go?'**
+  String get outcomeQuestion;
+
+  /// No description provided for @outcomeSpoke.
+  ///
+  /// In en, this message translates to:
+  /// **'Spoke'**
+  String get outcomeSpoke;
+
+  /// No description provided for @outcomeNoAnswer.
+  ///
+  /// In en, this message translates to:
+  /// **'No answer'**
+  String get outcomeNoAnswer;
+
+  /// No description provided for @outcomeLeftMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Left a message'**
+  String get outcomeLeftMessage;
+
+  /// No description provided for @fieldTime.
+  ///
+  /// In en, this message translates to:
+  /// **'Time'**
+  String get fieldTime;
+
+  /// No description provided for @fieldDurationMin.
+  ///
+  /// In en, this message translates to:
+  /// **'Duration (minutes)'**
+  String get fieldDurationMin;
+
+  /// No description provided for @fieldPlace.
+  ///
+  /// In en, this message translates to:
+  /// **'Place'**
+  String get fieldPlace;
+
+  /// No description provided for @currentLocationAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Current location'**
+  String get currentLocationAction;
+
+  /// No description provided for @locationAttached.
+  ///
+  /// In en, this message translates to:
+  /// **'Location attached'**
+  String get locationAttached;
+
+  /// No description provided for @locationUnavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Location unavailable'**
+  String get locationUnavailable;
+
+  /// No description provided for @fieldPhotos.
+  ///
+  /// In en, this message translates to:
+  /// **'Photos'**
+  String get fieldPhotos;
+
+  /// No description provided for @photoCamera.
+  ///
+  /// In en, this message translates to:
+  /// **'Camera'**
+  String get photoCamera;
+
+  /// No description provided for @photoGallery.
+  ///
+  /// In en, this message translates to:
+  /// **'Gallery'**
+  String get photoGallery;
+
+  /// No description provided for @fieldAmount.
+  ///
+  /// In en, this message translates to:
+  /// **'Amount'**
+  String get fieldAmount;
+
+  /// No description provided for @fieldDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Description'**
+  String get fieldDescription;
+
+  /// No description provided for @fieldDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Date'**
+  String get fieldDate;
+
+  /// No description provided for @chooseFileAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose file'**
+  String get chooseFileAction;
+
+  /// No description provided for @followUpSectionLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Follow up'**
+  String get followUpSectionLabel;
+
+  /// No description provided for @pickDateAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Pick date'**
+  String get pickDateAction;
+
+  /// No description provided for @followUpDefaultTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Follow up with {firstName}'**
+  String followUpDefaultTitle(String firstName);
+
+  /// No description provided for @callBackDefaultTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Call {firstName} back'**
+  String callBackDefaultTitle(String firstName);
+
+  /// No description provided for @saveCallAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Save call'**
+  String get saveCallAction;
+
+  /// No description provided for @saveVisitAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Save visit'**
+  String get saveVisitAction;
+
+  /// No description provided for @saveTaskAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Save task'**
+  String get saveTaskAction;
+
+  /// No description provided for @savePaymentAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Save payment'**
+  String get savePaymentAction;
+
+  /// No description provided for @saveFileAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Save file'**
+  String get saveFileAction;
+
+  /// No description provided for @saveChangesAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Save changes'**
+  String get saveChangesAction;
+
+  /// No description provided for @savedMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Saved'**
+  String get savedMessage;
+
+  /// No description provided for @callWithTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Call with {name}'**
+  String callWithTitle(String name);
+
+  /// No description provided for @justNowLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'just now'**
+  String get justNowLabel;
 }
 
 class _AppLocalizationsDelegate

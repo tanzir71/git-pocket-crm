@@ -1,13 +1,11 @@
 import 'dart:async';
-import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:intl/intl.dart';
-import 'package:path/path.dart';
-import 'package:path_provider/path_provider.dart';
 
 import 'core/db/app_database.dart';
 import 'core/db/legacy_db.dart';
+import 'core/files/file_store.dart';
 
 class DatabaseHelper {
   static final DatabaseHelper instance = DatabaseHelper._init();
@@ -175,23 +173,7 @@ class DatabaseHelper {
     }
 
     try {
-      final file = File(sourcePath);
-      if (!await file.exists()) {
-        return sourcePath;
-      }
-
-      final appDir = await getApplicationDocumentsDirectory();
-      final attachmentsDir = Directory(join(appDir.path, 'attachments'));
-      if (!await attachmentsDir.exists()) {
-        await attachmentsDir.create(recursive: true);
-      }
-
-      final fileName = basename(sourcePath);
-      final uniqueName = '${DateTime.now().millisecondsSinceEpoch}_$fileName';
-      final destinationPath = join(attachmentsDir.path, uniqueName);
-
-      await file.copy(destinationPath);
-      return destinationPath;
+      return await FileStore().copyIntoStorage(sourcePath);
     } catch (e) {
       debugPrint('Error replicating attachment: $e');
       return sourcePath;

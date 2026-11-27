@@ -41,6 +41,16 @@ class SmsRecord {
   int? subId;
 }
 
+class LocationPoint {
+  LocationPoint({
+    required this.lat,
+    required this.lng,
+  });
+
+  double lat;
+  double lng;
+}
+
 @HostApi()
 abstract class DeviceApi {
   @async
@@ -54,6 +64,13 @@ abstract class DeviceApi {
   void startObserving();
 
   void stopObserving();
+
+  @async
+  LocationPoint? currentLocation();
+
+  /// Mirrors the user's "Ask for a note after calls" setting (`all`, `starred`, `never`)
+  /// into native SharedPreferences for `PhoneStateReceiver`.
+  void setAfterCallMode(String mode);
 }
 
 @FlutterApi()

@@ -44,8 +44,12 @@ final goRouterProvider = Provider<GoRouter>((ref) {
         }
         if (uri.host == 'after-call') {
           final number = uri.queryParameters['number'];
+          final focus = uri.queryParameters['focus'];
           if (number != null && number.isNotEmpty) {
-            return '/today?afterCallNumber=${Uri.encodeQueryComponent(number)}';
+            final focusPart = (focus != null && focus.isNotEmpty)
+                ? '&afterCallFocus=${Uri.encodeQueryComponent(focus)}'
+                : '';
+            return '/today?afterCallNumber=${Uri.encodeQueryComponent(number)}$focusPart';
           }
           return '/today';
         }
@@ -83,7 +87,10 @@ final goRouterProvider = Provider<GoRouter>((ref) {
             routes: [
               GoRoute(
                 path: '/today',
-                builder: (context, state) => const TodayScreen(),
+                builder: (context, state) => TodayScreen(
+                  afterCallNumber: state.uri.queryParameters['afterCallNumber'],
+                  afterCallFocus: state.uri.queryParameters['afterCallFocus'],
+                ),
               ),
             ],
           ),

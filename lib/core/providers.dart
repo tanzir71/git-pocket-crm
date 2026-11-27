@@ -1,7 +1,10 @@
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:material_ui/material_ui.dart';
 
 import '../database_helper.dart';
+import '../features/capture/data/capture_service.dart';
 import '../features/followups/data/followups_repository.dart';
 import '../features/history/data/history_repository.dart';
 import '../features/messages/data/templates_repository.dart';
@@ -13,6 +16,7 @@ import '../features/sync/data/amount_parser.dart';
 import '../features/sync/data/sync_service.dart';
 import '../features/sync/data/sync_state_repository.dart';
 import 'db/app_database.dart';
+import 'files/file_store.dart';
 import 'phone/phone_service.dart';
 
 typedef Clock = DateTime Function();
@@ -144,5 +148,63 @@ final peopleSortProvider = StreamProvider<PeopleSort>((ref) {
       'longest' => PeopleSort.longest,
       _ => PeopleSort.recent,
     };
+  });
+});
+
+final fileStoreProvider = Provider<FileStore>((ref) => FileStore());
+
+final capturePlatformAdapterProvider = Provider<CapturePlatformAdapter>((ref) {
+  final picker = ImagePicker();
+  return DefaultCapturePlatformAdapter(
+    imagePicker: (fromCamera) async {
+      final file = await picker.pickImage(
+        source: fromCamera ? ImageSource.camera : ImageSource.gallery,
+        imageQuality: 85,
+      );
+      return file?.path;
+    },
+    filePicker: () async {
+      final files = await FilePicker.pickFiles();
+      if (files.isEmpty) return null;
+      return files.first.path;
+    },
+  );
+});
+
+final captureServiceProvider = Provider<CaptureService>((ref) {
+  return CaptureService(
+    db: ref.watch(appDatabaseProvider),
+    fileStore: ref.watch(fileStoreProvider),
+    clock: ref.watch(clockProvider),
+  );
+});
+
+/// Remembers the last selected Add-sheet entry type during the session.
+class LastAddEntryTypeNotifier extends Notifier<AddEntryType> {
+  @override
+  AddEntryType build() => AddEntryType.note;
+
+  void select(AddEntryType type) => state = type;
+}
+
+final lastAddEntryTypeProvider =
+    NotifierProvider<LastAddEntryTypeNotifier, AddEntryType>(
+  LastAddEntryTypeNotifier.new,
+);
+
+/// Watches the default follow-up hour (0..23, default 9 = 09:00).
+final defaultFollowUpHourProvider = StreamProvider<int>((ref) {
+  return ref.watch(settingsRepositoryProvider).watch('default_followup_hour').map((v) {
+    final parsed = int.tryParse(v ?? '');
+    if (parsed == null || parsed < 0 || parsed > 23) return 9;
+    return parsed;
+  });
+});
+
+/// Watches the "Ask for a note after calls" mode (`all`, `starred`, `never`).
+final afterCallModeProvider = StreamProvider<String>((ref) {
+  return ref.watch(settingsRepositoryProvider).watch('after_call_mode').map((v) {
+    if (v == 'starred' || v == 'never') return v!;
+    return 'all';
   });
 });

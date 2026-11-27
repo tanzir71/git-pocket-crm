@@ -13,6 +13,9 @@ import '../../../core/providers.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/tokens.dart';
 import '../../../core/widgets/widgets.dart';
+import '../../capture/data/capture_service.dart';
+import '../../capture/ui/add_sheet.dart';
+import '../../capture/ui/after_call_sheet.dart';
 import '../../payments/data/payments_repository.dart';
 import 'add_edit_person_sheet.dart';
 import 'cadence_picker_sheet.dart';
@@ -239,64 +242,31 @@ class _PersonScreenState extends ConsumerState<PersonScreen> {
       );
   }
 
-  Future<void> _showQuickNoteSheet(Contact contact) async {
-    final controller = TextEditingController();
-    await showAppSheet<void>(
-      context: context,
-      bodyBuilder: (ctx) {
-        final l10n = ctx.l10n;
-        final c = ctx.colors;
-        final tt = Theme.of(ctx).textTheme;
-        return StatefulBuilder(
-          builder: (ctx, setState) {
-            final canSave = controller.text.trim().isNotEmpty;
-            return Padding(
-              padding: EdgeInsets.fromLTRB(
-                AppTokens.screenPadding,
-                AppTokens.space8,
-                AppTokens.screenPadding,
-                MediaQuery.viewInsetsOf(ctx).bottom + AppTokens.space16,
-              ),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  Text(
-                    l10n.quickNoteTitle,
-                    style: tt.titleMedium!.copyWith(color: c.textPrimary),
-                  ),
-                  const SizedBox(height: AppTokens.space12),
-                  AppField(
-                    controller: controller,
-                    hintText: l10n.quickNoteHint,
-                    minLines: 3,
-                    maxLines: 6,
-                    autofocus: true,
-                    onChanged: (_) => setState(() {}),
-                  ),
-                  const SizedBox(height: AppTokens.space16),
-                  AppButton(
-                    label: l10n.saveNoteAction,
-                    variant: AppButtonVariant.primary,
-                    fullWidth: true,
-                    onPressed: canSave
-                        ? () async {
-                            await ref.read(historyRepositoryProvider).addNote(
-                                  contactId: contact.id,
-                                  note: controller.text.trim(),
-                                  timestamp: ref.read(clockProvider)().millisecondsSinceEpoch,
-                                );
-                            if (ctx.mounted) Navigator.of(ctx).pop();
-                          }
-                        : null,
-                  ),
-                ],
-              ),
-            );
-          },
-        );
-      },
+  Future<void> _openAddSheetForPerson(
+    Contact contact, {
+    AddEntryType? initialType,
+    TimelineEntry? editingEntry,
+  }) async {
+    final token = await showAddSheet(
+      context,
+      fixedPerson: contact,
+      initialType: initialType,
+      editingEntry: editingEntry,
     );
+    if (token != null && mounted) {
+      showCaptureSavedSnackBar(context, ref, token);
+    }
+  }
+
+  Future<void> _openAfterCallForEntry(Contact contact, TimelineEntry entry) async {
+    final token = await showAfterCallSheet(
+      context,
+      contact: contact,
+      callEntry: entry,
+    );
+    if (token != null && mounted) {
+      showCaptureSavedSnackBar(context, ref, token);
+    }
   }
 
   Future<void> _showQuickFollowUpSheet(Contact contact, {int? sourceTimelineId}) async {
@@ -656,8 +626,8 @@ class _PersonScreenState extends ConsumerState<PersonScreen> {
       backgroundColor: c.bgCanvas,
       floatingActionButton: AppFab(
         icon: Icons.add,
-        semanticLabel: l10n.actionNote,
-        onPressed: () => _showQuickNoteSheet(contact),
+        semanticLabel: l10n.addSheetTitle,
+        onPressed: () => _openAddSheetForPerson(contact),
       ),
       body: SafeArea(
         bottom: false,
@@ -879,7 +849,10 @@ class _PersonScreenState extends ConsumerState<PersonScreen> {
                           child: _PersonActionTile(
                             icon: Icons.edit_note_outlined,
                             label: l10n.actionNote,
-                            onTap: () => _showQuickNoteSheet(contact),
+                            onTap: () => _openAddSheetForPerson(
+                              contact,
+                              initialType: AddEntryType.note,
+                            ),
                           ),
                         ),
                       ],
@@ -1241,6 +1214,7 @@ class _PersonScreenState extends ConsumerState<PersonScreen> {
           title: title,
           body: (entry.note != null && entry.note!.trim().isNotEmpty) ? entry.note : null,
           timeLine: timeStr,
+          onTap: () => _openAfterCallForEntry(contact, entry),
           onLongPress: () => _showEntryActionsSheet(contact, entry),
         );
 
@@ -1277,6 +1251,7 @@ class _PersonScreenState extends ConsumerState<PersonScreen> {
           title: title,
           body: (entry.note != null && entry.note!.trim().isNotEmpty) ? entry.note : null,
           timeLine: metaTime,
+          onTap: () => _openAddSheetForPerson(contact, editingEntry: entry),
           onLongPress: () => _showEntryActionsSheet(contact, entry),
         );
 
@@ -1302,6 +1277,7 @@ class _PersonScreenState extends ConsumerState<PersonScreen> {
           title: title,
           body: body,
           timeLine: timeStr,
+          onTap: () => _openAddSheetForPerson(contact, editingEntry: entry),
           onLongPress: () => _showEntryActionsSheet(contact, entry),
         );
 
@@ -1314,6 +1290,7 @@ class _PersonScreenState extends ConsumerState<PersonScreen> {
           title: fileName,
           body: (entry.note != null && entry.note!.trim().isNotEmpty) ? entry.note : null,
           timeLine: timeStr,
+          onTap: () => _openAddSheetForPerson(contact, editingEntry: entry),
           onLongPress: () => _showEntryActionsSheet(contact, entry),
         );
 
@@ -1323,6 +1300,7 @@ class _PersonScreenState extends ConsumerState<PersonScreen> {
           title: l10n.entryNote,
           body: entry.note ?? entry.content,
           timeLine: timeStr,
+          onTap: () => _openAddSheetForPerson(contact, editingEntry: entry),
           onLongPress: () => _showEntryActionsSheet(contact, entry),
         );
     }

@@ -51,6 +51,65 @@ Future<T?> showAppSheet<T>({
   );
 }
 
+/// Shows a modal bottom sheet whose [builder] manages its own internal
+/// scrolling and pinned bottom action (still applying the exact sheet chrome,
+/// 90% height cap, handle, scrim, and 250ms decelerate motion).
+Future<T?> showCustomAppSheet<T>({
+  required BuildContext context,
+  required WidgetBuilder builder,
+  double maxHeightFraction = 0.9,
+  bool isDismissible = true,
+  bool enableDrag = true,
+}) {
+  final c = context.colors;
+  final disableAnim = MediaQuery.disableAnimationsOf(context);
+
+  return showModalBottomSheet<T>(
+    context: context,
+    isScrollControlled: true,
+    isDismissible: isDismissible,
+    enableDrag: enableDrag,
+    useSafeArea: true,
+    backgroundColor: c.bgSurface,
+    barrierColor: c.scrim,
+    shape: const RoundedRectangleBorder(
+      borderRadius: BorderRadius.vertical(
+        top: Radius.circular(AppTokens.radiusSheetTop),
+      ),
+    ),
+    sheetAnimationStyle: AnimationStyle(
+      duration: disableAnim ? Duration.zero : AppTokens.sheetSlideDuration,
+      reverseDuration: disableAnim ? Duration.zero : AppTokens.sheetSlideDuration,
+      curve: Curves.decelerate,
+    ),
+    builder: (sheetContext) {
+      final maxH = MediaQuery.sizeOf(sheetContext).height * maxHeightFraction;
+      return ConstrainedBox(
+        constraints: BoxConstraints(maxHeight: maxH),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            const SizedBox(height: AppTokens.space12),
+            Center(
+              child: Container(
+                width: AppTokens.sheetHandleWidth,
+                height: AppTokens.sheetHandleHeight,
+                decoration: BoxDecoration(
+                  color: c.bgSubtle,
+                  borderRadius: BorderRadius.circular(AppTokens.radiusFull),
+                ),
+              ),
+            ),
+            const SizedBox(height: AppTokens.space4),
+            Flexible(child: builder(sheetContext)),
+          ],
+        ),
+      );
+    },
+  );
+}
+
 class AppSheetContainer extends StatelessWidget {
   const AppSheetContainer({
     super.key,

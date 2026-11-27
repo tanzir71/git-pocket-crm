@@ -41,6 +41,18 @@ Log of technical, dependency, and design choices made during implementation wher
 - **Native batched reader:** Implemented `DeviceApiImpl` in Kotlin reading `CallLog.Calls` and `Telephony.Sms` on `Dispatchers.IO` with `_id > ?` watermarks (`Bundle` query args on API 30+, cursor cap fallback below), plus 2-second debounced `ContentObserver`s.
 - **Spam filter removal from sync:** `SyncService` never calls `SpamFilter`; messages matching any phone of a saved contact are always stored, and incoming monetary amounts become `suggested_amount` / `suggestion_state = 'open'` suggestions rather than auto-created payment rows. Legacy `SyncEngine.syncAll()` now delegates to `SyncService`.
 
+## Spec 06 — People and Person (2026-11-27)
+
+- **Centralised SQL in `lib/core/db/crm_queries.dart`:** Moved all `customSelect`/`customStatement` queries out of `lib/features/` into `lib/core/db/crm_queries.dart` and added a lint guard test ensuring zero SQL exists anywhere under `lib/features/`.
+- **Single-query People directory:** `CrmQueries.watchPeopleDirectory` returns contact metadata, first list name, last interaction kind, overdue follow-up status, effective reconnect cadence, and Spec 02 net balance in one query backed by `SliverChildBuilderDelegate` so 5,000+ rows remain smooth.
+
+## Spec 07 — Add and after-call (2026-11-27)
+
+- **Packages:** Added `image_picker: ^1.1.2` for visit photos (camera and gallery) copied into private app storage via `FileStore`.
+- **Voice input decision:** Left the in-field microphone button out and rely on Android's system keyboard voice typing. Existing Flutter speech-recognition plugins (`speech_to_text`) pull `android.permission.INTERNET` into the merged Android manifest, which violates Hard Rule 2 (`tool/check_manifest.sh`).
+- **Location:** Uses Android's native `LocationManager` (`ACCESS_COARSE_LOCATION`, 5-second timeout) via Pigeon `DeviceApi.currentLocation()`, storing coordinates only with no reverse geocoding and no network permission.
+
+
 
 
 

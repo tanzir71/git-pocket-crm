@@ -1,24 +1,34 @@
 package com.pocketcrm.pocket_crm
 
+import android.Manifest
 import android.content.ContentResolver
 import android.content.Context
+import android.content.pm.PackageManager
 import android.database.ContentObserver
 import android.database.Cursor
+import android.location.Location
+import android.location.LocationListener
+import android.location.LocationManager
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.os.CancellationSignal
 import android.os.Handler
 import android.os.Looper
 import android.provider.CallLog
 import android.provider.Telephony
 import android.telephony.TelephonyManager
 import android.util.Log
+import androidx.core.content.ContextCompat
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlinx.coroutines.withContext
+import kotlinx.coroutines.withTimeoutOrNull
+import kotlin.coroutines.resume
 
 class DeviceApiImpl(
     private val context: Context,
@@ -237,6 +247,77 @@ class DeviceApiImpl(
         pendingCallsRunnable = null
         pendingSmsRunnable?.let { mainHandler.removeCallbacks(it) }
         pendingSmsRunnable = null
+    }
+
+    override suspend fun currentLocation(): LocationPoint? = withContext(Dispatchers.Main) {
+        val hasCoarse = ContextCompat.checkSelfPermission(
+            context,
+            Manifest.permission.ACCESS_COARSE_LOCATION,
+        ) == PackageManager.PERMISSION_GRANTED
+        val hasFine = ContextCompat.checkSelfPermission(
+            context,
+            Manifest.permission.ACCESS_FINE_LOCATION,
+        ) == PackageManager.PERMISSION_GRANTED
+        if (!hasCoarse && !hasFine) return@withContext null
+
+        val lm = context.getSystemService(Context.LOCATION_SERVICE) as? LocationManager
+            ?: return@withContext null
+
+        val provider = when {
+            lm.isProviderEnabled(LocationManager.NETWORK_PROVIDER) -> LocationManager.NETWORK_PROVIDER
+            lm.isProviderEnabled(LocationManager.GPS_PROVIDER) -> LocationManager.GPS_PROVIDER
+            else -> LocationManager.PASSIVE_PROVIDER
+        }
+
+        // Try a fresh fix within 5 seconds, falling back to lastKnownLocation
+        val fresh = withTimeoutOrNull(5_000L) {
+            suspendCancellableCoroutine<Location?> { cont ->
+                try {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                        val signal = CancellationSignal()
+                        cont.invokeOnCancellation { signal.cancel() }
+                        lm.getCurrentLocation(
+                            provider,
+                            signal,
+                            context.mainExecutor,
+                        ) { loc ->
+                            if (cont.isActive) cont.resume(loc)
+                        }
+                    } else {
+                        val listener = object : LocationListener {
+                            override fun onLocationChanged(location: Location) {
+                                lm.removeUpdates(this)
+                                if (cont.isActive) cont.resume(location)
+                            }
+                            @Deprecated("Deprecated in API 29")
+                            override fun onStatusChanged(p: String?, s: Int, e: Bundle?) {}
+                            override fun onProviderEnabled(p: String) {}
+                            override fun onProviderDisabled(p: String) {}
+                        }
+                        cont.invokeOnCancellation { lm.removeUpdates(listener) }
+                        @Suppress("DEPRECATION")
+                        lm.requestSingleUpdate(provider, listener, Looper.getMainLooper())
+                    }
+                } catch (e: Exception) {
+                    Log.w(TAG, "currentLocation error: ${e.message}")
+                    if (cont.isActive) cont.resume(null)
+                }
+            }
+        }
+
+        val loc = fresh ?: try {
+            lm.getLastKnownLocation(provider)
+                ?: lm.getLastKnownLocation(LocationManager.PASSIVE_PROVIDER)
+        } catch (_: Exception) {
+            null
+        }
+
+        loc?.let { LocationPoint(lat = it.latitude, lng = it.longitude) }
+    }
+
+    override fun setAfterCallMode(mode: String) {
+        val prefs = context.getSharedPreferences(PhoneStateReceiver.PREFS_NAME, Context.MODE_PRIVATE)
+        prefs.edit().putString(PhoneStateReceiver.KEY_AFTER_CALL_MODE, mode).apply()
     }
 
     fun dispose() {

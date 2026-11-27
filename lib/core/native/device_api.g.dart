@@ -242,6 +242,56 @@ class SmsRecord {
   }
 }
 
+class LocationPoint {
+  LocationPoint({
+    required this.lat,
+    required this.lng,
+  });
+
+  double lat;
+
+  double lng;
+
+  List<Object?> _toList() {
+    return <Object?>[
+      lat,
+      lng,
+    ];
+  }
+
+  Object encode() {
+    return _toList();  }
+
+  static LocationPoint decode(Object result) {
+    result as List<Object?>;
+    return LocationPoint(
+      lat: result[0]! as double,
+      lng: result[1]! as double,
+    );
+  }
+
+  @override
+  // ignore: avoid_equals_and_hash_code_on_mutable_classes
+  bool operator ==(Object other) {
+    if (other is! LocationPoint || other.runtimeType != runtimeType) {
+      return false;
+    }
+    if (identical(this, other)) {
+      return true;
+    }
+    return _deepEquals(lat, other.lat) && _deepEquals(lng, other.lng);
+  }
+
+  @override
+  // ignore: avoid_equals_and_hash_code_on_mutable_classes
+  int get hashCode => _deepHash(<Object?>[runtimeType, ..._toList()]);
+
+  @override
+  String toString() {
+    return 'LocationPoint(lat: $lat, lng: $lng)';
+  }
+}
+
 
 class _PigeonCodec extends StandardMessageCodec {
   const _PigeonCodec();
@@ -256,6 +306,9 @@ class _PigeonCodec extends StandardMessageCodec {
     }    else if (value is SmsRecord) {
       buffer.putUint8(130);
       writeValue(buffer, value.encode());
+    }    else if (value is LocationPoint) {
+      buffer.putUint8(131);
+      writeValue(buffer, value.encode());
     } else {
       super.writeValue(buffer, value);
     }
@@ -268,6 +321,8 @@ class _PigeonCodec extends StandardMessageCodec {
         return CallRecord.decode(readValue(buffer)!);
       case 130:
         return SmsRecord.decode(readValue(buffer)!);
+      case 131:
+        return LocationPoint.decode(readValue(buffer)!);
       default:
         return super.readValueOfType(type, buffer);
     }
@@ -370,6 +425,43 @@ class DeviceApi {
       binaryMessenger: pigeonVar_binaryMessenger,
     );
     final Future<Object?> pigeonVar_sendFuture = pigeonVar_channel.send(null);
+    final pigeonVar_replyList = await pigeonVar_sendFuture as List<Object?>?;
+    _extractReplyValueOrThrow(
+        pigeonVar_replyList,
+        pigeonVar_channelName,
+        isNullValid: true,
+    )
+    ;
+  }
+
+  Future<LocationPoint?> currentLocation() async {
+    final pigeonVar_channelName = 'dev.flutter.pigeon.pocket_crm.DeviceApi.currentLocation$pigeonVar_messageChannelSuffix';
+    final pigeonVar_channel = BasicMessageChannel<Object?>(
+      pigeonVar_channelName,
+      pigeonChannelCodec,
+      binaryMessenger: pigeonVar_binaryMessenger,
+    );
+    final Future<Object?> pigeonVar_sendFuture = pigeonVar_channel.send(null);
+    final pigeonVar_replyList = await pigeonVar_sendFuture as List<Object?>?;
+    final Object? pigeonVar_replyValue = _extractReplyValueOrThrow(
+        pigeonVar_replyList,
+        pigeonVar_channelName,
+        isNullValid: true,
+    )
+    ;
+    return pigeonVar_replyValue as LocationPoint?;
+  }
+
+  /// Mirrors the user's "Ask for a note after calls" setting (`all`, `starred`, `never`)
+  /// into native SharedPreferences for `PhoneStateReceiver`.
+  Future<void> setAfterCallMode(String mode) async {
+    final pigeonVar_channelName = 'dev.flutter.pigeon.pocket_crm.DeviceApi.setAfterCallMode$pigeonVar_messageChannelSuffix';
+    final pigeonVar_channel = BasicMessageChannel<Object?>(
+      pigeonVar_channelName,
+      pigeonChannelCodec,
+      binaryMessenger: pigeonVar_binaryMessenger,
+    );
+    final Future<Object?> pigeonVar_sendFuture = pigeonVar_channel.send(<Object?>[mode]);
     final pigeonVar_replyList = await pigeonVar_sendFuture as List<Object?>?;
     _extractReplyValueOrThrow(
         pigeonVar_replyList,

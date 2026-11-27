@@ -310,6 +310,47 @@ data class SmsRecord (
     return "SmsRecord(id=$id, address=$address, body=$body, dateMs=$dateMs, box=$box, subId=$subId)"
   }
 }
+
+/** Generated class from Pigeon that represents data sent in messages. */
+data class LocationPoint (
+  val lat: Double,
+  val lng: Double
+)
+ {
+  companion object {
+    fun fromList(pigeonVar_list: List<Any?>): LocationPoint {
+      val lat = pigeonVar_list[0] as Double
+      val lng = pigeonVar_list[1] as Double
+      return LocationPoint(lat, lng)
+    }
+  }
+  fun toList(): List<Any?> {
+    return listOf(
+      lat,
+      lng,
+    )
+  }
+  override fun equals(other: Any?): Boolean {
+    if (other == null || other.javaClass != javaClass) {
+      return false
+    }
+    if (this === other) {
+      return true
+    }
+    val other = other as LocationPoint
+    return DeviceApiPigeonUtils.deepEquals(this.lat, other.lat) && DeviceApiPigeonUtils.deepEquals(this.lng, other.lng)
+  }
+
+  override fun hashCode(): Int {
+    var result = javaClass.hashCode()
+    result = 31 * result + DeviceApiPigeonUtils.deepHash(this.lat)
+    result = 31 * result + DeviceApiPigeonUtils.deepHash(this.lng)
+    return result
+  }
+  override fun toString(): String {
+    return "LocationPoint(lat=$lat, lng=$lng)"
+  }
+}
 private open class DeviceApiPigeonCodec : StandardMessageCodec() {
   override fun readValueOfType(type: Byte, buffer: ByteBuffer): Any? {
     return when (type) {
@@ -321,6 +362,11 @@ private open class DeviceApiPigeonCodec : StandardMessageCodec() {
       130.toByte() -> {
         (readValue(buffer) as? List<Any?>)?.let {
           SmsRecord.fromList(it)
+        }
+      }
+      131.toByte() -> {
+        (readValue(buffer) as? List<Any?>)?.let {
+          LocationPoint.fromList(it)
         }
       }
       else -> super.readValueOfType(type, buffer)
@@ -336,6 +382,10 @@ private open class DeviceApiPigeonCodec : StandardMessageCodec() {
         stream.write(130)
         writeValue(stream, value.toList())
       }
+      is LocationPoint -> {
+        stream.write(131)
+        writeValue(stream, value.toList())
+      }
       else -> super.writeValue(stream, value)
     }
   }
@@ -349,6 +399,12 @@ interface DeviceApi {
   fun simCountryIso(): String?
   fun startObserving()
   fun stopObserving()
+  suspend fun currentLocation(): LocationPoint?
+  /**
+   * Mirrors the user's "Ask for a note after calls" setting (`all`, `starred`, `never`)
+   * into native SharedPreferences for `PhoneStateReceiver`.
+   */
+  fun setAfterCallMode(mode: String)
 
   companion object {
     /** The codec used by DeviceApi. */
@@ -436,6 +492,41 @@ interface DeviceApi {
           channel.setMessageHandler { _, reply ->
             val wrapped: List<Any?> = try {
               api.stopObserving()
+              listOf(null)
+            } catch (exception: Throwable) {
+              DeviceApiPigeonUtils.wrapError(exception)
+            }
+            reply.reply(wrapped)
+          }
+        } else {
+          channel.setMessageHandler(null)
+        }
+      }
+      run {
+        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.pocket_crm.DeviceApi.currentLocation$separatedMessageChannelSuffix", codec)
+        if (api != null) {
+          channel.setMessageHandler { _, reply ->
+            CoroutineScope(Dispatchers.Main).launch {
+              val wrapped: List<Any?> = try {
+                listOf(api.currentLocation())
+              } catch (exception: Throwable) {
+                DeviceApiPigeonUtils.wrapError(exception)
+              }
+              reply.reply(wrapped)
+            }
+          }
+        } else {
+          channel.setMessageHandler(null)
+        }
+      }
+      run {
+        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.pocket_crm.DeviceApi.setAfterCallMode$separatedMessageChannelSuffix", codec)
+        if (api != null) {
+          channel.setMessageHandler { message, reply ->
+            val args = message as List<Any?>
+            val modeArg = args[0] as String
+            val wrapped: List<Any?> = try {
+              api.setAfterCallMode(modeArg)
               listOf(null)
             } catch (exception: Throwable) {
               DeviceApiPigeonUtils.wrapError(exception)

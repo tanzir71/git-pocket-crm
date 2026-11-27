@@ -47,5 +47,15 @@ Record of automated test runs and Android emulator verification runs (date, imag
 - **Command:** `bash tool/verify.sh && flutter test --dart-define=V2=true`
 - **Outcome:** PASSED. `flutter analyze` reported 0 issues; all 54 tests passed in both `V2=false` and `V2=true` modes (including zero SQL in `lib/features/`, partial-phone search, `Owes me` exact positive-balance filter, overdue danger meta, 5,000-row virtualization build-counter test, transactional duplicate merge, Person call note + visit place/photos + suggested-payment confirmation -> balance row, non-mobile WhatsApp hiding, and 4 committed Figma-sized 412x917 light/dark goldens for People and Person visually verified against frames `7:210` and `9:261`); `assembleDebug`, `check_manifest.sh`, and `check_landing.sh` passed.
 
+## 2026-11-27 — Spec 07
+
+- **Environment (host):** Host Windows 11, Flutter 3.50.1, Dart 3.14.0, `image_picker` 1.2.4, Pigeon 30.0.4
+- **Command:** `dart run pigeon --input pigeons/device.dart && bash tool/verify.sh && flutter test --dart-define=V2=true`
+- **Outcome:** PASSED. `flutter analyze` reported 0 issues; all 61 tests passed in both `V2=false` and `V2=true` modes (including atomic Visit with 2 photos via `FileStore` + 3-day follow-up linked via `source_timeline_id` + `last_interaction_at` update + full transactional Undo restoring all table counts; After-call sheet "No answer" editing existing call row in place + creating tomorrow "Call Amara back" follow-up with zero duplicate rows; 3-interaction note capture on Person screen; and 4 committed Figma-sized 412x917 light/dark goldens for Add Visit and After-call visually verified against frames `9:369` and `7:132`); `assembleDebug`, `check_manifest.sh` (confirmed zero `INTERNET` permission), and `check_landing.sh` passed.
+- **Environment (emulator):** Android Emulator `Pixel_8` (`android-34`, Android 14, debug APK)
+- **Command:** Installed debug APK, granted `READ_CONTACTS`, `READ_CALL_LOG`, `READ_PHONE_STATE`, `POST_NOTIFICATIONS`, saved contact "Amara Okafor" (`+14155550100`), killed background process with `adb shell am kill`, simulated incoming call `adb emu gsm call 4155550100` -> `gsm cancel 4155550100`, inspected `dumpsys notification --noredact` and verified `pocketcrm://after-call?number=4155550100` deep link intent resolution.
+- **Outcome:** PASSED. `PhoneStateReceiver` detected RINGING->IDLE transition, resolved `"Amara Okafor"` via `ContactsContract.PhoneLookup`, and posted high-importance notification id `7100` on channel `after_calls` titled `"Add a note about your call with Amara Okafor"` with 2 actions (`Add note`, `Follow up`) within 3 seconds. Deep link `pocketcrm://after-call?number=4155550100` resolved cleanly to `MainActivity`.
+
+
 
 

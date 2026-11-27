@@ -81,6 +81,15 @@ class FollowUpsRepository {
     );
   }
 
+  Future<void> rescheduleFollowUp(int id, int newDueDateMs, {int? newReminderTimeMs}) async {
+    await (_db.update(_db.tasks)..where((t) => t.id.equals(id))).write(
+      TasksCompanion(
+        dueDate: Value(newDueDateMs),
+        reminderTime: Value(newReminderTimeMs ?? newDueDateMs),
+      ),
+    );
+  }
+
   Future<void> deleteFollowUp(int id) async {
     await (_db.delete(_db.tasks)..where((t) => t.id.equals(id))).go();
   }

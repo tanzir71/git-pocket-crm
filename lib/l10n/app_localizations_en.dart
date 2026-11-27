@@ -659,4 +659,156 @@ class AppLocalizationsEn extends AppLocalizations {
     );
     return '$_temp0';
   }
+
+  @override
+  String get addSheetTitle => 'Add';
+
+  @override
+  String get editEntryTitle => 'Edit entry';
+
+  @override
+  String get choosePersonLabel => 'Choose a person';
+
+  @override
+  String get validationChoosePerson => 'Choose a person';
+
+  @override
+  String get validationAddAmount => 'Add an amount';
+
+  @override
+  String get validationAddNote => 'Add a note';
+
+  @override
+  String get validationAddTitle => 'Add a title';
+
+  @override
+  String get validationPickFile => 'Choose a file';
+
+  @override
+  String get suggestedLastCall => 'Your last call';
+
+  @override
+  String suggestedFollowUpAt(String time) {
+    return 'Suggested from your $time follow-up';
+  }
+
+  @override
+  String get typeNote => 'Note';
+
+  @override
+  String get typeCall => 'Call';
+
+  @override
+  String get typeVisit => 'Visit';
+
+  @override
+  String get typeTask => 'Task';
+
+  @override
+  String get typePayment => 'Payment';
+
+  @override
+  String get typeFile => 'File';
+
+  @override
+  String get directionOutgoing => 'Outgoing';
+
+  @override
+  String get directionIncoming => 'Incoming';
+
+  @override
+  String get outcomeQuestion => 'How did it go?';
+
+  @override
+  String get outcomeSpoke => 'Spoke';
+
+  @override
+  String get outcomeNoAnswer => 'No answer';
+
+  @override
+  String get outcomeLeftMessage => 'Left a message';
+
+  @override
+  String get fieldTime => 'Time';
+
+  @override
+  String get fieldDurationMin => 'Duration (minutes)';
+
+  @override
+  String get fieldPlace => 'Place';
+
+  @override
+  String get currentLocationAction => 'Current location';
+
+  @override
+  String get locationAttached => 'Location attached';
+
+  @override
+  String get locationUnavailable => 'Location unavailable';
+
+  @override
+  String get fieldPhotos => 'Photos';
+
+  @override
+  String get photoCamera => 'Camera';
+
+  @override
+  String get photoGallery => 'Gallery';
+
+  @override
+  String get fieldAmount => 'Amount';
+
+  @override
+  String get fieldDescription => 'Description';
+
+  @override
+  String get fieldDate => 'Date';
+
+  @override
+  String get chooseFileAction => 'Choose file';
+
+  @override
+  String get followUpSectionLabel => 'Follow up';
+
+  @override
+  String get pickDateAction => 'Pick date';
+
+  @override
+  String followUpDefaultTitle(String firstName) {
+    return 'Follow up with $firstName';
+  }
+
+  @override
+  String callBackDefaultTitle(String firstName) {
+    return 'Call $firstName back';
+  }
+
+  @override
+  String get saveCallAction => 'Save call';
+
+  @override
+  String get saveVisitAction => 'Save visit';
+
+  @override
+  String get saveTaskAction => 'Save task';
+
+  @override
+  String get savePaymentAction => 'Save payment';
+
+  @override
+  String get saveFileAction => 'Save file';
+
+  @override
+  String get saveChangesAction => 'Save changes';
+
+  @override
+  String get savedMessage => 'Saved';
+
+  @override
+  String callWithTitle(String name) {
+    return 'Call with $name';
+  }
+
+  @override
+  String get justNowLabel => 'just now';
 }
