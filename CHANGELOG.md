@@ -2,6 +2,14 @@
 
 All notable changes to PocketCRM are documented in this file.
 
+## Milestone 3: Reliable scheduled and bulk messaging (2026-11-27)
+
+- New native Android SMS outbox so scheduled and bulk messages send reliably even when PocketCRM is closed, the phone is idle, or after a restart, with automatic retries on temporary signal loss and send-window support.
+- New Messages tab, New message composer with reusable templates and live personalised preview (`{first_name}`, `{full_name}`, `{company}`, `{balance}`, `{city}`), live SMS/character counter, dual-SIM selector, Slow/Steady/Fast sending paces, and live Campaign progress screen with Pause, Resume, Stop, Retry failed, and CSV export.
+- Automatic opt-out detection when a contact replies STOP, UNSUBSCRIBE, or বন্ধ so future bulk messages skip them automatically.
+- Completed the move to PocketCRM v2 as the default app and removed the legacy v1 screens while carrying forward existing contacts, history, tasks, and pending scheduled messages.
+- New Setup screen guiding Contacts, Calls and messages (including Android 13+ restricted settings instructions), Alarms and reminders, Battery (with manufacturer tips), and Notifications, plus a "Check setup" 2-minute self-test in Settings and full support for using PocketCRM with any or all permissions turned off.
+
 ## Milestone 2: Everyday workflow (2026-11-27)
 
 - New Today screen showing recent unreviewed calls to note, due and overdue follow-ups, people due to reconnect with, scheduled messages going out today, and upcoming birthdays.

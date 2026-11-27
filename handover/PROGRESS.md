@@ -52,5 +52,24 @@ Milestone-by-milestone log of what shipped, key decisions, and what remains unve
 ### What is in UNVERIFIED.md
 - Permanent device/network items only (real mobile network behaviour, dual-SIM selection, Android "Allow restricted settings" sideload flow, and per-maker battery management).
 
+## 2026-11-27 — M3: Reliable scheduled and bulk messaging
+
+### What shipped
+- **Spec 09:** Replaced the old Flutter-side `Timer.periodic` SMS sender with a native Kotlin outbox (`OutboxDb`, `OutboxStateMachine`, `SmsSender`, `SmsResultReceiver`, `OutboxScheduler`, `AlarmReceiver`, `OutboxDrainWorker`, `OutboxBootReceiver`, `OutboxNotifications`, `OutboxApiImpl`) backed by Pigeon `OutboxApi`, `AlarmManager.setExactAndAllowWhileIdle`, and WorkManager foreground dataSync draining. Supports 1m/5m/15m automatic retry, daily send window, 30-minute missed single-message handling, `LIMIT_EXCEEDED` campaign pausing, GSM-7/UCS-2 multipart SMS counting, `SingleMessageSheet`, and `SyncService` outgoing SMS deduplication. Verified on Android 14 emulator across Doze deep idle + `am kill`, `adb reboot`, airplane-mode retry, 300-char & Bangla multipart, missed >30m, `content://sms/sent` dedup, and 40-message Fast campaign.
+- **Spec 10:** Built pure `renderTemplate`, seeded default templates, `CampaignsRepository` (recipient resolution skipping no-mobile/opted-out/duplicates, native CSV export via `FileProvider`), `MergeFieldTextController`, `MessagesScreen`, `NewMessageScreen`, `CampaignScreen`, `SentMessagesScreen`, `TemplateEditorScreen`, opt-out keyword detection (`STOP`, `UNSUBSCRIBE`, `বন্ধ`), one-time idempotent v1 scheduled/bulk SMS migration, and completed the v2 cut-over (`kV2 = true`, deleted `lib/legacy/` and legacy DB/sync/spam files, removed `sqflite`, `flutter_sms_inbox`, `call_log`, and `google_fonts`). Verified Pause/Resume, mid-run `am kill`, and Steady/Careful pacing on Android 14 emulator.
+- **Spec 11:** Built the 5-row Setup screen (Figma `10:648`) with live capability refresh on resume, 2-denial Contacts `"Open settings"`, Android 13+ sideloaded Restricted Settings 3-step guide sheet, manufacturer-specific battery guidance for 6 makers, first sync progress, Settings screen (`General`, `After calls`, `Reminders`, `Messages`, `Data`, `About`), 2-minute Reliability Check self-test (`"Check setup"`), and full degraded-mode operation with all permissions denied (including `"Open in your SMS app"` fallback). Added `android/app/proguard-rules.pro` for R8-minified release builds and verified the signed release APK Setup walkthrough on Android 14 emulator.
+- Built signed M3 pre-release APK (`build/PocketCRM.apk`, `sha256: 9e7e53089c409c7b58cbf0789110874683ccdfbe39d50baa58f8a4fc30a1a2e5`) and published GitHub pre-release `m3`.
+
+### What was decided
+- Kept native file sharing on `OutboxApi.shareFile` via `FileProvider` instead of adding `share_plus`.
+- Replaced `sqflite`'s `getDatabasesPath()` with `resolvePocketCrmDatabasePath` via `path_provider`, preserving the exact Android `databases/pocket_crm.db` location.
+- Added explicit `android/app/proguard-rules.pro` keeping Pigeon classes, BroadcastReceivers, WorkManager/Room `WorkDatabase_Impl`, and `flutter_local_notifications` models after testing the signed release APK on Android 14.
+
+### What is in UNVERIFIED.md
+- Permanent device/network items (real mobile network behaviour, dual-SIM selection, Android "Allow restricted settings" sideload flow, per-maker battery management).
+- Spec 09: cross-emulator radio forwarding from `Pixel_8` (API 34) to `Medium_Phone` (API 36) did not populate B's inbox (all 7 outbox checks verified directly on `Pixel_8`).
+- Spec 11: Android 13+ file-install restricted settings flow (exempt under `adb install`; covered by widget tests) and per-device verification of the 6 OEM battery setting labels (Xiaomi/Redmi/Poco, Oppo/Realme/OnePlus, Vivo/iQOO, Samsung, Tecno/Infinix/itel, Huawei/Honor).
+
+
 
 
