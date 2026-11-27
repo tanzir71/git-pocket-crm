@@ -57,6 +57,12 @@ Log of technical, dependency, and design choices made during implementation wher
 - **Packages:** Added `flutter_local_notifications` (spec-named) and `timezone` (required by `flutter_local_notifications`'s `zonedSchedule` API) plus Android `desugar_jdk_libs:2.1.5` in `android/app/build.gradle.kts`.
 - **Rescheduling:** Single idempotent `NotificationsService.rescheduleAll()` cancels and recreates all future follow-up reminders (including legacy `tasks.reminder_time` rows) and the optional daily morning summary from the database so notifications never drift from stored data.
 
+## Spec 09 — Native outbox (2026-11-27)
+
+- **Native dependencies:** Added `androidx.work:work-runtime-ktx:2.10.1` and `testImplementation("junit:junit:4.13.2")` in `android/app/build.gradle.kts` (no new Dart dependencies; UUID v4 is generated directly with `Random.secure()`).
+- **SMS counter:** Placed pure `countSms(text)` (3GPP TS 23.038 GSM-7 basic + extension table 160/153 vs UCS-2 UTF-16 70/67) in `lib/core/messages/sms_counter.dart` so Spec 09's single-message sheet and Spec 10's bulk composer share one implementation.
+- **Airplane mode handling on Android 14:** On Android 14 API 34, `SmsManager.sendMultipartTextMessage` during airplane mode can fail before invoking `SmsResultReceiver`. `SmsSender` checks `Settings.Global.AIRPLANE_MODE_ON` before dispatching and routes through `SmsResultReceiver.recordSyntheticFailure(..., RESULT_ERROR_RADIO_OFF)` so the 1m/5m/15m retry policy triggers reliably.
+
 
 
 

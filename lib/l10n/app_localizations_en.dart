@@ -931,4 +931,73 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get notifPermissionRationale =>
       'Allow notifications so PocketCRM can remind you about follow-ups and scheduled messages.';
+
+  @override
+  String messagePersonTitle(String name) {
+    return 'Message $name';
+  }
+
+  @override
+  String get messageFieldHint => 'Write a message';
+
+  @override
+  String smsCounterLabel(int units, int limit, int segments) {
+    return '$units / $limit · $segments SMS';
+  }
+
+  @override
+  String get sendNowOption => 'Send now';
+
+  @override
+  String get scheduleOption => 'Schedule';
+
+  @override
+  String get sendNowAction => 'Send now';
+
+  @override
+  String get scheduleMessageAction => 'Schedule';
+
+  @override
+  String get openInSmsAppAction => 'Open in your SMS app';
+
+  @override
+  String get fromSimLabel => 'From';
+
+  @override
+  String get mayBeMinutesLateNotice =>
+      'Exact alarms are off, so this message may go out a few minutes late.';
+
+  @override
+  String get statusMissed => 'Missed';
+
+  @override
+  String missedMessageTo(String name) {
+    return 'Missed message to $name';
+  }
+
+  @override
+  String get smsErrorNoService => 'No service';
+
+  @override
+  String get smsErrorRadioOff => 'Airplane mode or radio off';
+
+  @override
+  String get smsErrorLimitReached => 'Sending limit reached';
+
+  @override
+  String get smsErrorNotAllowed => 'Not allowed by the network';
+
+  @override
+  String get smsErrorGeneric => 'Not sent';
+
+  @override
+  String smsErrorUnknown(int code) {
+    return 'Unknown error ($code)';
+  }
+
+  @override
+  String get messageScheduledSnack => 'Message scheduled';
+
+  @override
+  String get messageQueuedSnack => 'Sending message';
 }

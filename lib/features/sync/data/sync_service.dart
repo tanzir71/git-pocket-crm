@@ -753,6 +753,22 @@ class SyncService {
           final type = isSent ? 'sms_outgoing' : 'sms_incoming';
           final nativeId = 'sms:${rec.id}';
 
+          // Outbox deduplication (Spec 09 step 4): when an outgoing SMS from the
+          // system SMS store matches an outbox row (same normalised address, same
+          // body, within 2 minutes), stamp `provider_sms_id` and skip insert.
+          if (isSent) {
+            final matchedClientId = await _matchOutboxMessageForOutgoingSms(
+              address: rec.address,
+              body: rec.body,
+              timestampMs: rec.dateMs,
+              region: region,
+            );
+            if (matchedClientId != null) {
+              await CrmQueries(_db).stampOutboxProviderSmsId(matchedClientId, nativeId);
+              continue;
+            }
+          }
+
           // Incoming SMS from a saved person: detect monetary amounts as suggestions only
           double? suggestedAmount;
           String? suggestionState;
@@ -795,6 +811,35 @@ class SyncService {
     }
 
     return totalInserted;
+  }
+
+  Future<String?> _matchOutboxMessageForOutgoingSms({
+    required String address,
+    required String body,
+    required int timestampMs,
+    required String region,
+  }) async {
+    final candidates = await CrmQueries(_db).findOutboxCandidatesForSync(
+      body: body,
+      smsTimestampMs: timestampMs,
+    );
+    if (candidates.isEmpty) return null;
+
+    final smsE164 = phoneService.normalise(address, region);
+    final smsSuffix = phoneService.nationalSuffix(smsE164 ?? address, digits: 9);
+
+    for (final c in candidates) {
+      if (c.address.trim() == address.trim()) return c.clientId;
+      final outboxE164 = phoneService.normalise(c.address, region);
+      if (smsE164 != null && outboxE164 != null && smsE164 == outboxE164) {
+        return c.clientId;
+      }
+      final outboxSuffix = phoneService.nationalSuffix(outboxE164 ?? c.address, digits: 9);
+      if (smsSuffix != null && outboxSuffix != null && smsSuffix == outboxSuffix) {
+        return c.clientId;
+      }
+    }
+    return null;
   }
 
   Future<void> _updateLastInteractionBatch(Set<int> contactIds) {

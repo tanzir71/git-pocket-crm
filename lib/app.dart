@@ -38,6 +38,9 @@ class _PocketCrmV2AppState extends ConsumerState<PocketCrmV2App>
         unawaited(
           notifications.initialize().then((_) => notifications.rescheduleAll()),
         );
+        final outbox = ref.read(outboxRepositoryProvider);
+        outbox.startListening();
+        unawaited(outbox.reconcile());
       });
     }
   }
@@ -49,6 +52,7 @@ class _PocketCrmV2AppState extends ConsumerState<PocketCrmV2App>
     if (state == AppLifecycleState.resumed) {
       unawaited(sync.syncIfStale());
       unawaited(ref.read(notificationsServiceProvider).rescheduleAll());
+      unawaited(ref.read(outboxRepositoryProvider).reconcile());
       unawaited(
         sync.startObserving((_) {
           unawaited(sync.syncAll(syncContacts: false));

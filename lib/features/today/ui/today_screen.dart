@@ -15,6 +15,7 @@ import '../../../core/widgets/widgets.dart';
 import '../../capture/ui/add_sheet.dart';
 import '../../capture/ui/after_call_sheet.dart';
 import '../../followups/data/followups_repository.dart';
+import '../../messages/data/outbox_repository.dart';
 import '../../people/ui/cadence_picker_sheet.dart';
 import '../data/cadence_calculator.dart';
 import '../data/today_repository.dart';
@@ -450,21 +451,41 @@ class _TodayScreenState extends ConsumerState<TodayScreen> {
                   delegate: SliverChildBuilderDelegate(
                     (context, index) {
                       final item = needsAttention[index];
-                      final reason = item.message.errorLabel ?? l10n.statusNotSent;
+                      final isMissed = item.message.status == 'missed';
+                      final reason = isMissed
+                          ? l10n.statusMissed
+                          : (item.message.errorCode != null
+                              ? smsErrorReasonLabel(item.message.errorCode, l10n)
+                              : (item.message.errorLabel ?? l10n.statusNotSent));
                       final timeStr =
                           fmt.formatRelativeDateTime(item.message.dueAt, l10n);
+                      final outboxRepo = ref.read(outboxRepositoryProvider);
                       return EventRow(
                         icon: Icons.error_outline,
-                        title: l10n.notSentTo(item.personName),
+                        title: isMissed
+                            ? l10n.missedMessageTo(item.personName)
+                            : l10n.notSentTo(item.personName),
                         body: '$reason · $timeStr',
                         isError: true,
-                        trailing: AppButton(
-                          label: l10n.retryAction,
-                          variant: AppButtonVariant.secondary,
-                          size: AppButtonSize.small,
-                          onPressed: item.message.contactId != null
-                              ? () => _openPerson(item.message.contactId!)
-                              : null,
+                        trailing: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            AppButton(
+                              label: isMissed ? l10n.sendNowAction : l10n.retryAction,
+                              variant: AppButtonVariant.secondary,
+                              size: AppButtonSize.small,
+                              onPressed: () =>
+                                  unawaited(outboxRepo.retry([item.message.clientId])),
+                            ),
+                            const SizedBox(width: AppTokens.space4),
+                            AppButton(
+                              label: l10n.dismissAction,
+                              variant: AppButtonVariant.quiet,
+                              size: AppButtonSize.small,
+                              onPressed: () =>
+                                  unawaited(outboxRepo.cancel([item.message.clientId])),
+                            ),
+                          ],
                         ),
                         onTap: item.message.contactId != null
                             ? () => _openPerson(item.message.contactId!)

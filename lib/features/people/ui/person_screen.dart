@@ -16,6 +16,7 @@ import '../../../core/widgets/widgets.dart';
 import '../../capture/data/capture_service.dart';
 import '../../capture/ui/add_sheet.dart';
 import '../../capture/ui/after_call_sheet.dart';
+import '../../messages/ui/single_message_sheet.dart';
 import '../../payments/data/payments_repository.dart';
 import 'add_edit_person_sheet.dart';
 import 'cadence_picker_sheet.dart';
@@ -151,12 +152,13 @@ class _PersonScreenState extends ConsumerState<PersonScreen> {
   Future<void> _messagePerson(Contact contact, List<ContactPhone> phones, {String? body}) async {
     final number = _bestNumber(contact, phones);
     if (number.trim().isEmpty) return;
-    final uri = Uri(
-      scheme: 'sms',
-      path: number.trim(),
-      queryParameters: (body != null && body.isNotEmpty) ? {'body': body} : null,
+    await showSingleMessageSheet(
+      context,
+      contact: contact,
+      address: number.trim(),
+      initialBody: body,
+      onLaunchUri: widget.onLaunchUri,
     );
-    await _launch(uri);
   }
 
   Future<void> _whatsappPerson(Contact contact, List<ContactPhone> phones) async {

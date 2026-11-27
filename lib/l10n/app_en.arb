@@ -544,5 +544,60 @@
       }
     }
   },
-  "notifPermissionRationale": "Allow notifications so PocketCRM can remind you about follow-ups and scheduled messages."
+  "notifPermissionRationale": "Allow notifications so PocketCRM can remind you about follow-ups and scheduled messages.",
+
+  "messagePersonTitle": "Message {name}",
+  "@messagePersonTitle": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "messageFieldHint": "Write a message",
+  "smsCounterLabel": "{units} / {limit} · {segments} SMS",
+  "@smsCounterLabel": {
+    "placeholders": {
+      "units": {
+        "type": "int"
+      },
+      "limit": {
+        "type": "int"
+      },
+      "segments": {
+        "type": "int"
+      }
+    }
+  },
+  "sendNowOption": "Send now",
+  "scheduleOption": "Schedule",
+  "sendNowAction": "Send now",
+  "scheduleMessageAction": "Schedule",
+  "openInSmsAppAction": "Open in your SMS app",
+  "fromSimLabel": "From",
+  "mayBeMinutesLateNotice": "Exact alarms are off, so this message may go out a few minutes late.",
+  "statusMissed": "Missed",
+  "missedMessageTo": "Missed message to {name}",
+  "@missedMessageTo": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "smsErrorNoService": "No service",
+  "smsErrorRadioOff": "Airplane mode or radio off",
+  "smsErrorLimitReached": "Sending limit reached",
+  "smsErrorNotAllowed": "Not allowed by the network",
+  "smsErrorGeneric": "Not sent",
+  "smsErrorUnknown": "Unknown error ({code})",
+  "@smsErrorUnknown": {
+    "placeholders": {
+      "code": {
+        "type": "int"
+      }
+    }
+  },
+  "messageScheduledSnack": "Message scheduled",
+  "messageQueuedSnack": "Sending message"
 }

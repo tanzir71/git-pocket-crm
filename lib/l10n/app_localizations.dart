@@ -1690,6 +1690,126 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Allow notifications so PocketCRM can remind you about follow-ups and scheduled messages.'**
   String get notifPermissionRationale;
+
+  /// No description provided for @messagePersonTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Message {name}'**
+  String messagePersonTitle(String name);
+
+  /// No description provided for @messageFieldHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Write a message'**
+  String get messageFieldHint;
+
+  /// No description provided for @smsCounterLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'{units} / {limit} · {segments} SMS'**
+  String smsCounterLabel(int units, int limit, int segments);
+
+  /// No description provided for @sendNowOption.
+  ///
+  /// In en, this message translates to:
+  /// **'Send now'**
+  String get sendNowOption;
+
+  /// No description provided for @scheduleOption.
+  ///
+  /// In en, this message translates to:
+  /// **'Schedule'**
+  String get scheduleOption;
+
+  /// No description provided for @sendNowAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Send now'**
+  String get sendNowAction;
+
+  /// No description provided for @scheduleMessageAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Schedule'**
+  String get scheduleMessageAction;
+
+  /// No description provided for @openInSmsAppAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Open in your SMS app'**
+  String get openInSmsAppAction;
+
+  /// No description provided for @fromSimLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'From'**
+  String get fromSimLabel;
+
+  /// No description provided for @mayBeMinutesLateNotice.
+  ///
+  /// In en, this message translates to:
+  /// **'Exact alarms are off, so this message may go out a few minutes late.'**
+  String get mayBeMinutesLateNotice;
+
+  /// No description provided for @statusMissed.
+  ///
+  /// In en, this message translates to:
+  /// **'Missed'**
+  String get statusMissed;
+
+  /// No description provided for @missedMessageTo.
+  ///
+  /// In en, this message translates to:
+  /// **'Missed message to {name}'**
+  String missedMessageTo(String name);
+
+  /// No description provided for @smsErrorNoService.
+  ///
+  /// In en, this message translates to:
+  /// **'No service'**
+  String get smsErrorNoService;
+
+  /// No description provided for @smsErrorRadioOff.
+  ///
+  /// In en, this message translates to:
+  /// **'Airplane mode or radio off'**
+  String get smsErrorRadioOff;
+
+  /// No description provided for @smsErrorLimitReached.
+  ///
+  /// In en, this message translates to:
+  /// **'Sending limit reached'**
+  String get smsErrorLimitReached;
+
+  /// No description provided for @smsErrorNotAllowed.
+  ///
+  /// In en, this message translates to:
+  /// **'Not allowed by the network'**
+  String get smsErrorNotAllowed;
+
+  /// No description provided for @smsErrorGeneric.
+  ///
+  /// In en, this message translates to:
+  /// **'Not sent'**
+  String get smsErrorGeneric;
+
+  /// No description provided for @smsErrorUnknown.
+  ///
+  /// In en, this message translates to:
+  /// **'Unknown error ({code})'**
+  String smsErrorUnknown(int code);
+
+  /// No description provided for @messageScheduledSnack.
+  ///
+  /// In en, this message translates to:
+  /// **'Message scheduled'**
+  String get messageScheduledSnack;
+
+  /// No description provided for @messageQueuedSnack.
+  ///
+  /// In en, this message translates to:
+  /// **'Sending message'**
+  String get messageQueuedSnack;
 }
 
 class _AppLocalizationsDelegate

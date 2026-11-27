@@ -817,6 +817,61 @@ class CrmQueries {
     return true;
   }
 
+  /// Returns all locally-queued outbox messages joined with their recipient name.
+  Future<List<OutboxWithPersonRow>> getQueuedOutboxWithPerson() async {
+    final rows = await _db.customSelect(
+      '''
+      SELECT o.*, COALESCE(c.display_name, o.address) AS person_name
+      FROM outbox_messages o
+      LEFT JOIN contacts c ON c.id = o.contact_id
+      WHERE o.status = 'queued'
+      ORDER BY o.due_at ASC
+      ''',
+    ).get();
+    return rows
+        .map(
+          (r) => OutboxWithPersonRow(
+            message: _db.outboxMessages.map(r.data),
+            personName: r.read<String>('person_name'),
+          ),
+        )
+        .toList();
+  }
+
+  /// Sync deduplication (Spec 09 step 4): returns candidate outbox messages with
+  /// exact body match sent/due within 2 minutes of [smsTimestampMs].
+  Future<List<OutboxMessage>> findOutboxCandidatesForSync({
+    required String body,
+    required int smsTimestampMs,
+    int windowMs = 120000,
+  }) async {
+    final rows = await _db.customSelect(
+      '''
+      SELECT *
+      FROM outbox_messages
+      WHERE status IN ('sent', 'delivered', 'sending')
+        AND body = ?
+        AND ABS(COALESCE(sent_at, due_at) - ?) <= ?
+      ORDER BY ABS(COALESCE(sent_at, due_at) - ?) ASC
+      ''',
+      variables: [
+        Variable<String>(body),
+        Variable<int>(smsTimestampMs),
+        Variable<int>(windowMs),
+        Variable<int>(smsTimestampMs),
+      ],
+    ).get();
+    return rows.map((r) => _db.outboxMessages.map(r.data)).toList();
+  }
+
+  /// Stamps `provider_sms_id` on an outbox message matched during device SMS sync.
+  Future<void> stampOutboxProviderSmsId(String clientId, String providerSmsId) async {
+    await _db.customStatement(
+      'UPDATE outbox_messages SET provider_sms_id = ? WHERE client_id = ?',
+      [providerSmsId, clientId],
+    );
+  }
+
   String _buildFtsQuery(String input) {
     final tokens = input
         .split(RegExp(r'\s+'))
