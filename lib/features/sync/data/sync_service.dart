@@ -8,6 +8,7 @@ import 'package:flutter_contacts/flutter_contacts.dart' as fc;
 import 'package:permission_handler/permission_handler.dart';
 
 import '../../../core/db/app_database.dart';
+import '../../../core/db/crm_queries.dart';
 import '../../../core/native/device_api.g.dart';
 import '../../../core/phone/phone_service.dart';
 import '../../settings/data/settings_repository.dart';
@@ -462,39 +463,9 @@ class SyncService {
     final done = await _syncState.get('native_ids_migrated_v5');
     if (done == '1') return false;
 
+    final queries = CrmQueries(_db);
     await _db.transaction(() async {
-      final legacySms = await _db.customSelect(
-        '''
-        SELECT id, native_message_id
-        FROM timeline
-        WHERE type IN ('sms_incoming', 'sms_outgoing')
-          AND native_message_id IS NOT NULL
-          AND native_message_id NOT LIKE 'sms:%'
-          AND native_message_id NOT LIKE 'call:%'
-          AND native_message_id NOT LIKE 'scheduled_%'
-        ''',
-      ).get();
-
-      for (final row in legacySms) {
-        final id = row.read<int>('id');
-        final oldNativeId = row.read<String>('native_message_id');
-        final isNumeric = RegExp(r'^\d+$').hasMatch(oldNativeId);
-        if (!isNumeric) continue;
-
-        final newNativeId = 'sms:$oldNativeId';
-        // Guard against conflict if sms:<id> already exists
-        final clash = await _db.customSelect(
-          'SELECT id FROM timeline WHERE native_message_id = ?',
-          variables: [Variable<String>(newNativeId)],
-        ).get();
-        if (clash.isEmpty) {
-          await _db.customStatement(
-            'UPDATE timeline SET native_message_id = ? WHERE id = ?',
-            [newNativeId, id],
-          );
-        }
-      }
-
+      await queries.rewriteLegacyBareSmsIds();
       await _syncState.setInt('last_call_id', 0);
       await _syncState.setInt('last_sms_id', 0);
       await _syncState.set('native_ids_migrated_v5', '1');
@@ -712,25 +683,14 @@ class SyncService {
           final nativeId = 'call:${rec.id}';
 
           if (dedupLegacyNullCalls) {
-            final existingLegacy = await _db.customSelect(
-              '''
-              SELECT id FROM timeline
-              WHERE contact_id = ? AND type = ? AND timestamp = ? AND native_message_id IS NULL
-              LIMIT 1
-              ''',
-              variables: [
-                Variable<int>(contactId),
-                Variable<String>(callType),
-                Variable<int>(rec.dateMs),
-              ],
-            ).get();
-
-            if (existingLegacy.isNotEmpty) {
-              final existingId = existingLegacy.first.read<int>('id');
-              await _db.customStatement(
-                'UPDATE timeline SET native_message_id = ?, duration_seconds = COALESCE(duration_seconds, ?), source = ? WHERE id = ?',
-                [nativeId, rec.durationSeconds, 'device', existingId],
-              );
+            final stamped = await CrmQueries(_db).stampLegacyCallIfPresent(
+              contactId: contactId,
+              type: callType,
+              timestampMs: rec.dateMs,
+              nativeId: nativeId,
+              durationSeconds: rec.durationSeconds,
+            );
+            if (stamped) {
               touchedContacts.add(contactId);
               continue;
             }
@@ -837,26 +797,8 @@ class SyncService {
     return totalInserted;
   }
 
-  Future<void> _updateLastInteractionBatch(Set<int> contactIds) async {
-    for (final cid in contactIds) {
-      await _db.customStatement(
-        '''
-        UPDATE contacts
-        SET last_interaction_at = (
-          SELECT MAX(t.timestamp)
-          FROM timeline t
-          WHERE t.contact_id = ?
-            AND COALESCE(t.hidden, 0) = 0
-            AND (
-              (t.type IN ('call_incoming', 'call_outgoing') AND COALESCE(t.duration_seconds, 0) > 0)
-              OR t.type IN ('sms_incoming', 'sms_outgoing', 'visit')
-            )
-        )
-        WHERE id = ?
-        ''',
-        [cid, cid],
-      );
-    }
+  Future<void> _updateLastInteractionBatch(Set<int> contactIds) {
+    return CrmQueries(_db).recomputeLastInteractions(contactIds);
   }
 
   Future<void> startObserving(void Function(String kind) onChange) async {

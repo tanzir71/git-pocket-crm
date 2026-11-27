@@ -41,4 +41,11 @@ Record of automated test runs and Android emulator verification runs (date, imag
 - **Command:** `adb -s emulator-5554 install -r build/app/outputs/flutter-apk/app-debug.apk`, granted `READ_CONTACTS`, `READ_CALL_LOG`, `READ_SMS`, `READ_PHONE_STATE`, inserted contact "Amara Okafor" (`+14155550100`), injected 3 SMS (`adb emu sms send`) and 2 calls (`adb emu gsm call/accept/cancel`), inspected `databases/pocket_crm.db`.
 - **Outcome:** PASSED. Full first sync (cold debug start, 1 contact + 3 SMS + 2 calls) completed cleanly (`contacts`: `Amara Okafor`, `contact_phones`: `+14155550100`, `timeline`: 2 calls `call:1` 6s incoming, `call:2` 0s missed, 3 SMS `sms:1..3`, with `"Please send the invoice and the bill reference"` kept and `"I will pay Tk 500 tomorrow"` stamped `suggested_amount=500.0, suggestion_state='open'` with zero payment rows; cold debug activity launch 11.3s + sync). Live incoming SMS while app open auto-synced via `ContentObserver` (2s debounce + incremental sync; verified `sms:4` in `timeline` within ~3-4s on device, 8.2s including polling overhead). Also verified that keeping `ContentObserver` active across `AppLifecycleState.paused` (only stopping on `detached`) ensures incoming calls (which briefly pause the activity under Android's InCallUI) trigger CallLog sync immediately.
 
+## 2026-11-27 — Spec 06
+
+- **Environment:** Host Windows 11, Flutter 3.50.1, Dart 3.14.0
+- **Command:** `bash tool/verify.sh && flutter test --dart-define=V2=true`
+- **Outcome:** PASSED. `flutter analyze` reported 0 issues; all 54 tests passed in both `V2=false` and `V2=true` modes (including zero SQL in `lib/features/`, partial-phone search, `Owes me` exact positive-balance filter, overdue danger meta, 5,000-row virtualization build-counter test, transactional duplicate merge, Person call note + visit place/photos + suggested-payment confirmation -> balance row, non-mobile WhatsApp hiding, and 4 committed Figma-sized 412x917 light/dark goldens for People and Person visually verified against frames `7:210` and `9:261`); `assembleDebug`, `check_manifest.sh`, and `check_landing.sh` passed.
+
+
 

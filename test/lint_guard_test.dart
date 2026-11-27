@@ -44,4 +44,34 @@ void main() {
       reason: 'Design system lint guard violations found:\n${violations.join('\n')}',
     );
   });
+
+  test('lint guard: no file in lib/features contains SQL', () {
+    final dir = Directory('lib/features');
+    if (!dir.existsSync()) return;
+
+    final sqlPatterns = <(String name, RegExp pattern)>[
+      ('customSelect/customStatement/customUpdate', RegExp(r'\bcustom(Select|Statement|Update)\b')),
+      ('raw SQL statement', RegExp(r'\b(SELECT\s+.+\s+FROM|INSERT\s+INTO|UPDATE\s+\w+\s+SET|DELETE\s+FROM)\b')),
+    ];
+
+    final violations = <String>[];
+    for (final entity in dir.listSync(recursive: true)) {
+      if (entity is! File || !entity.path.endsWith('.dart')) continue;
+      final lines = entity.readAsLinesSync();
+      for (var i = 0; i < lines.length; i++) {
+        final line = lines[i];
+        for (final (name, pattern) in sqlPatterns) {
+          if (pattern.hasMatch(line)) {
+            violations.add('${entity.path}:${i + 1}: $name -> ${line.trim()}');
+          }
+        }
+      }
+    }
+
+    expect(
+      violations,
+      isEmpty,
+      reason: 'SQL found in lib/features:\n${violations.join('\n')}',
+    );
+  });
 }

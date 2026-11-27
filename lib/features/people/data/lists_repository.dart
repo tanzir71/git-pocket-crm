@@ -1,6 +1,7 @@
 import 'package:drift/drift.dart';
 
 import '../../../core/db/app_database.dart';
+import '../../../core/db/crm_queries.dart';
 
 class ContactListSummary {
   const ContactListSummary({
@@ -13,82 +14,33 @@ class ContactListSummary {
 }
 
 class ListsRepository {
-  ListsRepository(this._db);
+  ListsRepository(this._db) : _queries = CrmQueries(_db);
 
   final AppDatabase _db;
+  final CrmQueries _queries;
 
   Stream<List<ContactListSummary>> watchLists() {
-    return _db
-        .customSelect(
-          '''
-          SELECT cl.*, COUNT(clm.contact_id) AS member_count
-          FROM contact_lists cl
-          LEFT JOIN contact_list_members clm ON cl.id = clm.list_id
-          GROUP BY cl.id
-          ORDER BY cl.name ASC
-          ''',
-          readsFrom: {_db.contactLists, _db.contactListMembers},
-        )
-        .watch()
-        .map(
+    return _queries.watchListSummaries().map(
           (rows) => rows
               .map(
                 (r) => ContactListSummary(
-                  list: _db.contactLists.map(r.data),
-                  memberCount: r.read<int>('member_count'),
+                  list: r.list,
+                  memberCount: r.memberCount,
                 ),
               )
               .toList(),
         );
   }
 
-  Stream<List<Contact>> watchMembers(int listId) {
-    return _db
-        .customSelect(
-          '''
-          SELECT c.*
-          FROM contacts c
-          JOIN contact_list_members clm ON clm.contact_id = c.id
-          WHERE clm.list_id = ?
-          ORDER BY c.display_name ASC
-          ''',
-          variables: [Variable<int>(listId)],
-          readsFrom: {_db.contacts, _db.contactListMembers},
-        )
-        .watch()
-        .map((rows) => rows.map((r) => _db.contacts.map(r.data)).toList());
-  }
+  Stream<List<Contact>> watchMembers(int listId) => _queries.watchListMembers(listId);
 
-  Future<List<Contact>> getMembers(int listId) async {
-    final rows = await _db.customSelect(
-      '''
-      SELECT c.*
-      FROM contacts c
-      JOIN contact_list_members clm ON clm.contact_id = c.id
-      WHERE clm.list_id = ?
-      ORDER BY c.display_name ASC
-      ''',
-      variables: [Variable<int>(listId)],
-    ).get();
-    return rows.map((r) => _db.contacts.map(r.data)).toList();
-  }
+  Future<List<Contact>> getMembers(int listId) => _queries.getListMembers(listId);
 
-  Stream<List<ContactList>> watchListsForPerson(int contactId) {
-    return _db
-        .customSelect(
-          '''
-          SELECT cl.*
-          FROM contact_lists cl
-          JOIN contact_list_members clm ON clm.list_id = cl.id
-          WHERE clm.contact_id = ?
-          ORDER BY cl.name ASC
-          ''',
-          variables: [Variable<int>(contactId)],
-          readsFrom: {_db.contactLists, _db.contactListMembers},
-        )
-        .watch()
-        .map((rows) => rows.map((r) => _db.contactLists.map(r.data)).toList());
-  }
+  Stream<List<ContactList>> watchListsForPerson(int contactId) =>
+      _queries.watchListsForContact(contactId);
+
+  Future<int> countMembersWithoutOwnCadence(int listId) =>
+      _queries.countListMembersWithoutOwnCadence(listId);
 
   Future<int> createList(String name, {int? cadenceDays}) {
     return _db.into(_db.contactLists).insert(
@@ -126,9 +78,40 @@ class ListsRepository {
         );
   }
 
+  Future<void> addMembers(int listId, Iterable<int> contactIds) async {
+    await _db.transaction(() async {
+      for (final cid in contactIds) {
+        await _db.into(_db.contactListMembers).insert(
+              ContactListMembersCompanion.insert(
+                listId: Value(listId),
+                contactId: Value(cid),
+              ),
+              mode: InsertMode.insertOrIgnore,
+            );
+      }
+    });
+  }
+
   Future<void> removeMember(int listId, int contactId) async {
     await (_db.delete(_db.contactListMembers)
           ..where((t) => t.listId.equals(listId) & t.contactId.equals(contactId)))
         .go();
+  }
+
+  Future<void> setListsForPerson(int contactId, Set<int> listIds) async {
+    await _db.transaction(() async {
+      await (_db.delete(_db.contactListMembers)
+            ..where((t) => t.contactId.equals(contactId)))
+          .go();
+      for (final listId in listIds) {
+        await _db.into(_db.contactListMembers).insert(
+              ContactListMembersCompanion.insert(
+                listId: Value(listId),
+                contactId: Value(contactId),
+              ),
+              mode: InsertMode.insertOrIgnore,
+            );
+      }
+    });
   }
 }

@@ -198,4 +198,29 @@ class PaymentsRepository {
       const TimelineEntriesCompanion(suggestionState: Value('dismissed')),
     );
   }
+
+  /// Confirms a legacy `payment_status = 'unconfirmed'` row by updating its status in place.
+  Future<void> confirmLegacyUnconfirmedPayment({
+    required int timelineId,
+    required String paymentStatus,
+    String? currency,
+  }) async {
+    await (_db.update(_db.timelineEntries)..where((t) => t.id.equals(timelineId))).write(
+      TimelineEntriesCompanion(
+        paymentStatus: Value(paymentStatus),
+        currency: currency != null ? Value(currency) : const Value.absent(),
+        editedAt: Value(DateTime.now().millisecondsSinceEpoch),
+      ),
+    );
+  }
+
+  /// Dismisses a legacy `payment_status = 'unconfirmed'` row by hiding it.
+  Future<void> dismissLegacyUnconfirmedPayment(int timelineId) async {
+    await (_db.update(_db.timelineEntries)..where((t) => t.id.equals(timelineId))).write(
+      const TimelineEntriesCompanion(
+        hidden: Value(1),
+        suggestionState: Value('dismissed'),
+      ),
+    );
+  }
 }

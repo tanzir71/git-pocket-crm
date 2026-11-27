@@ -91,7 +91,11 @@ final goRouterProvider = Provider<GoRouter>((ref) {
             routes: [
               GoRoute(
                 path: '/people',
-                builder: (context, state) => const PeopleScreen(),
+                builder: (context, state) => PeopleScreen(
+                  focusSearch: state.uri.queryParameters['focusSearch'] == '1',
+                  initialSelectionForCadence:
+                      state.uri.queryParameters['selectForCadence'] == '1',
+                ),
               ),
             ],
           ),

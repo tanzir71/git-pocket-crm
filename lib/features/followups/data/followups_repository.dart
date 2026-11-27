@@ -1,6 +1,7 @@
 import 'package:drift/drift.dart';
 
 import '../../../core/db/app_database.dart';
+import '../../../core/db/crm_queries.dart';
 
 class FollowUpWithPerson {
   const FollowUpWithPerson({
@@ -13,9 +14,10 @@ class FollowUpWithPerson {
 }
 
 class FollowUpsRepository {
-  FollowUpsRepository(this._db);
+  FollowUpsRepository(this._db) : _queries = CrmQueries(_db);
 
   final AppDatabase _db;
+  final CrmQueries _queries;
 
   Stream<List<Task>> watchOpenForPerson(int contactId) {
     return (_db.select(_db.tasks)
@@ -25,52 +27,17 @@ class FollowUpsRepository {
   }
 
   Stream<List<FollowUpWithPerson>> watchDueAndOverdue(int endOfTodayMs) {
-    return _db
-        .customSelect(
-          '''
-          SELECT t.*, COALESCE(c.display_name, '') AS person_name
-          FROM tasks t
-          LEFT JOIN contacts c ON c.id = t.contact_id
-          WHERE t.is_completed = 0 AND t.due_date <= ?
-          ORDER BY t.due_date ASC, t.id ASC
-          ''',
-          variables: [Variable<int>(endOfTodayMs)],
-          readsFrom: {_db.tasks, _db.contacts},
-        )
-        .watch()
-        .map(
+    return _queries.watchDueAndOverdueTasks(endOfTodayMs).map(
           (rows) => rows
-              .map(
-                (r) => FollowUpWithPerson(
-                  task: _db.tasks.map(r.data),
-                  personName: r.read<String>('person_name'),
-                ),
-              )
+              .map((r) => FollowUpWithPerson(task: r.task, personName: r.personName))
               .toList(),
         );
   }
 
   Stream<List<FollowUpWithPerson>> watchAllOpen() {
-    return _db
-        .customSelect(
-          '''
-          SELECT t.*, COALESCE(c.display_name, '') AS person_name
-          FROM tasks t
-          LEFT JOIN contacts c ON c.id = t.contact_id
-          WHERE t.is_completed = 0
-          ORDER BY t.due_date ASC, t.id ASC
-          ''',
-          readsFrom: {_db.tasks, _db.contacts},
-        )
-        .watch()
-        .map(
+    return _queries.watchAllOpenTasks().map(
           (rows) => rows
-              .map(
-                (r) => FollowUpWithPerson(
-                  task: _db.tasks.map(r.data),
-                  personName: r.read<String>('person_name'),
-                ),
-              )
+              .map((r) => FollowUpWithPerson(task: r.task, personName: r.personName))
               .toList(),
         );
   }

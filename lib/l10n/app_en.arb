@@ -20,5 +20,384 @@
   "sentMessagesTitle": "Sent messages",
   "templateTitle": "Template",
   "continueLabel": "Continue",
-  "doThisLater": "Do this later"
+  "doThisLater": "Do this later",
+
+  "peopleTitle": "People",
+  "peopleCount": "{count, plural, =0{No people} =1{1 person} other{{count} people}}",
+  "@peopleCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "addPersonTooltip": "Add person",
+  "searchPeopleHint": "Search people, companies, numbers, notes",
+  "clearSearchTooltip": "Clear search",
+  "filterAll": "All",
+  "filterStarred": "Starred",
+  "filterDueToReconnect": "Due to reconnect",
+  "filterOwesMe": "Owes me",
+  "newListChip": "New list",
+  "sortRecentlyContacted": "Recently contacted",
+  "sortName": "Name",
+  "sortLongestSinceContact": "Longest since contact",
+  "selectionCount": "{count} selected",
+  "@selectionCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "closeSelectionTooltip": "Exit selection",
+  "actionAddToList": "Add to list",
+  "actionSetReconnect": "Set reconnect",
+  "actionMessage": "Message",
+  "actionStar": "Star",
+  "mergeSuggestionTitle": "{firstName} and {secondName} share a number",
+  "@mergeSuggestionTitle": {
+    "placeholders": {
+      "firstName": {
+        "type": "String"
+      },
+      "secondName": {
+        "type": "String"
+      }
+    }
+  },
+  "mergeAction": "Merge",
+  "keepSeparateAction": "Keep separate",
+  "noMatchesTitle": "No one matches '{query}'",
+  "@noMatchesTitle": {
+    "placeholders": {
+      "query": {
+        "type": "String"
+      }
+    }
+  },
+  "addQueryAsPerson": "Add '{query}' as a new person",
+  "@addQueryAsPerson": {
+    "placeholders": {
+      "query": {
+        "type": "String"
+      }
+    }
+  },
+  "noPeopleYetTitle": "No people yet",
+  "noPeopleYetSubtitle": "People from your phone and people you add will appear here.",
+  "noPeopleInFilter": "No people in this view",
+  "followUpOverdue": "follow-up overdue",
+  "noContactYet": "no contact yet",
+  "calledToday": "called today",
+  "calledYesterday": "called yesterday",
+  "calledAgo": "called {age} ago",
+  "@calledAgo": {
+    "placeholders": {
+      "age": {
+        "type": "String"
+      }
+    }
+  },
+  "messagedToday": "messaged today",
+  "messagedYesterday": "messaged yesterday",
+  "messagedAgo": "messaged {age} ago",
+  "@messagedAgo": {
+    "placeholders": {
+      "age": {
+        "type": "String"
+      }
+    }
+  },
+  "visitedToday": "visited today",
+  "visitedYesterday": "visited yesterday",
+  "visitedAgo": "visited {age} ago",
+  "@visitedAgo": {
+    "placeholders": {
+      "age": {
+        "type": "String"
+      }
+    }
+  },
+  "lastSpokeToday": "last spoke today",
+  "lastSpokeYesterday": "last spoke yesterday",
+  "lastSpokeAgo": "last spoke {age} ago",
+  "@lastSpokeAgo": {
+    "placeholders": {
+      "age": {
+        "type": "String"
+      }
+    }
+  },
+  "ageNow": "Now",
+
+  "listRename": "Rename",
+  "listSetReconnect": "Set how often to reconnect",
+  "listMessage": "Message this list",
+  "listDelete": "Delete list",
+  "listNameLabel": "List name",
+  "createListTitle": "New list",
+  "renameListTitle": "Rename list",
+  "deleteListConfirm": "Delete '{name}'? People in this list will not be deleted.",
+  "@deleteListConfirm": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "manageListsTitle": "Lists",
+
+  "cadencePickerTitle": "How often to reconnect",
+  "cadenceWeekly": "Every week",
+  "cadenceBiweekly": "Every 2 weeks",
+  "cadenceMonthly": "Every month",
+  "cadenceQuarterly": "Every 3 months",
+  "cadenceHalfYearly": "Every 6 months",
+  "cadenceYearly": "Every year",
+  "cadenceNever": "Never",
+  "cadenceEveryNDays": "Every {days} days",
+  "@cadenceEveryNDays": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "reconnectEvery": "Reconnect {cadence}",
+  "@reconnectEvery": {
+    "placeholders": {
+      "cadence": {
+        "type": "String"
+      }
+    }
+  },
+  "setReconnectChip": "Set reconnect",
+  "cadenceListHint": "Applies to the {count, plural, =1{1 person} other{{count} people}} in {listName} who have no setting of their own.",
+  "@cadenceListHint": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "listName": {
+        "type": "String"
+      }
+    }
+  },
+
+  "addPersonTitle": "Add person",
+  "editPersonTitle": "Edit details",
+  "fieldName": "Name",
+  "fieldPhone": "Phone number",
+  "fieldAddPhone": "Add another number",
+  "fieldPrimary": "Primary",
+  "fieldCompany": "Company",
+  "fieldRole": "Role",
+  "fieldCity": "City",
+  "fieldEmail": "Email",
+  "fieldBirthday": "Birthday (YYYY-MM-DD)",
+  "fieldLinkedin": "LinkedIn",
+  "fieldFacebook": "Facebook",
+  "fieldAbout": "About",
+  "phoneIncompleteWarning": "This number does not look complete",
+  "duplicatePhoneNotice": "This number already belongs to {name}",
+  "@duplicatePhoneNotice": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "openPersonAction": "Open {name}",
+  "@openPersonAction": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "saveAction": "Save",
+  "cancelAction": "Cancel",
+  "deleteAction": "Delete",
+  "undoAction": "Undo",
+  "doneAction": "Done",
+  "okAction": "OK",
+
+  "starTooltip": "Star",
+  "unstarTooltip": "Remove star",
+  "moreTooltip": "More",
+  "backTooltip": "Back",
+  "doNotMessageLabel": "Do not message",
+  "askedNotToBeMessaged": "Asked not to be messaged",
+  "deletePersonMenu": "Delete person",
+  "deletePersonTitle": "Delete {name}?",
+  "@deletePersonTitle": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "deletePersonConfirm": "{count, plural, =0{This person will be removed from PocketCRM.} =1{This person and 1 history entry will be removed.} other{This person and {count} history entries will be removed.}}",
+  "@deletePersonConfirm": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "actionCall": "Call",
+  "actionWhatsApp": "WhatsApp",
+  "actionNote": "Note",
+  "pickNumberTitle": "Choose a number",
+  "sectionNext": "Next",
+  "sectionHistory": "History",
+  "owesYouAmount": "Owes you {amount}",
+  "@owesYouAmount": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "youOweAmount": "You owe {amount}",
+  "@youOweAmount": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "sendReminderAction": "Send a reminder",
+  "historyFilterTooltip": "Filter history",
+  "historyFilterAll": "All",
+  "historyFilterCalls": "Calls",
+  "historyFilterMessages": "Messages",
+  "historyFilterNotes": "Notes",
+  "historyFilterVisits": "Visits",
+  "historyFilterPayments": "Payments",
+  "historyFilterFiles": "Files",
+  "historyEmpty": "No history yet",
+  "historyEmptyFiltered": "No entries in this filter",
+  "loadMoreAction": "Show more",
+  "callOutgoing": "Outgoing call",
+  "callIncoming": "Incoming call",
+  "callMissed": "Missed call",
+  "messageReceived": "Message received",
+  "messageSent": "Message sent",
+  "entryNote": "Note",
+  "entryVisit": "Visit",
+  "entryVisitPlace": "Visit · {place}",
+  "@entryVisitPlace": {
+    "placeholders": {
+      "place": {
+        "type": "String"
+      }
+    }
+  },
+  "paymentReceivedTitle": "Payment received · {amount}",
+  "@paymentReceivedTitle": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "paymentPaidTitle": "You paid · {amount}",
+  "@paymentPaidTitle": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "paymentOwedToMeTitle": "Owes you · {amount}",
+  "@paymentOwedToMeTitle": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "paymentIOweTitle": "You owe · {amount}",
+  "@paymentIOweTitle": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "suggestedPaymentTitle": "Looks like a payment · {amount}",
+  "@suggestedPaymentTitle": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "confirmAction": "Confirm",
+  "dismissAction": "Dismiss",
+  "confirmPaymentTitle": "Confirm payment",
+  "paymentStatusReceived": "Received",
+  "paymentStatusPaid": "Paid",
+  "paymentStatusOwesMe": "Owes me",
+  "paymentStatusIOwe": "I owe",
+  "deleteEntryAction": "Delete entry",
+  "hideFromHistoryAction": "Hide from history",
+  "addFollowUpAction": "Add follow-up",
+  "entryHiddenMessage": "Hidden from history",
+  "entryDeletedMessage": "Entry deleted",
+  "followUpCompletedMessage": "Follow-up completed",
+  "photoCount": "{count, plural, =1{1 photo} other{{count} photos}}",
+  "@photoCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "statusScheduled": "Scheduled",
+  "statusDelivered": "Delivered",
+  "statusNotSent": "Not sent",
+  "statusSent": "Sent",
+  "quickNoteTitle": "Add note",
+  "quickNoteHint": "Write a note",
+  "saveNoteAction": "Save note",
+  "quickFollowUpTitle": "Add follow-up",
+  "followUpTitleHint": "What needs to happen?",
+  "dueTomorrow": "Tomorrow",
+  "dueInThreeDays": "In 3 days",
+  "dueNextWeek": "Next week",
+  "saveFollowUpAction": "Save follow-up",
+  "personPickerTitle": "Choose a person",
+  "personPickerRecent": "Recent",
+  "personPickerAll": "All people",
+  "personPickerLists": "Lists",
+  "personNotFound": "Person not found",
+  "durationMinutes": "{minutes} min",
+  "@durationMinutes": {
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "durationSeconds": "{seconds} s",
+  "@durationSeconds": {
+    "placeholders": {
+      "seconds": {
+        "type": "int"
+      }
+    }
+  },
+  "todayLabel": "Today",
+  "yesterdayLabel": "Yesterday",
+  "overdueByDays": "{days, plural, =1{overdue by 1 day} other{overdue by {days} days}}",
+  "@overdueByDays": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  }
 }

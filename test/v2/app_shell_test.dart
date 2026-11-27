@@ -35,7 +35,7 @@ void main() {
     // Tap People destination
     await tester.tap(find.text('People'));
     await tester.pumpAndSettle();
-    expect(find.text('People will be built in spec 06.'), findsOneWidget);
+    expect(find.text('Amara Okafor'), findsOneWidget);
     expect(find.byType(CircularProgressIndicator), findsNothing);
 
     // Tap Messages destination

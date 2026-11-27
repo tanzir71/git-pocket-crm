@@ -119,3 +119,30 @@ final localeOverrideProvider = StreamProvider<Locale?>((ref) {
     return Locale(value);
   });
 });
+
+/// Watches the saved currency ISO code (defaults to 'USD').
+final currencyCodeProvider = StreamProvider<String>((ref) {
+  return ref.watch(settingsRepositoryProvider).watch('currency_code').map((value) {
+    if (value == null || value.trim().isEmpty) return 'USD';
+    return value.trim().toUpperCase();
+  });
+});
+
+/// Watches the saved default phone region ISO code (defaults to 'US').
+final phoneRegionProvider = StreamProvider<String>((ref) {
+  return ref.watch(settingsRepositoryProvider).watch('phone_region').map((value) {
+    if (value == null || value.trim().isEmpty) return 'US';
+    return value.trim().toUpperCase();
+  });
+});
+
+/// Watches the persisted People sort order.
+final peopleSortProvider = StreamProvider<PeopleSort>((ref) {
+  return ref.watch(settingsRepositoryProvider).watch('people_sort').map((value) {
+    return switch (value) {
+      'name' => PeopleSort.name,
+      'longest' => PeopleSort.longest,
+      _ => PeopleSort.recent,
+    };
+  });
+});
