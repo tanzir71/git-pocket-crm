@@ -1,13 +1,17 @@
 package com.pocketcrm.pocket_crm.outbox
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.app.AlarmManager
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Build
 import android.os.PowerManager
+import android.provider.Settings
 import android.telephony.SubscriptionManager
+import android.telephony.TelephonyManager
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
@@ -163,6 +167,106 @@ class OutboxApiImpl(
         } catch (_: Exception) {
             // Safe no-op if no share target is available.
         }
+    }
+
+    @SuppressLint("HardwareIds")
+    override fun setupInfo(): SetupPlatformInfo {
+        val installer = try {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                context.packageManager.getInstallSourceInfo(context.packageName).installingPackageName
+            } else {
+                @Suppress("DEPRECATION")
+                context.packageManager.getInstallerPackageName(context.packageName)
+            }
+        } catch (_: Exception) {
+            null
+        }
+        val knownStores = setOf(
+            "com.android.vending",
+            "com.amazon.venezia",
+            "com.sec.android.app.samsungapps",
+            "com.huawei.appmarket",
+        )
+        val installedFromStore = installer != null && knownStores.contains(installer)
+
+        var ownNumber: String? = null
+        if (ContextCompat.checkSelfPermission(context, Manifest.permission.READ_PHONE_STATE)
+            == PackageManager.PERMISSION_GRANTED
+        ) {
+            try {
+                val subMgr = context.getSystemService(Context.TELEPHONY_SUBSCRIPTION_SERVICE)
+                    as? SubscriptionManager
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU && subMgr != null) {
+                    val defSubId = SubscriptionManager.getDefaultSmsSubscriptionId()
+                    if (defSubId != SubscriptionManager.INVALID_SUBSCRIPTION_ID) {
+                        ownNumber = subMgr.getPhoneNumber(defSubId).takeIf { it.isNotBlank() }
+                    }
+                }
+                if (ownNumber.isNullOrBlank()) {
+                    val tm = context.getSystemService(Context.TELEPHONY_SERVICE) as? TelephonyManager
+                    @Suppress("DEPRECATION")
+                    ownNumber = tm?.line1Number?.takeIf { it.isNotBlank() }
+                }
+            } catch (_: Exception) {
+                ownNumber = null
+            }
+        }
+
+        return SetupPlatformInfo(
+            sdkInt = Build.VERSION.SDK_INT.toLong(),
+            manufacturer = Build.MANUFACTURER ?: "",
+            installedFromStore = installedFromStore,
+            ownPhoneNumber = ownNumber,
+        )
+    }
+
+    override fun openExactAlarmSettings() {
+        val intent = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            Intent(Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM).apply {
+                data = Uri.parse("package:${context.packageName}")
+                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            }
+        } else {
+            Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
+                data = Uri.parse("package:${context.packageName}")
+                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            }
+        }
+        try {
+            context.startActivity(intent)
+        } catch (_: Exception) {
+            openAppDetailsSettings()
+        }
+    }
+
+    @SuppressLint("BatteryLife")
+    override fun requestIgnoreBatteryOptimisations() {
+        val intent = Intent(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS).apply {
+            data = Uri.parse("package:${context.packageName}")
+            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        }
+        try {
+            context.startActivity(intent)
+        } catch (_: Exception) {
+            try {
+                val fallback = Intent(Settings.ACTION_IGNORE_BATTERY_OPTIMIZATION_SETTINGS).apply {
+                    addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                }
+                context.startActivity(fallback)
+            } catch (_: Exception) {
+                openAppDetailsSettings()
+            }
+        }
+    }
+
+    override fun openAppDetailsSettings() {
+        val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
+            data = Uri.parse("package:${context.packageName}")
+            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        }
+        try {
+            context.startActivity(intent)
+        } catch (_: Exception) {}
     }
 
     companion object {

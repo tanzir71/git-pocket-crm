@@ -2428,6 +2428,474 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Done ({count})'**
   String recipientPickerDone(int count);
+
+  /// No description provided for @setupSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'A few permissions let PocketCRM log your calls and send on time, even when the app is closed.'**
+  String get setupSubtitle;
+
+  /// No description provided for @setupRowContactsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Contacts'**
+  String get setupRowContactsTitle;
+
+  /// No description provided for @setupRowContactsSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Shows your people and matches calls to them'**
+  String get setupRowContactsSubtitle;
+
+  /// No description provided for @setupRowCallsSmsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Calls and messages'**
+  String get setupRowCallsSmsTitle;
+
+  /// No description provided for @setupRowCallsSmsSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Builds each person\'s history on this phone'**
+  String get setupRowCallsSmsSubtitle;
+
+  /// No description provided for @setupRowAlarmsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Alarms and reminders'**
+  String get setupRowAlarmsTitle;
+
+  /// No description provided for @setupRowAlarmsSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Sends scheduled messages at the exact time'**
+  String get setupRowAlarmsSubtitle;
+
+  /// No description provided for @setupRowAlarmsFallback.
+  ///
+  /// In en, this message translates to:
+  /// **'Scheduled messages may be a few minutes late'**
+  String get setupRowAlarmsFallback;
+
+  /// No description provided for @setupRowBatteryTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Battery'**
+  String get setupRowBatteryTitle;
+
+  /// No description provided for @setupRowBatterySubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Stops Android pausing sends when the app is closed'**
+  String get setupRowBatterySubtitle;
+
+  /// No description provided for @setupRowNotificationsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Notifications'**
+  String get setupRowNotificationsTitle;
+
+  /// No description provided for @setupRowNotificationsSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Follow-up reminders and send results'**
+  String get setupRowNotificationsSubtitle;
+
+  /// No description provided for @setupAllowedLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Allowed'**
+  String get setupAllowedLabel;
+
+  /// No description provided for @setupAllowAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Allow'**
+  String get setupAllowAction;
+
+  /// No description provided for @setupOpenSettingsAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Open settings'**
+  String get setupOpenSettingsAction;
+
+  /// No description provided for @setupPrivacyNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Everything stays on this phone. PocketCRM has no internet access.'**
+  String get setupPrivacyNote;
+
+  /// No description provided for @setupSyncingContacts.
+  ///
+  /// In en, this message translates to:
+  /// **'Reading your contacts...'**
+  String get setupSyncingContacts;
+
+  /// No description provided for @setupSyncingHistory.
+  ///
+  /// In en, this message translates to:
+  /// **'Reading your call and message history...'**
+  String get setupSyncingHistory;
+
+  /// No description provided for @setupSyncProgressCounts.
+  ///
+  /// In en, this message translates to:
+  /// **'Synced {contacts} people · {calls} calls · {sms} messages'**
+  String setupSyncProgressCounts(int contacts, int calls, int sms);
+
+  /// No description provided for @restrictedSettingsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Allow restricted settings'**
+  String get restrictedSettingsTitle;
+
+  /// No description provided for @restrictedSettingsStep1.
+  ///
+  /// In en, this message translates to:
+  /// **'1. Tap the three dots at the top right.'**
+  String get restrictedSettingsStep1;
+
+  /// No description provided for @restrictedSettingsStep2.
+  ///
+  /// In en, this message translates to:
+  /// **'2. Tap \"Allow restricted settings\" and confirm with your screen lock.'**
+  String get restrictedSettingsStep2;
+
+  /// No description provided for @restrictedSettingsStep3.
+  ///
+  /// In en, this message translates to:
+  /// **'3. Come back here and tap Allow again.'**
+  String get restrictedSettingsStep3;
+
+  /// No description provided for @restrictedSettingsFallback.
+  ///
+  /// In en, this message translates to:
+  /// **'No such option? Open Permissions on that page and allow SMS and Call logs there.'**
+  String get restrictedSettingsFallback;
+
+  /// No description provided for @restrictedSettingsOpenAppInfo.
+  ///
+  /// In en, this message translates to:
+  /// **'Open app info'**
+  String get restrictedSettingsOpenAppInfo;
+
+  /// No description provided for @oemBatteryXiaomi.
+  ///
+  /// In en, this message translates to:
+  /// **'Turn on Autostart and set Battery saver to No restrictions'**
+  String get oemBatteryXiaomi;
+
+  /// No description provided for @oemBatteryOppo.
+  ///
+  /// In en, this message translates to:
+  /// **'Allow background activity and Auto-launch'**
+  String get oemBatteryOppo;
+
+  /// No description provided for @oemBatteryVivo.
+  ///
+  /// In en, this message translates to:
+  /// **'Allow High background power consumption and Autostart'**
+  String get oemBatteryVivo;
+
+  /// No description provided for @oemBatterySamsung.
+  ///
+  /// In en, this message translates to:
+  /// **'Add PocketCRM to Never sleeping apps'**
+  String get oemBatterySamsung;
+
+  /// No description provided for @oemBatteryTecno.
+  ///
+  /// In en, this message translates to:
+  /// **'Allow Auto-start in Phone Master'**
+  String get oemBatteryTecno;
+
+  /// No description provided for @oemBatteryHuawei.
+  ///
+  /// In en, this message translates to:
+  /// **'Set App launch to Manage manually and allow all three switches'**
+  String get oemBatteryHuawei;
+
+  /// No description provided for @reliabilitySectionTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Check reliability'**
+  String get reliabilitySectionTitle;
+
+  /// No description provided for @reliabilitySendTestAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Send a test message'**
+  String get reliabilitySendTestAction;
+
+  /// No description provided for @reliabilityPhoneLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Your phone number'**
+  String get reliabilityPhoneLabel;
+
+  /// No description provided for @reliabilityPhoneHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter your own number'**
+  String get reliabilityPhoneHint;
+
+  /// No description provided for @reliabilityScheduledNotice.
+  ///
+  /// In en, this message translates to:
+  /// **'Close the app and lock your phone. The message should arrive at {time}.'**
+  String reliabilityScheduledNotice(String time);
+
+  /// No description provided for @reliabilityTestMessageBody.
+  ///
+  /// In en, this message translates to:
+  /// **'PocketCRM test, scheduled for {time}'**
+  String reliabilityTestMessageBody(String time);
+
+  /// No description provided for @reliabilityResultOnTime.
+  ///
+  /// In en, this message translates to:
+  /// **'Arrived on time'**
+  String get reliabilityResultOnTime;
+
+  /// No description provided for @reliabilityResultLate.
+  ///
+  /// In en, this message translates to:
+  /// **'Arrived {minutes} minutes late: allow Alarms and reminders, and check the Battery step'**
+  String reliabilityResultLate(int minutes);
+
+  /// No description provided for @reliabilityResultFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Not sent: {reason}'**
+  String reliabilityResultFailed(String reason);
+
+  /// No description provided for @finishSetupBannerTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Finish setup'**
+  String get finishSetupBannerTitle;
+
+  /// No description provided for @finishSetupBannerSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Allow contacts, calls and messages to log history automatically'**
+  String get finishSetupBannerSubtitle;
+
+  /// No description provided for @settingsSectionGeneral.
+  ///
+  /// In en, this message translates to:
+  /// **'General'**
+  String get settingsSectionGeneral;
+
+  /// No description provided for @settingsSectionAfterCalls.
+  ///
+  /// In en, this message translates to:
+  /// **'After calls'**
+  String get settingsSectionAfterCalls;
+
+  /// No description provided for @settingsSectionReminders.
+  ///
+  /// In en, this message translates to:
+  /// **'Reminders'**
+  String get settingsSectionReminders;
+
+  /// No description provided for @settingsSectionMessages.
+  ///
+  /// In en, this message translates to:
+  /// **'Messages'**
+  String get settingsSectionMessages;
+
+  /// No description provided for @settingsSectionData.
+  ///
+  /// In en, this message translates to:
+  /// **'Data'**
+  String get settingsSectionData;
+
+  /// No description provided for @settingsSectionAbout.
+  ///
+  /// In en, this message translates to:
+  /// **'About'**
+  String get settingsSectionAbout;
+
+  /// No description provided for @settingsYourName.
+  ///
+  /// In en, this message translates to:
+  /// **'Your name'**
+  String get settingsYourName;
+
+  /// No description provided for @settingsNotSet.
+  ///
+  /// In en, this message translates to:
+  /// **'Not set'**
+  String get settingsNotSet;
+
+  /// No description provided for @settingsCurrency.
+  ///
+  /// In en, this message translates to:
+  /// **'Currency'**
+  String get settingsCurrency;
+
+  /// No description provided for @settingsPhoneRegion.
+  ///
+  /// In en, this message translates to:
+  /// **'Region for phone numbers'**
+  String get settingsPhoneRegion;
+
+  /// No description provided for @settingsTheme.
+  ///
+  /// In en, this message translates to:
+  /// **'Theme'**
+  String get settingsTheme;
+
+  /// No description provided for @settingsThemeSystem.
+  ///
+  /// In en, this message translates to:
+  /// **'System'**
+  String get settingsThemeSystem;
+
+  /// No description provided for @settingsThemeLight.
+  ///
+  /// In en, this message translates to:
+  /// **'Light'**
+  String get settingsThemeLight;
+
+  /// No description provided for @settingsThemeDark.
+  ///
+  /// In en, this message translates to:
+  /// **'Dark'**
+  String get settingsThemeDark;
+
+  /// No description provided for @settingsLanguage.
+  ///
+  /// In en, this message translates to:
+  /// **'Language'**
+  String get settingsLanguage;
+
+  /// No description provided for @settingsLanguageSystem.
+  ///
+  /// In en, this message translates to:
+  /// **'System default'**
+  String get settingsLanguageSystem;
+
+  /// No description provided for @settingsLanguageEnglish.
+  ///
+  /// In en, this message translates to:
+  /// **'English'**
+  String get settingsLanguageEnglish;
+
+  /// No description provided for @settingsLanguageBengali.
+  ///
+  /// In en, this message translates to:
+  /// **'বাংলা'**
+  String get settingsLanguageBengali;
+
+  /// No description provided for @settingsAfterCallPrompt.
+  ///
+  /// In en, this message translates to:
+  /// **'Ask for a note'**
+  String get settingsAfterCallPrompt;
+
+  /// No description provided for @settingsAfterCallAll.
+  ///
+  /// In en, this message translates to:
+  /// **'All saved people'**
+  String get settingsAfterCallAll;
+
+  /// No description provided for @settingsAfterCallStarred.
+  ///
+  /// In en, this message translates to:
+  /// **'Starred only'**
+  String get settingsAfterCallStarred;
+
+  /// No description provided for @settingsAfterCallNever.
+  ///
+  /// In en, this message translates to:
+  /// **'Never'**
+  String get settingsAfterCallNever;
+
+  /// No description provided for @settingsMorningSummary.
+  ///
+  /// In en, this message translates to:
+  /// **'Morning summary'**
+  String get settingsMorningSummary;
+
+  /// No description provided for @settingsReconnectNudges.
+  ///
+  /// In en, this message translates to:
+  /// **'Reconnect nudges'**
+  String get settingsReconnectNudges;
+
+  /// No description provided for @settingsOn.
+  ///
+  /// In en, this message translates to:
+  /// **'On'**
+  String get settingsOn;
+
+  /// No description provided for @settingsOff.
+  ///
+  /// In en, this message translates to:
+  /// **'Off'**
+  String get settingsOff;
+
+  /// No description provided for @settingsDefaultPace.
+  ///
+  /// In en, this message translates to:
+  /// **'Default pace'**
+  String get settingsDefaultPace;
+
+  /// No description provided for @settingsSendWindow.
+  ///
+  /// In en, this message translates to:
+  /// **'Send window'**
+  String get settingsSendWindow;
+
+  /// No description provided for @settingsOptOutWords.
+  ///
+  /// In en, this message translates to:
+  /// **'Opt-out words'**
+  String get settingsOptOutWords;
+
+  /// No description provided for @settingsSyncNow.
+  ///
+  /// In en, this message translates to:
+  /// **'Sync now'**
+  String get settingsSyncNow;
+
+  /// No description provided for @settingsSyncNever.
+  ///
+  /// In en, this message translates to:
+  /// **'Not synced yet'**
+  String get settingsSyncNever;
+
+  /// No description provided for @settingsSyncComplete.
+  ///
+  /// In en, this message translates to:
+  /// **'Sync complete'**
+  String get settingsSyncComplete;
+
+  /// No description provided for @settingsCheckSetup.
+  ///
+  /// In en, this message translates to:
+  /// **'Check setup'**
+  String get settingsCheckSetup;
+
+  /// No description provided for @settingsVersion.
+  ///
+  /// In en, this message translates to:
+  /// **'Version'**
+  String get settingsVersion;
+
+  /// No description provided for @settingsLicences.
+  ///
+  /// In en, this message translates to:
+  /// **'Licences'**
+  String get settingsLicences;
+
+  /// No description provided for @settingsNoInternetStatement.
+  ///
+  /// In en, this message translates to:
+  /// **'PocketCRM cannot connect to the internet.'**
+  String get settingsNoInternetStatement;
 }
 
 class _AppLocalizationsDelegate

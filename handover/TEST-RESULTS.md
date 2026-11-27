@@ -93,6 +93,23 @@ Record of automated test runs and Android emulator verification runs (date, imag
   - **Pacing (`s10-steady` 15s, `s10-careful` 60s):** PASSED. Measured inter-message gaps: Steady `14.9s` (`2/3` within 45s window), Careful `58.3s` (`2/2 delivered`, `status='done'`).
   - **Database path after `sqflite` removal:** Verified `path_provider` opened `databases/pocket_crm.db` in the exact same Android directory `/data/user/0/com.pocketcrm.pocket_crm/databases/pocket_crm.db`.
 
+## 2026-11-27 — Spec 11
+
+- **Environment (host):** Host Windows 11, Flutter 3.50.1, Dart 3.14.0, Pigeon 30.0.4, `android/app/proguard-rules.pro` (R8 + resource shrinking enabled for release)
+- **Command:** `(cd android && ./gradlew :app:testDebugUnitTest) && bash tool/verify.sh && bash tool/build_apk.sh`
+- **Outcome:** PASSED. `flutter analyze` reported 0 issues; all 86 Flutter tests passed (including `SetupScreen` live capability states, Continue disabled until Contacts allowed, 2-denial Contacts -> `"Open settings"`, Android 13+ file-install instant denial opening the 3-step Restricted Settings guide sheet, Samsung OEM battery guidance, `ReliabilityCheckService` exact copy for pending/on time/late/failed, full degraded-mode workflow from first launch -> `"Do this later"` -> Today `"Finish setup"` row -> adding a note with every permission denied, composer `"Open in your SMS app"` `sms:` URI fallback without SMS permission, and 2 committed light/dark Setup goldens visually verified against Figma frame `10:648`); Kotlin JUnit passed; `assembleDebug`, `check_manifest.sh` (zero `INTERNET`), and `check_landing.sh` passed.
+- **Environment (emulator):** Android Emulator `Pixel_8` (`android-34`, Android 14, signed release APK `build/PocketCRM.apk`, `sha256: 9e7e53089c409c7b58cbf0789110874683ccdfbe39d50baa58f8a4fc30a1a2e5`)
+- **Command:** Installed signed release APK via `adb install -r --no-streaming build/PocketCRM.apk`, cleared app data (`pm clear`), launched `MainActivity`, drove all 5 Setup rows via `adb shell input tap` + system dialogs/settings, then tapped `Continue`.
+- **Outcome:** PASSED. All 5 Setup rows started as `Allow` and refreshed live on foreground return to `Allowed`:
+  1. `Contacts`: `Allow` -> Android Contacts dialog (`Allow`) -> `Allowed`
+  2. `Calls and messages`: `Allow` -> Android Call logs + SMS + Phone state dialogs (`Allow`) -> `Allowed`
+  3. `Alarms and reminders`: `Allow` -> Android Exact Alarms settings toggle on + Back -> `Allowed`
+  4. `Battery`: `Allow` -> Android ignore battery optimizations dialog (`Allow`) -> `Allowed`
+  5. `Notifications`: `Allow` -> Android Notifications dialog (`Allow`) -> `Allowed`
+  Tapping `Continue` ran first sync and navigated cleanly to `People`. (Android 13+ sideload restricted settings is exempt under `adb install` and stays recorded in `handover/UNVERIFIED.md`.)
+- **M3 Signed APK:** `bash tool/build_apk.sh` produced `build/PocketCRM.apk` (`65.1 MB`, `sha256: 9e7e53089c409c7b58cbf0789110874683ccdfbe39d50baa58f8a4fc30a1a2e5`).
+
+
 
 
 

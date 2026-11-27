@@ -1389,4 +1389,265 @@ class AppLocalizationsEn extends AppLocalizations {
   String recipientPickerDone(int count) {
     return 'Done ($count)';
   }
+
+  @override
+  String get setupSubtitle =>
+      'A few permissions let PocketCRM log your calls and send on time, even when the app is closed.';
+
+  @override
+  String get setupRowContactsTitle => 'Contacts';
+
+  @override
+  String get setupRowContactsSubtitle =>
+      'Shows your people and matches calls to them';
+
+  @override
+  String get setupRowCallsSmsTitle => 'Calls and messages';
+
+  @override
+  String get setupRowCallsSmsSubtitle =>
+      'Builds each person\'s history on this phone';
+
+  @override
+  String get setupRowAlarmsTitle => 'Alarms and reminders';
+
+  @override
+  String get setupRowAlarmsSubtitle =>
+      'Sends scheduled messages at the exact time';
+
+  @override
+  String get setupRowAlarmsFallback =>
+      'Scheduled messages may be a few minutes late';
+
+  @override
+  String get setupRowBatteryTitle => 'Battery';
+
+  @override
+  String get setupRowBatterySubtitle =>
+      'Stops Android pausing sends when the app is closed';
+
+  @override
+  String get setupRowNotificationsTitle => 'Notifications';
+
+  @override
+  String get setupRowNotificationsSubtitle =>
+      'Follow-up reminders and send results';
+
+  @override
+  String get setupAllowedLabel => 'Allowed';
+
+  @override
+  String get setupAllowAction => 'Allow';
+
+  @override
+  String get setupOpenSettingsAction => 'Open settings';
+
+  @override
+  String get setupPrivacyNote =>
+      'Everything stays on this phone. PocketCRM has no internet access.';
+
+  @override
+  String get setupSyncingContacts => 'Reading your contacts...';
+
+  @override
+  String get setupSyncingHistory => 'Reading your call and message history...';
+
+  @override
+  String setupSyncProgressCounts(int contacts, int calls, int sms) {
+    return 'Synced $contacts people · $calls calls · $sms messages';
+  }
+
+  @override
+  String get restrictedSettingsTitle => 'Allow restricted settings';
+
+  @override
+  String get restrictedSettingsStep1 =>
+      '1. Tap the three dots at the top right.';
+
+  @override
+  String get restrictedSettingsStep2 =>
+      '2. Tap \"Allow restricted settings\" and confirm with your screen lock.';
+
+  @override
+  String get restrictedSettingsStep3 =>
+      '3. Come back here and tap Allow again.';
+
+  @override
+  String get restrictedSettingsFallback =>
+      'No such option? Open Permissions on that page and allow SMS and Call logs there.';
+
+  @override
+  String get restrictedSettingsOpenAppInfo => 'Open app info';
+
+  @override
+  String get oemBatteryXiaomi =>
+      'Turn on Autostart and set Battery saver to No restrictions';
+
+  @override
+  String get oemBatteryOppo => 'Allow background activity and Auto-launch';
+
+  @override
+  String get oemBatteryVivo =>
+      'Allow High background power consumption and Autostart';
+
+  @override
+  String get oemBatterySamsung => 'Add PocketCRM to Never sleeping apps';
+
+  @override
+  String get oemBatteryTecno => 'Allow Auto-start in Phone Master';
+
+  @override
+  String get oemBatteryHuawei =>
+      'Set App launch to Manage manually and allow all three switches';
+
+  @override
+  String get reliabilitySectionTitle => 'Check reliability';
+
+  @override
+  String get reliabilitySendTestAction => 'Send a test message';
+
+  @override
+  String get reliabilityPhoneLabel => 'Your phone number';
+
+  @override
+  String get reliabilityPhoneHint => 'Enter your own number';
+
+  @override
+  String reliabilityScheduledNotice(String time) {
+    return 'Close the app and lock your phone. The message should arrive at $time.';
+  }
+
+  @override
+  String reliabilityTestMessageBody(String time) {
+    return 'PocketCRM test, scheduled for $time';
+  }
+
+  @override
+  String get reliabilityResultOnTime => 'Arrived on time';
+
+  @override
+  String reliabilityResultLate(int minutes) {
+    return 'Arrived $minutes minutes late: allow Alarms and reminders, and check the Battery step';
+  }
+
+  @override
+  String reliabilityResultFailed(String reason) {
+    return 'Not sent: $reason';
+  }
+
+  @override
+  String get finishSetupBannerTitle => 'Finish setup';
+
+  @override
+  String get finishSetupBannerSubtitle =>
+      'Allow contacts, calls and messages to log history automatically';
+
+  @override
+  String get settingsSectionGeneral => 'General';
+
+  @override
+  String get settingsSectionAfterCalls => 'After calls';
+
+  @override
+  String get settingsSectionReminders => 'Reminders';
+
+  @override
+  String get settingsSectionMessages => 'Messages';
+
+  @override
+  String get settingsSectionData => 'Data';
+
+  @override
+  String get settingsSectionAbout => 'About';
+
+  @override
+  String get settingsYourName => 'Your name';
+
+  @override
+  String get settingsNotSet => 'Not set';
+
+  @override
+  String get settingsCurrency => 'Currency';
+
+  @override
+  String get settingsPhoneRegion => 'Region for phone numbers';
+
+  @override
+  String get settingsTheme => 'Theme';
+
+  @override
+  String get settingsThemeSystem => 'System';
+
+  @override
+  String get settingsThemeLight => 'Light';
+
+  @override
+  String get settingsThemeDark => 'Dark';
+
+  @override
+  String get settingsLanguage => 'Language';
+
+  @override
+  String get settingsLanguageSystem => 'System default';
+
+  @override
+  String get settingsLanguageEnglish => 'English';
+
+  @override
+  String get settingsLanguageBengali => 'বাংলা';
+
+  @override
+  String get settingsAfterCallPrompt => 'Ask for a note';
+
+  @override
+  String get settingsAfterCallAll => 'All saved people';
+
+  @override
+  String get settingsAfterCallStarred => 'Starred only';
+
+  @override
+  String get settingsAfterCallNever => 'Never';
+
+  @override
+  String get settingsMorningSummary => 'Morning summary';
+
+  @override
+  String get settingsReconnectNudges => 'Reconnect nudges';
+
+  @override
+  String get settingsOn => 'On';
+
+  @override
+  String get settingsOff => 'Off';
+
+  @override
+  String get settingsDefaultPace => 'Default pace';
+
+  @override
+  String get settingsSendWindow => 'Send window';
+
+  @override
+  String get settingsOptOutWords => 'Opt-out words';
+
+  @override
+  String get settingsSyncNow => 'Sync now';
+
+  @override
+  String get settingsSyncNever => 'Not synced yet';
+
+  @override
+  String get settingsSyncComplete => 'Sync complete';
+
+  @override
+  String get settingsCheckSetup => 'Check setup';
+
+  @override
+  String get settingsVersion => 'Version';
+
+  @override
+  String get settingsLicences => 'Licences';
+
+  @override
+  String get settingsNoInternetStatement =>
+      'PocketCRM cannot connect to the internet.';
 }

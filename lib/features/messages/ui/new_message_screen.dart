@@ -724,7 +724,9 @@ class _NewMessageScreenState extends ConsumerState<NewMessageScreen> {
       } else {
         await launchUrl(uri, mode: LaunchMode.externalApplication);
       }
-      if (mounted && context.canPop()) context.pop();
+      if (mounted && (GoRouter.maybeOf(context)?.canPop() ?? false)) {
+        context.pop();
+      }
       return;
     }
 

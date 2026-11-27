@@ -882,5 +882,113 @@
     "placeholders": {
       "count": { "type": "int" }
     }
-  }
+  },
+
+  "setupSubtitle": "A few permissions let PocketCRM log your calls and send on time, even when the app is closed.",
+  "setupRowContactsTitle": "Contacts",
+  "setupRowContactsSubtitle": "Shows your people and matches calls to them",
+  "setupRowCallsSmsTitle": "Calls and messages",
+  "setupRowCallsSmsSubtitle": "Builds each person's history on this phone",
+  "setupRowAlarmsTitle": "Alarms and reminders",
+  "setupRowAlarmsSubtitle": "Sends scheduled messages at the exact time",
+  "setupRowAlarmsFallback": "Scheduled messages may be a few minutes late",
+  "setupRowBatteryTitle": "Battery",
+  "setupRowBatterySubtitle": "Stops Android pausing sends when the app is closed",
+  "setupRowNotificationsTitle": "Notifications",
+  "setupRowNotificationsSubtitle": "Follow-up reminders and send results",
+  "setupAllowedLabel": "Allowed",
+  "setupAllowAction": "Allow",
+  "setupOpenSettingsAction": "Open settings",
+  "setupPrivacyNote": "Everything stays on this phone. PocketCRM has no internet access.",
+  "setupSyncingContacts": "Reading your contacts...",
+  "setupSyncingHistory": "Reading your call and message history...",
+  "setupSyncProgressCounts": "Synced {contacts} people · {calls} calls · {sms} messages",
+  "@setupSyncProgressCounts": {
+    "placeholders": {
+      "contacts": { "type": "int" },
+      "calls": { "type": "int" },
+      "sms": { "type": "int" }
+    }
+  },
+  "restrictedSettingsTitle": "Allow restricted settings",
+  "restrictedSettingsStep1": "1. Tap the three dots at the top right.",
+  "restrictedSettingsStep2": "2. Tap \"Allow restricted settings\" and confirm with your screen lock.",
+  "restrictedSettingsStep3": "3. Come back here and tap Allow again.",
+  "restrictedSettingsFallback": "No such option? Open Permissions on that page and allow SMS and Call logs there.",
+  "restrictedSettingsOpenAppInfo": "Open app info",
+  "oemBatteryXiaomi": "Turn on Autostart and set Battery saver to No restrictions",
+  "oemBatteryOppo": "Allow background activity and Auto-launch",
+  "oemBatteryVivo": "Allow High background power consumption and Autostart",
+  "oemBatterySamsung": "Add PocketCRM to Never sleeping apps",
+  "oemBatteryTecno": "Allow Auto-start in Phone Master",
+  "oemBatteryHuawei": "Set App launch to Manage manually and allow all three switches",
+
+  "reliabilitySectionTitle": "Check reliability",
+  "reliabilitySendTestAction": "Send a test message",
+  "reliabilityPhoneLabel": "Your phone number",
+  "reliabilityPhoneHint": "Enter your own number",
+  "reliabilityScheduledNotice": "Close the app and lock your phone. The message should arrive at {time}.",
+  "@reliabilityScheduledNotice": {
+    "placeholders": {
+      "time": { "type": "String" }
+    }
+  },
+  "reliabilityTestMessageBody": "PocketCRM test, scheduled for {time}",
+  "@reliabilityTestMessageBody": {
+    "placeholders": {
+      "time": { "type": "String" }
+    }
+  },
+  "reliabilityResultOnTime": "Arrived on time",
+  "reliabilityResultLate": "Arrived {minutes} minutes late: allow Alarms and reminders, and check the Battery step",
+  "@reliabilityResultLate": {
+    "placeholders": {
+      "minutes": { "type": "int" }
+    }
+  },
+  "reliabilityResultFailed": "Not sent: {reason}",
+  "@reliabilityResultFailed": {
+    "placeholders": {
+      "reason": { "type": "String" }
+    }
+  },
+  "finishSetupBannerTitle": "Finish setup",
+  "finishSetupBannerSubtitle": "Allow contacts, calls and messages to log history automatically",
+
+  "settingsSectionGeneral": "General",
+  "settingsSectionAfterCalls": "After calls",
+  "settingsSectionReminders": "Reminders",
+  "settingsSectionMessages": "Messages",
+  "settingsSectionData": "Data",
+  "settingsSectionAbout": "About",
+  "settingsYourName": "Your name",
+  "settingsNotSet": "Not set",
+  "settingsCurrency": "Currency",
+  "settingsPhoneRegion": "Region for phone numbers",
+  "settingsTheme": "Theme",
+  "settingsThemeSystem": "System",
+  "settingsThemeLight": "Light",
+  "settingsThemeDark": "Dark",
+  "settingsLanguage": "Language",
+  "settingsLanguageSystem": "System default",
+  "settingsLanguageEnglish": "English",
+  "settingsLanguageBengali": "বাংলা",
+  "settingsAfterCallPrompt": "Ask for a note",
+  "settingsAfterCallAll": "All saved people",
+  "settingsAfterCallStarred": "Starred only",
+  "settingsAfterCallNever": "Never",
+  "settingsMorningSummary": "Morning summary",
+  "settingsReconnectNudges": "Reconnect nudges",
+  "settingsOn": "On",
+  "settingsOff": "Off",
+  "settingsDefaultPace": "Default pace",
+  "settingsSendWindow": "Send window",
+  "settingsOptOutWords": "Opt-out words",
+  "settingsSyncNow": "Sync now",
+  "settingsSyncNever": "Not synced yet",
+  "settingsSyncComplete": "Sync complete",
+  "settingsCheckSetup": "Check setup",
+  "settingsVersion": "Version",
+  "settingsLicences": "Licences",
+  "settingsNoInternetStatement": "PocketCRM cannot connect to the internet."
 }

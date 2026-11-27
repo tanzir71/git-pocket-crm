@@ -175,7 +175,9 @@ final goRouterProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: '/setup',
         parentNavigatorKey: rootNavigatorKey,
-        builder: (context, state) => const SetupScreen(),
+        builder: (context, state) => SetupScreen(
+          checkMode: state.uri.queryParameters['mode'] == 'check',
+        ),
       ),
       GoRoute(
         path: '/settings',

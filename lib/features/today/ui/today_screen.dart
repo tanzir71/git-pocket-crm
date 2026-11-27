@@ -303,6 +303,8 @@ class _TodayScreenState extends ConsumerState<TodayScreen> {
     final goingOutAsync = ref.watch(_goingOutTodayProvider);
     final birthdaysAsync = ref.watch(_birthdaysProvider);
     final hasAnyCadence = ref.watch(_hasAnyCadenceProvider).value ?? false;
+    final setupState = ref.watch(setupCapabilityProvider).value;
+    final showFinishSetup = setupState?.needsFinishSetupBanner ?? false;
 
     final promptCall = promptAsync.value;
     final needsAttention = needsAttentionAsync.value ?? const <OutboxWithPersonRow>[];
@@ -410,6 +412,15 @@ class _TodayScreenState extends ConsumerState<TodayScreen> {
                 ),
               ),
             ),
+
+            if (showFinishSetup)
+              SliverToBoxAdapter(
+                child: SettingRow(
+                  label: l10n.finishSetupBannerTitle,
+                  value: l10n.setupAllowAction,
+                  onTap: () => context.push('/setup'),
+                ),
+              ),
 
             if (isEverythingEmpty)
               SliverFillRemaining(

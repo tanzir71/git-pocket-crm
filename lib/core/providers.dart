@@ -14,6 +14,7 @@ import '../features/payments/data/payments_repository.dart';
 import '../features/people/data/lists_repository.dart';
 import '../features/people/data/people_repository.dart';
 import '../features/settings/data/settings_repository.dart';
+import '../features/setup/data/setup_controller.dart';
 import '../features/sync/data/amount_parser.dart';
 import '../features/sync/data/sync_service.dart';
 import '../features/sync/data/sync_state_repository.dart';
@@ -254,6 +255,22 @@ final campaignsRepositoryProvider = Provider<CampaignsRepository>((ref) {
 
 final scheduledSmsMigratorProvider = Provider<ScheduledSmsMigrator>((ref) {
   return ScheduledSmsMigrator(
+    db: ref.watch(appDatabaseProvider),
+    outbox: ref.watch(outboxRepositoryProvider),
+    clock: ref.watch(clockProvider),
+  );
+});
+
+final setupPlatformBridgeProvider = Provider<SetupPlatformBridge>((ref) {
+  return DefaultSetupPlatformBridge(outbox: ref.watch(outboxRepositoryProvider));
+});
+
+final setupCapabilityProvider = FutureProvider.autoDispose<SetupCapabilityState>((ref) {
+  return ref.watch(setupPlatformBridgeProvider).readState();
+});
+
+final reliabilityCheckServiceProvider = Provider<ReliabilityCheckService>((ref) {
+  return ReliabilityCheckService(
     db: ref.watch(appDatabaseProvider),
     outbox: ref.watch(outboxRepositoryProvider),
     clock: ref.watch(clockProvider),

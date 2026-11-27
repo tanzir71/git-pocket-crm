@@ -105,6 +105,20 @@ class OutboxCapabilities {
   bool smsPermission;
 }
 
+class SetupPlatformInfo {
+  SetupPlatformInfo({
+    required this.sdkInt,
+    required this.manufacturer,
+    required this.installedFromStore,
+    this.ownPhoneNumber,
+  });
+
+  int sdkInt;
+  String manufacturer;
+  bool installedFromStore;
+  String? ownPhoneNumber;
+}
+
 @HostApi()
 abstract class OutboxApi {
   void enqueue(List<OutboxItem> items);
@@ -128,6 +142,14 @@ abstract class OutboxApi {
   OutboxCapabilities capabilities();
 
   void shareFile(String path, String mimeType, String subject);
+
+  SetupPlatformInfo setupInfo();
+
+  void openExactAlarmSettings();
+
+  void requestIgnoreBatteryOptimisations();
+
+  void openAppDetailsSettings();
 }
 
 @FlutterApi()

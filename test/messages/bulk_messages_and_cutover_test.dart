@@ -82,6 +82,19 @@ class _FakeOutboxClient implements OutboxPlatformClient {
   Future<void> shareFile(String path, String mimeType, String subject) async {}
 
   @override
+  Future<SetupPlatformInfo> setupInfo() async =>
+      SetupPlatformInfo(sdkInt: 34, manufacturer: 'Google', installedFromStore: false);
+
+  @override
+  Future<void> openExactAlarmSettings() async {}
+
+  @override
+  Future<void> requestIgnoreBatteryOptimisations() async {}
+
+  @override
+  Future<void> openAppDetailsSettings() async {}
+
+  @override
   void listenForChanges(void Function(int latestSeq) onChanged) {}
 }
 

@@ -501,6 +501,55 @@ data class OutboxCapabilities (
     return "OutboxCapabilities(exactAlarms=$exactAlarms, ignoringBatteryOptimisation=$ignoringBatteryOptimisation, notifications=$notifications, smsPermission=$smsPermission)"
   }
 }
+
+/** Generated class from Pigeon that represents data sent in messages. */
+data class SetupPlatformInfo (
+  val sdkInt: Long,
+  val manufacturer: String,
+  val installedFromStore: Boolean,
+  val ownPhoneNumber: String? = null
+)
+ {
+  companion object {
+    fun fromList(pigeonVar_list: List<Any?>): SetupPlatformInfo {
+      val sdkInt = pigeonVar_list[0] as Long
+      val manufacturer = pigeonVar_list[1] as String
+      val installedFromStore = pigeonVar_list[2] as Boolean
+      val ownPhoneNumber = pigeonVar_list[3] as String?
+      return SetupPlatformInfo(sdkInt, manufacturer, installedFromStore, ownPhoneNumber)
+    }
+  }
+  fun toList(): List<Any?> {
+    return listOf(
+      sdkInt,
+      manufacturer,
+      installedFromStore,
+      ownPhoneNumber,
+    )
+  }
+  override fun equals(other: Any?): Boolean {
+    if (other == null || other.javaClass != javaClass) {
+      return false
+    }
+    if (this === other) {
+      return true
+    }
+    val other = other as SetupPlatformInfo
+    return OutboxApiPigeonUtils.deepEquals(this.sdkInt, other.sdkInt) && OutboxApiPigeonUtils.deepEquals(this.manufacturer, other.manufacturer) && OutboxApiPigeonUtils.deepEquals(this.installedFromStore, other.installedFromStore) && OutboxApiPigeonUtils.deepEquals(this.ownPhoneNumber, other.ownPhoneNumber)
+  }
+
+  override fun hashCode(): Int {
+    var result = javaClass.hashCode()
+    result = 31 * result + OutboxApiPigeonUtils.deepHash(this.sdkInt)
+    result = 31 * result + OutboxApiPigeonUtils.deepHash(this.manufacturer)
+    result = 31 * result + OutboxApiPigeonUtils.deepHash(this.installedFromStore)
+    result = 31 * result + OutboxApiPigeonUtils.deepHash(this.ownPhoneNumber)
+    return result
+  }
+  override fun toString(): String {
+    return "SetupPlatformInfo(sdkInt=$sdkInt, manufacturer=$manufacturer, installedFromStore=$installedFromStore, ownPhoneNumber=$ownPhoneNumber)"
+  }
+}
 private open class OutboxApiPigeonCodec : StandardMessageCodec() {
   override fun readValueOfType(type: Byte, buffer: ByteBuffer): Any? {
     return when (type) {
@@ -529,6 +578,11 @@ private open class OutboxApiPigeonCodec : StandardMessageCodec() {
           OutboxCapabilities.fromList(it)
         }
       }
+      134.toByte() -> {
+        (readValue(buffer) as? List<Any?>)?.let {
+          SetupPlatformInfo.fromList(it)
+        }
+      }
       else -> super.readValueOfType(type, buffer)
     }
   }
@@ -554,6 +608,10 @@ private open class OutboxApiPigeonCodec : StandardMessageCodec() {
         stream.write(133)
         writeValue(stream, value.toList())
       }
+      is SetupPlatformInfo -> {
+        stream.write(134)
+        writeValue(stream, value.toList())
+      }
       else -> super.writeValue(stream, value)
     }
   }
@@ -572,6 +630,10 @@ interface OutboxApi {
   fun sims(): List<SimInfo>
   fun capabilities(): OutboxCapabilities
   fun shareFile(path: String, mimeType: String, subject: String)
+  fun setupInfo(): SetupPlatformInfo
+  fun openExactAlarmSettings()
+  fun requestIgnoreBatteryOptimisations()
+  fun openAppDetailsSettings()
 
   companion object {
     /** The codec used by OutboxApi. */
@@ -765,6 +827,69 @@ interface OutboxApi {
             val subjectArg = args[2] as String
             val wrapped: List<Any?> = try {
               api.shareFile(pathArg, mimeTypeArg, subjectArg)
+              listOf(null)
+            } catch (exception: Throwable) {
+              OutboxApiPigeonUtils.wrapError(exception)
+            }
+            reply.reply(wrapped)
+          }
+        } else {
+          channel.setMessageHandler(null)
+        }
+      }
+      run {
+        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.pocket_crm.OutboxApi.setupInfo$separatedMessageChannelSuffix", codec)
+        if (api != null) {
+          channel.setMessageHandler { _, reply ->
+            val wrapped: List<Any?> = try {
+              listOf(api.setupInfo())
+            } catch (exception: Throwable) {
+              OutboxApiPigeonUtils.wrapError(exception)
+            }
+            reply.reply(wrapped)
+          }
+        } else {
+          channel.setMessageHandler(null)
+        }
+      }
+      run {
+        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.pocket_crm.OutboxApi.openExactAlarmSettings$separatedMessageChannelSuffix", codec)
+        if (api != null) {
+          channel.setMessageHandler { _, reply ->
+            val wrapped: List<Any?> = try {
+              api.openExactAlarmSettings()
+              listOf(null)
+            } catch (exception: Throwable) {
+              OutboxApiPigeonUtils.wrapError(exception)
+            }
+            reply.reply(wrapped)
+          }
+        } else {
+          channel.setMessageHandler(null)
+        }
+      }
+      run {
+        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.pocket_crm.OutboxApi.requestIgnoreBatteryOptimisations$separatedMessageChannelSuffix", codec)
+        if (api != null) {
+          channel.setMessageHandler { _, reply ->
+            val wrapped: List<Any?> = try {
+              api.requestIgnoreBatteryOptimisations()
+              listOf(null)
+            } catch (exception: Throwable) {
+              OutboxApiPigeonUtils.wrapError(exception)
+            }
+            reply.reply(wrapped)
+          }
+        } else {
+          channel.setMessageHandler(null)
+        }
+      }
+      run {
+        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.pocket_crm.OutboxApi.openAppDetailsSettings$separatedMessageChannelSuffix", codec)
+        if (api != null) {
+          channel.setMessageHandler { _, reply ->
+            val wrapped: List<Any?> = try {
+              api.openAppDetailsSettings()
               listOf(null)
             } catch (exception: Throwable) {
               OutboxApiPigeonUtils.wrapError(exception)

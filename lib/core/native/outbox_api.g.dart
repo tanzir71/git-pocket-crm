@@ -477,6 +477,66 @@ class OutboxCapabilities {
   }
 }
 
+class SetupPlatformInfo {
+  SetupPlatformInfo({
+    required this.sdkInt,
+    required this.manufacturer,
+    required this.installedFromStore,
+    this.ownPhoneNumber,
+  });
+
+  int sdkInt;
+
+  String manufacturer;
+
+  bool installedFromStore;
+
+  String? ownPhoneNumber;
+
+  List<Object?> _toList() {
+    return <Object?>[
+      sdkInt,
+      manufacturer,
+      installedFromStore,
+      ownPhoneNumber,
+    ];
+  }
+
+  Object encode() {
+    return _toList();  }
+
+  static SetupPlatformInfo decode(Object result) {
+    result as List<Object?>;
+    return SetupPlatformInfo(
+      sdkInt: result[0]! as int,
+      manufacturer: result[1]! as String,
+      installedFromStore: result[2]! as bool,
+      ownPhoneNumber: result[3] as String?,
+    );
+  }
+
+  @override
+  // ignore: avoid_equals_and_hash_code_on_mutable_classes
+  bool operator ==(Object other) {
+    if (other is! SetupPlatformInfo || other.runtimeType != runtimeType) {
+      return false;
+    }
+    if (identical(this, other)) {
+      return true;
+    }
+    return _deepEquals(sdkInt, other.sdkInt) && _deepEquals(manufacturer, other.manufacturer) && _deepEquals(installedFromStore, other.installedFromStore) && _deepEquals(ownPhoneNumber, other.ownPhoneNumber);
+  }
+
+  @override
+  // ignore: avoid_equals_and_hash_code_on_mutable_classes
+  int get hashCode => _deepHash(<Object?>[runtimeType, ..._toList()]);
+
+  @override
+  String toString() {
+    return 'SetupPlatformInfo(sdkInt: $sdkInt, manufacturer: $manufacturer, installedFromStore: $installedFromStore, ownPhoneNumber: $ownPhoneNumber)';
+  }
+}
+
 
 class _PigeonCodec extends StandardMessageCodec {
   const _PigeonCodec();
@@ -500,6 +560,9 @@ class _PigeonCodec extends StandardMessageCodec {
     }    else if (value is OutboxCapabilities) {
       buffer.putUint8(133);
       writeValue(buffer, value.encode());
+    }    else if (value is SetupPlatformInfo) {
+      buffer.putUint8(134);
+      writeValue(buffer, value.encode());
     } else {
       super.writeValue(buffer, value);
     }
@@ -518,6 +581,8 @@ class _PigeonCodec extends StandardMessageCodec {
         return SimInfo.decode(readValue(buffer)!);
       case 133:
         return OutboxCapabilities.decode(readValue(buffer)!);
+      case 134:
+        return SetupPlatformInfo.decode(readValue(buffer)!);
       default:
         return super.readValueOfType(type, buffer);
     }
@@ -722,6 +787,75 @@ class OutboxApi {
       binaryMessenger: pigeonVar_binaryMessenger,
     );
     final Future<Object?> pigeonVar_sendFuture = pigeonVar_channel.send(<Object?>[path, mimeType, subject]);
+    final pigeonVar_replyList = await pigeonVar_sendFuture as List<Object?>?;
+    _extractReplyValueOrThrow(
+        pigeonVar_replyList,
+        pigeonVar_channelName,
+        isNullValid: true,
+    )
+    ;
+  }
+
+  Future<SetupPlatformInfo> setupInfo() async {
+    final pigeonVar_channelName = 'dev.flutter.pigeon.pocket_crm.OutboxApi.setupInfo$pigeonVar_messageChannelSuffix';
+    final pigeonVar_channel = BasicMessageChannel<Object?>(
+      pigeonVar_channelName,
+      pigeonChannelCodec,
+      binaryMessenger: pigeonVar_binaryMessenger,
+    );
+    final Future<Object?> pigeonVar_sendFuture = pigeonVar_channel.send(null);
+    final pigeonVar_replyList = await pigeonVar_sendFuture as List<Object?>?;
+    final Object? pigeonVar_replyValue = _extractReplyValueOrThrow(
+        pigeonVar_replyList,
+        pigeonVar_channelName,
+        isNullValid: false,
+    )
+    ;
+    return pigeonVar_replyValue! as SetupPlatformInfo;
+  }
+
+  Future<void> openExactAlarmSettings() async {
+    final pigeonVar_channelName = 'dev.flutter.pigeon.pocket_crm.OutboxApi.openExactAlarmSettings$pigeonVar_messageChannelSuffix';
+    final pigeonVar_channel = BasicMessageChannel<Object?>(
+      pigeonVar_channelName,
+      pigeonChannelCodec,
+      binaryMessenger: pigeonVar_binaryMessenger,
+    );
+    final Future<Object?> pigeonVar_sendFuture = pigeonVar_channel.send(null);
+    final pigeonVar_replyList = await pigeonVar_sendFuture as List<Object?>?;
+    _extractReplyValueOrThrow(
+        pigeonVar_replyList,
+        pigeonVar_channelName,
+        isNullValid: true,
+    )
+    ;
+  }
+
+  Future<void> requestIgnoreBatteryOptimisations() async {
+    final pigeonVar_channelName = 'dev.flutter.pigeon.pocket_crm.OutboxApi.requestIgnoreBatteryOptimisations$pigeonVar_messageChannelSuffix';
+    final pigeonVar_channel = BasicMessageChannel<Object?>(
+      pigeonVar_channelName,
+      pigeonChannelCodec,
+      binaryMessenger: pigeonVar_binaryMessenger,
+    );
+    final Future<Object?> pigeonVar_sendFuture = pigeonVar_channel.send(null);
+    final pigeonVar_replyList = await pigeonVar_sendFuture as List<Object?>?;
+    _extractReplyValueOrThrow(
+        pigeonVar_replyList,
+        pigeonVar_channelName,
+        isNullValid: true,
+    )
+    ;
+  }
+
+  Future<void> openAppDetailsSettings() async {
+    final pigeonVar_channelName = 'dev.flutter.pigeon.pocket_crm.OutboxApi.openAppDetailsSettings$pigeonVar_messageChannelSuffix';
+    final pigeonVar_channel = BasicMessageChannel<Object?>(
+      pigeonVar_channelName,
+      pigeonChannelCodec,
+      binaryMessenger: pigeonVar_binaryMessenger,
+    );
+    final Future<Object?> pigeonVar_sendFuture = pigeonVar_channel.send(null);
     final pigeonVar_replyList = await pigeonVar_sendFuture as List<Object?>?;
     _extractReplyValueOrThrow(
         pigeonVar_replyList,

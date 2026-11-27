@@ -57,6 +57,10 @@ abstract class OutboxPlatformClient {
   Future<List<SimInfo>> sims();
   Future<OutboxCapabilities> capabilities();
   Future<void> shareFile(String path, String mimeType, String subject);
+  Future<SetupPlatformInfo> setupInfo();
+  Future<void> openExactAlarmSettings();
+  Future<void> requestIgnoreBatteryOptimisations();
+  Future<void> openAppDetailsSettings();
   void listenForChanges(void Function(int latestSeq) onChanged);
 }
 
@@ -162,6 +166,50 @@ class PigeonOutboxPlatformClient implements OutboxPlatformClient {
     if (!Platform.isAndroid) return;
     try {
       await _api.shareFile(path, mimeType, subject);
+    } catch (_) {}
+  }
+
+  @override
+  Future<SetupPlatformInfo> setupInfo() async {
+    if (!Platform.isAndroid) {
+      return SetupPlatformInfo(
+        sdkInt: 0,
+        manufacturer: '',
+        installedFromStore: false,
+      );
+    }
+    try {
+      return await _api.setupInfo();
+    } catch (_) {
+      return SetupPlatformInfo(
+        sdkInt: 0,
+        manufacturer: '',
+        installedFromStore: false,
+      );
+    }
+  }
+
+  @override
+  Future<void> openExactAlarmSettings() async {
+    if (!Platform.isAndroid) return;
+    try {
+      await _api.openExactAlarmSettings();
+    } catch (_) {}
+  }
+
+  @override
+  Future<void> requestIgnoreBatteryOptimisations() async {
+    if (!Platform.isAndroid) return;
+    try {
+      await _api.requestIgnoreBatteryOptimisations();
+    } catch (_) {}
+  }
+
+  @override
+  Future<void> openAppDetailsSettings() async {
+    if (!Platform.isAndroid) return;
+    try {
+      await _api.openAppDetailsSettings();
     } catch (_) {}
   }
 
@@ -531,4 +579,10 @@ class OutboxRepository {
 
   Future<void> shareFile(String path, String mimeType, String subject) =>
       client.shareFile(path, mimeType, subject);
+
+  Future<SetupPlatformInfo> setupInfo() => client.setupInfo();
+  Future<void> openExactAlarmSettings() => client.openExactAlarmSettings();
+  Future<void> requestIgnoreBatteryOptimisations() =>
+      client.requestIgnoreBatteryOptimisations();
+  Future<void> openAppDetailsSettings() => client.openAppDetailsSettings();
 }

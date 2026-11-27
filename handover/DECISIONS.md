@@ -69,6 +69,13 @@ Log of technical, dependency, and design choices made during implementation wher
 - **Database path without `sqflite`:** Removed `sqflite`, `flutter_sms_inbox`, `call_log`, and `google_fonts`, and replaced `getDatabasesPath()` with `resolvePocketCrmDatabasePath` via `path_provider` (`<appDataDir>/databases/pocket_crm.db` on Android), verified by both unit test and emulator run.
 - **Cut-over & lint guard:** Flipped `kV2` to `true`, deleted `lib/legacy/`, `lib/sms_processor.dart`, `lib/sync_engine.dart`, `lib/spam_filter.dart`, `lib/database_helper.dart`, `lib/core/db/legacy_db.dart`, `MainActivity`'s `sendSms` channel, and legacy tests; extended `test/lint_guard_test.dart` to enforce design tokens across all of `lib/` and zero `"legacy"` references.
 
+## Spec 11 — Setup and reliability (2026-11-27)
+
+- **Native setup helpers on `OutboxApi`:** Extended Pigeon `OutboxApi` with `setupInfo()` (`sdkInt`, `manufacturer`, `installedFromStore` via `PackageManager.getInstallSourceInfo`, and optional `ownPhoneNumber` via `SubscriptionManager`/`TelephonyManager`), `openExactAlarmSettings()`, `requestIgnoreBatteryOptimisations()`, and `openAppDetailsSettings()` rather than adding extra platform plugins.
+- **R8 keep rules for release APK (`android/app/proguard-rules.pro`):** Testing the signed release APK on Android 14 caught R8 stripping `androidx.work.impl.WorkDatabase_Impl.<init>()` (WorkManager's Room initializer). Added `android/app/proguard-rules.pro` keeping `com.pocketcrm.pocket_crm.**`, WorkManager/Room/Startup initializers, and `com.dexterous.flutterlocalnotifications.**`, with explicit `isMinifyEnabled = true` and `isShrinkResources = true` in `android/app/build.gradle.kts`.
+- **OEM battery guidance:** Kept all 6 manufacturer battery guidance lines in `lib/l10n/app_en.arb` and matched `Build.MANUFACTURER` case-insensitively in `OemBatteryVendor.fromManufacturer()`.
+
+
 
 
 
