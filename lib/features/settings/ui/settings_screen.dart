@@ -195,6 +195,23 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
     }
   }
 
+  Future<void> _runExport(Future<bool> Function() action) async {
+    try {
+      final saved = await action();
+      if (saved && mounted) {
+        ScaffoldMessenger.of(context)
+          ..hideCurrentSnackBar()
+          ..showSnackBar(SnackBar(content: Text(context.l10n.exportSavedSnack)));
+      }
+    } catch (_) {
+      if (mounted) {
+        ScaffoldMessenger.of(context)
+          ..hideCurrentSnackBar()
+          ..showSnackBar(SnackBar(content: Text(context.l10n.exportFailedSnack)));
+      }
+    }
+  }
+
   String _fmtMin(int min) {
     final h = (min ~/ 60).toString().padLeft(2, '0');
     final m = (min % 60).toString().padLeft(2, '0');
@@ -428,6 +445,14 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
             onTap: () => context.push('/settings/backup'),
           ),
           SettingRow(
+            label: l10n.settingsExportPeopleCsv,
+            onTap: () => _runExport(() => ref.read(exportServiceProvider).exportPeopleCsvToSaf()),
+          ),
+          SettingRow(
+            label: l10n.settingsExportPeopleVcard,
+            onTap: () => _runExport(() => ref.read(exportServiceProvider).exportPeopleVcardToSaf()),
+          ),
+          SettingRow(
             label: l10n.settingsCheckSetup,
             onTap: () => context.push('/setup?mode=check'),
           ),
@@ -459,24 +484,6 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
           ),
         ],
       ),
-    );
-  }
-}
-
-class BackupSettingsScreen extends StatelessWidget {
-  const BackupSettingsScreen({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    final c = context.colors;
-    final l10n = context.l10n;
-    return Scaffold(
-      backgroundColor: c.bgCanvas,
-      appBar: AppBar(
-        backgroundColor: c.bgCanvas,
-        title: Text(l10n.backupTitle),
-      ),
-      body: const SizedBox.shrink(),
     );
   }
 }

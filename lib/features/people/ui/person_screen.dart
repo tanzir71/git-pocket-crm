@@ -695,6 +695,8 @@ class _PersonScreenState extends ConsumerState<PersonScreen> {
                             await ref
                                 .read(peopleRepositoryProvider)
                                 .setDoNotMessage(contact.id, contact.doNotMessage != 1);
+                          case 'export_csv':
+                            await ref.read(exportServiceProvider).exportPersonHistoryCsv(contact);
                           case 'delete':
                             await _confirmDeletePerson(contact);
                         }
@@ -712,6 +714,10 @@ class _PersonScreenState extends ConsumerState<PersonScreen> {
                                 Icon(Icons.check, size: 18, color: ctx.colors.textPrimary),
                             ],
                           ),
+                        ),
+                        PopupMenuItem(
+                          value: 'export_csv',
+                          child: Text(l10n.exportHistoryCsvMenu),
                         ),
                         PopupMenuItem(
                           value: 'delete',

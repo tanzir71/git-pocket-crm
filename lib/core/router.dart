@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:material_ui/material_ui.dart';
 
 import '../dev/gallery_screen.dart';
+import '../features/backup/ui/backup_screen.dart';
 import '../features/messages/ui/campaign_screen.dart';
 import '../features/messages/ui/messages_screen.dart';
 import '../features/messages/ui/new_message_screen.dart';

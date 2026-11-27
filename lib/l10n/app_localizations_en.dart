@@ -1650,4 +1650,145 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get settingsNoInternetStatement =>
       'PocketCRM cannot connect to the internet.';
+
+  @override
+  String get settingsExportPeopleCsv => 'People as CSV';
+
+  @override
+  String get settingsExportPeopleVcard => 'People as vCard';
+
+  @override
+  String get exportHistoryCsvMenu => 'Export history as CSV';
+
+  @override
+  String get exportSavedSnack => 'Export saved';
+
+  @override
+  String get exportFailedSnack => 'Could not save export';
+
+  @override
+  String get backupLastTime => 'Last backup';
+
+  @override
+  String get backupNever => 'Never';
+
+  @override
+  String get backupNowAction => 'Back up now';
+
+  @override
+  String get backupIncludeFiles => 'Include photos and files';
+
+  @override
+  String get backupProtectPassphrase => 'Protect with a passphrase';
+
+  @override
+  String get backupPassphraseHint => 'Passphrase';
+
+  @override
+  String get backupPassphraseConfirmHint => 'Confirm passphrase';
+
+  @override
+  String get backupPassphraseWarning =>
+      'If you forget this passphrase the backup cannot be opened.';
+
+  @override
+  String get backupPassphraseMismatch => 'Passphrases do not match';
+
+  @override
+  String get backupPassphraseRequired => 'Enter a passphrase';
+
+  @override
+  String get backupRestoreAction => 'Restore from a backup';
+
+  @override
+  String get backupAutoTitle => 'Automatic backups';
+
+  @override
+  String get backupAutoSubtitle => 'Weekly plain backup, keeps last 4';
+
+  @override
+  String get backupAutoExplanation =>
+      'Kept on this phone and removed if the app is uninstalled. Save a backup elsewhere now and then.';
+
+  @override
+  String backupAutoCount(int count) {
+    return '$count on this phone';
+  }
+
+  @override
+  String get backupStagePreparing => 'Preparing database...';
+
+  @override
+  String get backupStageReadingOutbox => 'Reading scheduled messages...';
+
+  @override
+  String get backupStagePacking => 'Packing files...';
+
+  @override
+  String get backupStageEncrypting => 'Encrypting backup...';
+
+  @override
+  String get backupStageSaving => 'Saving backup...';
+
+  @override
+  String get backupStageDecrypting => 'Decrypting backup...';
+
+  @override
+  String get backupStageVerifying => 'Checking backup...';
+
+  @override
+  String get backupStageRestoring => 'Restoring data...';
+
+  @override
+  String get backupSavedSnack => 'Backup saved';
+
+  @override
+  String get backupWrongPassphrase =>
+      'That passphrase does not open this backup';
+
+  @override
+  String get backupCorruptError => 'This file is not a valid PocketCRM backup';
+
+  @override
+  String backupManifestSummary(
+    String people,
+    String history,
+    String files,
+    String date,
+  ) {
+    return '$people people, $history history entries, $files files, from $date';
+  }
+
+  @override
+  String backupV1Summary(String people, String history, String tasks) {
+    return 'Old backup: $people people, $history history entries, $tasks follow-ups';
+  }
+
+  @override
+  String get backupReplaceConfirmTitle =>
+      'Replace everything on this phone with this backup?';
+
+  @override
+  String get backupReplaceConfirmAction => 'Replace';
+
+  @override
+  String get backupMergeV1ConfirmTitle =>
+      'Import this old backup into PocketCRM?';
+
+  @override
+  String get backupMergeV1ConfirmAction => 'Import';
+
+  @override
+  String get backupEnterPassphraseTitle => 'Enter backup passphrase';
+
+  @override
+  String get backupOpenAction => 'Open backup';
+
+  @override
+  String get backupRestoredSnack => 'Backup restored';
+
+  @override
+  String backupV1ImportedSnack(int people, int history) {
+    return 'Imported $people people and $history history entries';
+  }
 }

@@ -47,6 +47,7 @@ class _PocketCrmV2AppState extends ConsumerState<PocketCrmV2App>
               .then((_) => outbox.reconcile()),
         );
         unawaited(ref.read(templatesRepositoryProvider).seedDefaultsIfEmpty());
+        unawaited(ref.read(backupServiceProvider).runAutoBackupIfDue());
       });
     }
   }

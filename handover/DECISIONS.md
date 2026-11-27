@@ -75,6 +75,15 @@ Log of technical, dependency, and design choices made during implementation wher
 - **R8 keep rules for release APK (`android/app/proguard-rules.pro`):** Testing the signed release APK on Android 14 caught R8 stripping `androidx.work.impl.WorkDatabase_Impl.<init>()` (WorkManager's Room initializer). Added `android/app/proguard-rules.pro` keeping `com.pocketcrm.pocket_crm.**`, WorkManager/Room/Startup initializers, and `com.dexterous.flutterlocalnotifications.**`, with explicit `isMinifyEnabled = true` and `isShrinkResources = true` in `android/app/build.gradle.kts`.
 - **OEM battery guidance:** Kept all 6 manufacturer battery guidance lines in `lib/l10n/app_en.arb` and matched `Build.MANUFACTURER` case-insensitively in `OemBatteryVendor.fromManufacturer()`.
 
+## Spec 12 — Backup and export (2026-11-27)
+
+- **Packages:** Added `archive: ^4.7.1` and `cryptography: ^2.9.0` (both spec-named).
+- **Encryption KDF (`PCRM1`):** `cryptography` 2.9.0 provides pure-Dart `Argon2id` across Android and desktop hosts, so `BackupCrypto` defaults to `Argon2id` (`kdfMethod = 1`, `memory = 19456 KiB`, `iterations = 2`, `parallelism = 1`, 32-byte key) with AES-256-GCM, and also supports decrypting `kdfMethod = 2` (`PBKDF2-HMAC-SHA256`, 600,000 iterations) in the `PCRM1` envelope (`5B magic + 1B kdf + 16B salt + 12B nonce + ciphertext + 16B tag`).
+- **SAF Pigeon bridge:** Added `pigeons/backup.dart` (`BackupSafApi`: `createDocument`, `copyFileToUri`, `pickDocument`) implemented in `BackupSafApiImpl.kt` with 64 KB chunked streaming on `Dispatchers.IO` and `MainActivity.onActivityResult` forwarding; zero storage permissions are requested anywhere.
+- **vCard 3.0 export:** Implemented standards-compliant vCard 3.0 serialization directly in `ExportService.buildPeopleVcard()` (`FN`, `N`, `TEL`, `ORG`, `TITLE`, `EMAIL`, `ADR`, `BDAY`, `NOTE`) rather than relying on `flutter_contacts` export.
+- **Database reload on restore:** Added `dbRevisionProvider` watched by `appDatabaseProvider` so restoring a `.pcrm` backup closes the active Drift connection, copies the old DB to `pocket_crm.before-restore.bak`, swaps the file and attachments, and reopens cleanly (triggering Drift migrations automatically when restoring an older schema).
+
+
 
 
 

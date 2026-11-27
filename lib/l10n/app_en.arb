@@ -990,5 +990,73 @@
   "settingsCheckSetup": "Check setup",
   "settingsVersion": "Version",
   "settingsLicences": "Licences",
-  "settingsNoInternetStatement": "PocketCRM cannot connect to the internet."
+  "settingsNoInternetStatement": "PocketCRM cannot connect to the internet.",
+  "settingsExportPeopleCsv": "People as CSV",
+  "settingsExportPeopleVcard": "People as vCard",
+  "exportHistoryCsvMenu": "Export history as CSV",
+  "exportSavedSnack": "Export saved",
+  "exportFailedSnack": "Could not save export",
+
+  "backupLastTime": "Last backup",
+  "backupNever": "Never",
+  "backupNowAction": "Back up now",
+  "backupIncludeFiles": "Include photos and files",
+  "backupProtectPassphrase": "Protect with a passphrase",
+  "backupPassphraseHint": "Passphrase",
+  "backupPassphraseConfirmHint": "Confirm passphrase",
+  "backupPassphraseWarning": "If you forget this passphrase the backup cannot be opened.",
+  "backupPassphraseMismatch": "Passphrases do not match",
+  "backupPassphraseRequired": "Enter a passphrase",
+  "backupRestoreAction": "Restore from a backup",
+  "backupAutoTitle": "Automatic backups",
+  "backupAutoSubtitle": "Weekly plain backup, keeps last 4",
+  "backupAutoExplanation": "Kept on this phone and removed if the app is uninstalled. Save a backup elsewhere now and then.",
+  "backupAutoCount": "{count} on this phone",
+  "@backupAutoCount": {
+    "placeholders": {
+      "count": { "type": "int" }
+    }
+  },
+  "backupStagePreparing": "Preparing database...",
+  "backupStageReadingOutbox": "Reading scheduled messages...",
+  "backupStagePacking": "Packing files...",
+  "backupStageEncrypting": "Encrypting backup...",
+  "backupStageSaving": "Saving backup...",
+  "backupStageDecrypting": "Decrypting backup...",
+  "backupStageVerifying": "Checking backup...",
+  "backupStageRestoring": "Restoring data...",
+  "backupSavedSnack": "Backup saved",
+  "backupWrongPassphrase": "That passphrase does not open this backup",
+  "backupCorruptError": "This file is not a valid PocketCRM backup",
+  "backupManifestSummary": "{people} people, {history} history entries, {files} files, from {date}",
+  "@backupManifestSummary": {
+    "placeholders": {
+      "people": { "type": "String" },
+      "history": { "type": "String" },
+      "files": { "type": "String" },
+      "date": { "type": "String" }
+    }
+  },
+  "backupV1Summary": "Old backup: {people} people, {history} history entries, {tasks} follow-ups",
+  "@backupV1Summary": {
+    "placeholders": {
+      "people": { "type": "String" },
+      "history": { "type": "String" },
+      "tasks": { "type": "String" }
+    }
+  },
+  "backupReplaceConfirmTitle": "Replace everything on this phone with this backup?",
+  "backupReplaceConfirmAction": "Replace",
+  "backupMergeV1ConfirmTitle": "Import this old backup into PocketCRM?",
+  "backupMergeV1ConfirmAction": "Import",
+  "backupEnterPassphraseTitle": "Enter backup passphrase",
+  "backupOpenAction": "Open backup",
+  "backupRestoredSnack": "Backup restored",
+  "backupV1ImportedSnack": "Imported {people} people and {history} history entries",
+  "@backupV1ImportedSnack": {
+    "placeholders": {
+      "people": { "type": "int" },
+      "history": { "type": "int" }
+    }
+  }
 }

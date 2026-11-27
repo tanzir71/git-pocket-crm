@@ -1,8 +1,14 @@
+import 'dart:io';
+
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:material_ui/material_ui.dart';
+import 'package:path/path.dart' as p;
+import 'package:path_provider/path_provider.dart';
 
+import '../features/backup/data/backup_service.dart';
+import '../features/backup/data/export_service.dart';
 import '../features/capture/data/capture_service.dart';
 import '../features/followups/data/followups_repository.dart';
 import '../features/history/data/history_repository.dart';
@@ -29,8 +35,21 @@ typedef Clock = DateTime Function();
 /// Overridable clock for deterministic tests.
 final clockProvider = Provider<Clock>((ref) => DateTime.now);
 
+/// Incremented after a database restore so [appDatabaseProvider] reopens cleanly.
+class DbRevisionNotifier extends Notifier<int> {
+  @override
+  int build() => 0;
+
+  void bump() => state = state + 1;
+}
+
+final dbRevisionProvider = NotifierProvider<DbRevisionNotifier, int>(
+  DbRevisionNotifier.new,
+);
+
 /// Single Drift database instance for the entire process.
 final appDatabaseProvider = Provider<AppDatabase>((ref) {
+  ref.watch(dbRevisionProvider);
   final db = AppDatabase.openDefault();
   ref.onDispose(db.close);
   return db;
@@ -273,6 +292,50 @@ final reliabilityCheckServiceProvider = Provider<ReliabilityCheckService>((ref) 
   return ReliabilityCheckService(
     db: ref.watch(appDatabaseProvider),
     outbox: ref.watch(outboxRepositoryProvider),
+    clock: ref.watch(clockProvider),
+  );
+});
+
+final backupSafClientProvider = Provider<BackupSafClient>((ref) {
+  return PigeonBackupSafClient();
+});
+
+final backupServiceProvider = Provider<BackupService>((ref) {
+  return BackupService(
+    db: ref.watch(appDatabaseProvider),
+    outboxClient: ref.watch(outboxPlatformClientProvider),
+    safClient: ref.watch(backupSafClientProvider),
+    cacheDirProvider: getTemporaryDirectory,
+    attachmentsDirProvider: () async {
+      final docs = await getApplicationDocumentsDirectory();
+      return Directory(p.join(docs.path, 'attachments'));
+    },
+    dbPathProvider: () async {
+      final docs = await getApplicationDocumentsDirectory();
+      return resolvePocketCrmDatabasePath(
+        documentsDirPath: docs.path,
+        isAndroid: Platform.isAndroid,
+      );
+    },
+    autoBackupDirProvider: () async {
+      if (Platform.isAndroid) {
+        final ext = await getExternalStorageDirectory();
+        if (ext != null) return Directory(p.join(ext.path, 'auto_backups'));
+      }
+      final docs = await getApplicationDocumentsDirectory();
+      return Directory(p.join(docs.path, 'auto_backups'));
+    },
+    phoneService: ref.watch(phoneServiceProvider),
+    clock: ref.watch(clockProvider),
+  );
+});
+
+final exportServiceProvider = Provider<ExportService>((ref) {
+  return ExportService(
+    db: ref.watch(appDatabaseProvider),
+    safClient: ref.watch(backupSafClientProvider),
+    outboxClient: ref.watch(outboxPlatformClientProvider),
+    cacheDirProvider: getTemporaryDirectory,
     clock: ref.watch(clockProvider),
   );
 });

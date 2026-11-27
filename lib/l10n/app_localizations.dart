@@ -2896,6 +2896,257 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'PocketCRM cannot connect to the internet.'**
   String get settingsNoInternetStatement;
+
+  /// No description provided for @settingsExportPeopleCsv.
+  ///
+  /// In en, this message translates to:
+  /// **'People as CSV'**
+  String get settingsExportPeopleCsv;
+
+  /// No description provided for @settingsExportPeopleVcard.
+  ///
+  /// In en, this message translates to:
+  /// **'People as vCard'**
+  String get settingsExportPeopleVcard;
+
+  /// No description provided for @exportHistoryCsvMenu.
+  ///
+  /// In en, this message translates to:
+  /// **'Export history as CSV'**
+  String get exportHistoryCsvMenu;
+
+  /// No description provided for @exportSavedSnack.
+  ///
+  /// In en, this message translates to:
+  /// **'Export saved'**
+  String get exportSavedSnack;
+
+  /// No description provided for @exportFailedSnack.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not save export'**
+  String get exportFailedSnack;
+
+  /// No description provided for @backupLastTime.
+  ///
+  /// In en, this message translates to:
+  /// **'Last backup'**
+  String get backupLastTime;
+
+  /// No description provided for @backupNever.
+  ///
+  /// In en, this message translates to:
+  /// **'Never'**
+  String get backupNever;
+
+  /// No description provided for @backupNowAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Back up now'**
+  String get backupNowAction;
+
+  /// No description provided for @backupIncludeFiles.
+  ///
+  /// In en, this message translates to:
+  /// **'Include photos and files'**
+  String get backupIncludeFiles;
+
+  /// No description provided for @backupProtectPassphrase.
+  ///
+  /// In en, this message translates to:
+  /// **'Protect with a passphrase'**
+  String get backupProtectPassphrase;
+
+  /// No description provided for @backupPassphraseHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Passphrase'**
+  String get backupPassphraseHint;
+
+  /// No description provided for @backupPassphraseConfirmHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm passphrase'**
+  String get backupPassphraseConfirmHint;
+
+  /// No description provided for @backupPassphraseWarning.
+  ///
+  /// In en, this message translates to:
+  /// **'If you forget this passphrase the backup cannot be opened.'**
+  String get backupPassphraseWarning;
+
+  /// No description provided for @backupPassphraseMismatch.
+  ///
+  /// In en, this message translates to:
+  /// **'Passphrases do not match'**
+  String get backupPassphraseMismatch;
+
+  /// No description provided for @backupPassphraseRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a passphrase'**
+  String get backupPassphraseRequired;
+
+  /// No description provided for @backupRestoreAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Restore from a backup'**
+  String get backupRestoreAction;
+
+  /// No description provided for @backupAutoTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Automatic backups'**
+  String get backupAutoTitle;
+
+  /// No description provided for @backupAutoSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Weekly plain backup, keeps last 4'**
+  String get backupAutoSubtitle;
+
+  /// No description provided for @backupAutoExplanation.
+  ///
+  /// In en, this message translates to:
+  /// **'Kept on this phone and removed if the app is uninstalled. Save a backup elsewhere now and then.'**
+  String get backupAutoExplanation;
+
+  /// No description provided for @backupAutoCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} on this phone'**
+  String backupAutoCount(int count);
+
+  /// No description provided for @backupStagePreparing.
+  ///
+  /// In en, this message translates to:
+  /// **'Preparing database...'**
+  String get backupStagePreparing;
+
+  /// No description provided for @backupStageReadingOutbox.
+  ///
+  /// In en, this message translates to:
+  /// **'Reading scheduled messages...'**
+  String get backupStageReadingOutbox;
+
+  /// No description provided for @backupStagePacking.
+  ///
+  /// In en, this message translates to:
+  /// **'Packing files...'**
+  String get backupStagePacking;
+
+  /// No description provided for @backupStageEncrypting.
+  ///
+  /// In en, this message translates to:
+  /// **'Encrypting backup...'**
+  String get backupStageEncrypting;
+
+  /// No description provided for @backupStageSaving.
+  ///
+  /// In en, this message translates to:
+  /// **'Saving backup...'**
+  String get backupStageSaving;
+
+  /// No description provided for @backupStageDecrypting.
+  ///
+  /// In en, this message translates to:
+  /// **'Decrypting backup...'**
+  String get backupStageDecrypting;
+
+  /// No description provided for @backupStageVerifying.
+  ///
+  /// In en, this message translates to:
+  /// **'Checking backup...'**
+  String get backupStageVerifying;
+
+  /// No description provided for @backupStageRestoring.
+  ///
+  /// In en, this message translates to:
+  /// **'Restoring data...'**
+  String get backupStageRestoring;
+
+  /// No description provided for @backupSavedSnack.
+  ///
+  /// In en, this message translates to:
+  /// **'Backup saved'**
+  String get backupSavedSnack;
+
+  /// No description provided for @backupWrongPassphrase.
+  ///
+  /// In en, this message translates to:
+  /// **'That passphrase does not open this backup'**
+  String get backupWrongPassphrase;
+
+  /// No description provided for @backupCorruptError.
+  ///
+  /// In en, this message translates to:
+  /// **'This file is not a valid PocketCRM backup'**
+  String get backupCorruptError;
+
+  /// No description provided for @backupManifestSummary.
+  ///
+  /// In en, this message translates to:
+  /// **'{people} people, {history} history entries, {files} files, from {date}'**
+  String backupManifestSummary(
+    String people,
+    String history,
+    String files,
+    String date,
+  );
+
+  /// No description provided for @backupV1Summary.
+  ///
+  /// In en, this message translates to:
+  /// **'Old backup: {people} people, {history} history entries, {tasks} follow-ups'**
+  String backupV1Summary(String people, String history, String tasks);
+
+  /// No description provided for @backupReplaceConfirmTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Replace everything on this phone with this backup?'**
+  String get backupReplaceConfirmTitle;
+
+  /// No description provided for @backupReplaceConfirmAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Replace'**
+  String get backupReplaceConfirmAction;
+
+  /// No description provided for @backupMergeV1ConfirmTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Import this old backup into PocketCRM?'**
+  String get backupMergeV1ConfirmTitle;
+
+  /// No description provided for @backupMergeV1ConfirmAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Import'**
+  String get backupMergeV1ConfirmAction;
+
+  /// No description provided for @backupEnterPassphraseTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter backup passphrase'**
+  String get backupEnterPassphraseTitle;
+
+  /// No description provided for @backupOpenAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Open backup'**
+  String get backupOpenAction;
+
+  /// No description provided for @backupRestoredSnack.
+  ///
+  /// In en, this message translates to:
+  /// **'Backup restored'**
+  String get backupRestoredSnack;
+
+  /// No description provided for @backupV1ImportedSnack.
+  ///
+  /// In en, this message translates to:
+  /// **'Imported {people} people and {history} history entries'**
+  String backupV1ImportedSnack(int people, int history);
 }
 
 class _AppLocalizationsDelegate

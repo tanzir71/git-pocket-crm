@@ -471,6 +471,17 @@ class AppDatabase extends _$AppDatabase {
       await rebuildFtsForContact(row.read<int>('id'));
     }
   }
+
+  /// Creates a consistent standalone SQLite snapshot at [destinationPath] using
+  /// `VACUUM INTO`, deleting any pre-existing file at that path first.
+  Future<void> vacuumInto(String destinationPath) async {
+    final destFile = File(destinationPath);
+    if (await destFile.exists()) {
+      await destFile.delete();
+    }
+    final escaped = destinationPath.replaceAll("'", "''");
+    await customStatement("VACUUM INTO '$escaped'");
+  }
 }
 
 /// Computes the exact SQLite database path matching Android's historical

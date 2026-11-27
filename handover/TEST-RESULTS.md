@@ -109,6 +109,13 @@ Record of automated test runs and Android emulator verification runs (date, imag
   Tapping `Continue` ran first sync and navigated cleanly to `People`. (Android 13+ sideload restricted settings is exempt under `adb install` and stays recorded in `handover/UNVERIFIED.md`.)
 - **M3 Signed APK:** `bash tool/build_apk.sh` produced `build/PocketCRM.apk` (`65.1 MB`, `sha256: 9e7e53089c409c7b58cbf0789110874683ccdfbe39d50baa58f8a4fc30a1a2e5`).
 
+## 2026-11-27 — Spec 12
+
+- **Environment (host):** Host Windows 11, Flutter 3.50.1, Dart 3.14.0, `archive` 4.7.1, `cryptography` 2.9.0, Pigeon 30.0.4
+- **Command:** `grep -R "Permission.storage\|/storage/emulated" lib; (cd android && ./gradlew :app:testDebugUnitTest) && bash tool/verify.sh`
+- **Outcome:** PASSED. `grep` returned zero matches; `flutter analyze` reported 0 issues; all 94 Flutter tests passed (including encrypted `PCRM1` Argon2id round-trip across every table + 3 binary/text attachment files -> wipe -> restore row-for-row & byte-for-byte + `pocket_crm.before-restore.bak` + future outbox re-enqueue & past-due missed marking; literal v4->v5 schema-upgrade restore; wrong passphrase & truncated plain/encrypted file rejection leaving live data untouched; v1 JSON backup idempotent double-import with zero duplicates; weekly automatic backups keeping last 4 plain archives; RFC 4180 People CSV, vCard 3.0, and Person history CSV exports; `BackupSettingsScreen` widget test; and full-`lib/` lint guards); Kotlin JUnit passed; `assembleDebug`, `check_manifest.sh` (zero `INTERNET`), and `check_landing.sh` passed.
+
+
 
 
 
