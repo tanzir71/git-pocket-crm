@@ -209,6 +209,10 @@ img {
   line-height: 1.385;
 }
 
+.nav-btn-mobile {
+  display: none;
+}
+
 .btn-secondary-sm:hover {
   background-color: var(--subtle-hover);
 }
@@ -601,6 +605,14 @@ h3 {
 
   .nav-links {
     display: none;
+  }
+
+  .nav-btn-desktop {
+    display: none;
+  }
+
+  .nav-btn-mobile {
+    display: inline-flex;
   }
 
   .section {

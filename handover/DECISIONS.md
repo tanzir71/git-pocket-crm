@@ -99,6 +99,12 @@ Log of technical, dependency, and design choices made during implementation wher
 - **Permission allow-list (`tool/allowed_permissions.txt`):** Locked the merged release manifest to the exact 19 sorted permissions (including AndroidX/WorkManager/notification/picker declarations, with zero `android.permission.INTERNET`) enforced via `diff -u` in `tool/check_manifest.sh`.
 - **Fail-fast release signing:** Added an explicit `GradleException` guard in `android/app/build.gradle.kts` when any `*Release` task runs without `key.properties` so release builds never fall back to a debug key.
 
+## Spec 15 part B — Landing page (2026-11-27)
+
+- **Responsive nav CTA without JS:** Rendered two sibling `<a class="btn btn-secondary-sm">` links (`.nav-btn-desktop` `"GitHub"` and `.nav-btn-mobile` `"Download"`) toggled via the existing `max-width: 1039px` media query so the site remains 100% JavaScript-free.
+- **Real-app light & dark screenshots:** Captured the real `TodayScreen`, `AfterCallSheet`, and `NewMessageScreen` widgets at `2.0x` DPR (`824x1834`) with bundled Inter v4.1 and MaterialIcons fonts, resized to `626x1393` WebP (q=82, ~31–35 KB each) + PNG fallbacks, and wired dark variants via `<picture>` `media="(prefers-color-scheme: dark)"`.
+- **Copy audit against `UNVERIFIED.md`:** Verified every sentence on `docs/index.html` against the built app and `handover/UNVERIFIED.md`. Retained `"at the time you chose"` because exact-alarm scheduled sending under Doze and post-reboot was verified on the Android 14 emulator (Spec 09 & Spec 10).
+
 
 
 

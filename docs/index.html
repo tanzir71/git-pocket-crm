@@ -35,7 +35,8 @@
           <li><a href="#privacy">Privacy</a></li>
           <li><a href="#install">Install</a></li>
         </ul>
-        <a class="btn btn-secondary-sm" href="https://github.com/tanzir71/git-pocket-crm">GitHub</a>
+        <a class="btn btn-secondary-sm nav-btn-desktop" href="https://github.com/tanzir71/git-pocket-crm">GitHub</a>
+        <a class="btn btn-secondary-sm nav-btn-mobile" href="https://github.com/tanzir71/git-pocket-crm/releases/latest/download/PocketCRM.apk">Download</a>
       </nav>
     </div>
   </header>
@@ -48,14 +49,16 @@
           <h1>Remember every conversation.<br>Follow up on time.</h1>
           <p class="lead">PocketCRM turns your phone's calls and messages into a history for each person. Add a note in seconds after a call or a visit, set the next step, and it comes back when it is due.</p>
           <div class="cta-row">
-            <a class="btn btn-primary" href="https://github.com/tanzir71/git-pocket-crm">Follow the build on GitHub</a>
-            <a class="btn btn-quiet" href="https://github.com/tanzir71/git-pocket-crm/releases">See milestone builds</a>
+            <a class="btn btn-primary" href="https://github.com/tanzir71/git-pocket-crm/releases/latest/download/PocketCRM.apk">Download for Android</a>
+            <a class="btn btn-quiet" href="https://github.com/tanzir71/git-pocket-crm">View source on GitHub</a>
           </div>
-          <p class="caption">Version 2 is being built in the open. Each milestone is published as it lands.</p>
+          <p class="caption">Installs from an APK file. Everything stays on your phone.</p>
         </div>
         <div class="phone-wrap">
           <div class="phone-frame">
             <picture>
+              <source srcset="assets/screen-today-dark.webp" media="(prefers-color-scheme: dark)" type="image/webp">
+              <source srcset="assets/screen-today-dark.png" media="(prefers-color-scheme: dark)" type="image/png">
               <source srcset="assets/screen-today.webp" type="image/webp">
               <img src="assets/screen-today.png" width="626" height="1393" alt="The Today screen: a prompt to note a call that just ended, three follow-ups, and two people to reconnect with.">
             </picture>
@@ -69,6 +72,8 @@
         <div class="phone-wrap">
           <div class="phone-frame phone-frame-sm">
             <picture>
+              <source srcset="assets/screen-after-call-dark.webp" media="(prefers-color-scheme: dark)" type="image/webp">
+              <source srcset="assets/screen-after-call-dark.png" media="(prefers-color-scheme: dark)" type="image/png">
               <source srcset="assets/screen-after-call.webp" type="image/webp">
               <img src="assets/screen-after-call.png" width="626" height="1393" loading="lazy" alt="The note sheet after a call, with the outcome, a note, and a follow-up set for tomorrow.">
             </picture>
@@ -159,6 +164,8 @@
         <div class="phone-wrap">
           <div class="phone-frame phone-frame-sm">
             <picture>
+              <source srcset="assets/screen-new-message-dark.webp" media="(prefers-color-scheme: dark)" type="image/webp">
+              <source srcset="assets/screen-new-message-dark.png" media="(prefers-color-scheme: dark)" type="image/png">
               <source srcset="assets/screen-new-message.webp" type="image/webp">
               <img src="assets/screen-new-message.png" width="626" height="1393" loading="lazy" alt="The message composer with a personalised reminder, a preview for one person, and the send time and pace.">
             </picture>
@@ -173,7 +180,7 @@
           <h2>It cannot connect to the internet</h2>
           <p class="privacy-copy">No account, no server, no analytics. The app does not hold Android's internet permission, so your calls, messages and notes have nowhere to go. Backups are files you keep, protected with a passphrase if you want one.</p>
           <div class="privacy-links">
-            <a href="https://github.com/tanzir71/git-pocket-crm/blob/main/android/app/src/main/AndroidManifest.xml">See the permission list</a>
+            <a href="https://github.com/tanzir71/git-pocket-crm/blob/main/tool/allowed_permissions.txt">See the permission list</a>
             <a href="https://github.com/tanzir71/git-pocket-crm">Read the source</a>
           </div>
         </div>
@@ -205,8 +212,8 @@
           <p>Google Play only lets an app read call and message history if it replaces your phone or SMS app. PocketCRM works beside the ones you already use, so it is published here instead.</p>
         </div>
         <div class="install-cta">
-          <a class="btn btn-primary" href="https://github.com/tanzir71/git-pocket-crm/releases">See milestone builds</a>
-          <p class="caption">Version 2.0 is not released yet.</p>
+          <a class="btn btn-primary" href="https://github.com/tanzir71/git-pocket-crm/releases/latest/download/PocketCRM.apk">Download for Android</a>
+          <p class="caption">Android only. Every release is on GitHub.</p>
         </div>
       </div>
     </section>

@@ -138,6 +138,12 @@ Record of automated test runs and Android emulator verification runs (date, imag
 - **Command:** Clean install via `adb install -r --no-streaming build/PocketCRM.apk`, `pm clear`, launched `MainActivity` -> verified Setup opened -> granted permissions via `adb` -> verified `5/5 Allowed` -> tapped `Continue` -> created contact `Amara Okafor` -> added note `"Release v2 verified"`.
 - **Outcome:** PASSED. Clean install opened directly to Setup, refreshed all 5 rows to `Allowed`, navigated to People, created contact, and saved/displayed the note cleanly in the R8 release build.
 
+## 2026-11-27 — Spec 15 part B (Landing page)
+
+- **Environment:** Host Windows 11, Python 3.13.17, Playwright Chromium, `curl`
+- **Command:** `python tool/og/render_landing.py && bash tool/check_landing.sh && bash tool/verify.sh`
+- **Outcome:** PASSED. Replaced all three phone screenshots with real-app light and dark captures (`626x1393` WebP q=82 + PNG fallback via `<picture>` and `prefers-color-scheme: dark`), regenerated `docs/og.png` from the real Today screenshot, and updated nav/hero/privacy/install links and copy to Part B (`Download for Android` -> `releases/latest/download/PocketCRM.apk`, `tool/allowed_permissions.txt`). Playwright audit confirmed 0 external network requests (6 same-origin requests only), 0 horizontal overflow at `320px` (`320/320`) and at `200%` font size on `390px` (`390/390`), and first-load payload of `154.3 KB` (`< 400 KB`). Visually compared `built-desktop.png`, `built-mobile.png`, `built-dark.png`, and `docs/og.png` against the design.
+
 
 
 
