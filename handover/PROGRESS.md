@@ -70,6 +70,22 @@ Milestone-by-milestone log of what shipped, key decisions, and what remains unve
 - Spec 09: cross-emulator radio forwarding from `Pixel_8` (API 34) to `Medium_Phone` (API 36) did not populate B's inbox (all 7 outbox checks verified directly on `Pixel_8`).
 - Spec 11: Android 13+ file-install restricted settings flow (exempt under `adb install`; covered by widget tests) and per-device verification of the 6 OEM battery setting labels (Xiaomi/Redmi/Poco, Oppo/Realme/OnePlus, Vivo/iQOO, Samsung, Tecno/Infinix/itel, Huawei/Honor).
 
+## 2026-11-27 — M4: Backup and global readiness
+
+### What shipped
+- **Spec 12:** Added `archive` 4.7.1 and `cryptography` 2.9.0; built native Android Storage Access Framework Pigeon bridge (`pigeons/backup.dart` + `BackupSafApiImpl.kt` with 64 KB chunked streaming and zero storage permissions); implemented `.pcrm` backups (`VACUUM INTO` snapshot + `manifest.json` + `outbox.json` + `attachments/`) with optional `PCRM1` AES-256-GCM + Argon2id encryption, safe atomic restore (`pocket_crm.before-restore.bak`, automatic forward schema migration, re-enqueuing future outbox items and marking past due single messages missed), idempotent merge import of v1 JSON backups, weekly automatic plain backups keeping the last 4, Android `dataExtractionRules`/`backup_rules` excluding private DB/attachments from cloud backup while allowing device-to-device transfer, and open-format exports (People CSV, People vCard 3.0, Person history CSV).
+- **Spec 13:** Translated all 509 ARB keys to Bengali (`lib/l10n/app_bn.arb`) with automated ARB completeness and no-literal widget tests; defaulted currency and phone region from device locale with searchable currency picker and per-currency balances on Person; converted padding/alignment across all UI files to directional RTL layout with RTL goldens (`Today`, `Person`, `New message`); verified zero overflows at `1.3x` and `2.0x` text scale with 18 text-scale goldens across all 9 designed screens; verified TalkBack semantics across all 9 screens and WCAG 2.1 `>= 4.5:1` contrast across both light and dark themes; enabled edge-to-edge and predictive back (`android:enableOnBackInvokedCallback="true"`); generated adaptive + monochrome launcher icon (`flutter_launcher_icons`) and set one-sentence `pubspec.yaml` description.
+- Built signed M4 pre-release APK (`build/PocketCRM.apk`, `sha256: c92f2f1b640d63ee97b40d22262cb669a87a2a778c9225cddf9706eb3e023c0f`) and published GitHub pre-release `m4`.
+
+### What was decided
+- Defaulted `PCRM1` backup encryption to pure-Dart `Argon2id` (`kdfMethod = 1`) via `cryptography` 2.9.0 while retaining decrypt support for `PBKDF2-HMAC-SHA256` (`kdfMethod = 2`, 600,000 iterations).
+- Implemented standards-compliant vCard 3.0 export directly in `ExportService`.
+- Marked `lib/l10n/app_bn.arb` in `DECISIONS.md` and `UNVERIFIED.md` as needing native Bengali speaker review.
+
+### What is in UNVERIFIED.md
+- Permanent device/network items, Spec 09 cross-emulator forwarding, Spec 11 sideloaded restricted settings & OEM battery labels, plus Spec 13 physical-hardware GPU startup (<1.5s) & 5,000-row scroll frame times (<32ms) and native Bengali translation review.
+
+
 
 
 

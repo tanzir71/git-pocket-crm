@@ -2,6 +2,13 @@
 
 All notable changes to PocketCRM are documented in this file.
 
+## Milestone 4: Backup and global readiness (2026-11-27)
+
+- Full encrypted and plain `.pcrm` backup and restore saved wherever you choose through Android's file picker (with optional passphrase encryption, automatic safety backup before restoring, and weekly automatic local backups keeping the last four).
+- Old PocketCRM v1 JSON backups still import cleanly without creating duplicates.
+- Export all people as CSV or vCard 3.0 from Settings, or export any person's history as CSV from their page.
+- Added Bengali (`বাংলা`) alongside English, searchable currency picker with multi-currency balances, RTL layout support, large text scaling up to 200%, TalkBack screen-reader support, predictive back, edge-to-edge display, and a new adaptive launcher icon.
+
 ## Milestone 3: Reliable scheduled and bulk messaging (2026-11-27)
 
 - New native Android SMS outbox so scheduled and bulk messages send reliably even when PocketCRM is closed, the phone is idle, or after a restart, with automatic retries on temporary signal loss and send-window support.
