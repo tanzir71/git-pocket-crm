@@ -23,4 +23,11 @@ Log of technical, dependency, and design choices made during implementation wher
 - **Bundled font:** Downloaded official Inter v4.1 (`Inter-Regular.ttf`, `Inter-Medium.ttf`, `Inter-SemiBold.ttf`, and SIL Open Font License `OFL.txt`) from `rsms/inter` GitHub releases into `assets/fonts/` and registered `OFL.txt` via `LicenseRegistry` in `AppTheme.registerFontLicenses()`.
 - **Design token enforcement:** Added `AppColors` `ThemeExtension` and `AppTokens` matching every value in `handover/02-design-system.md`, plus `test/lint_guard_test.dart` ensuring zero hardcoded colors, `FontStyle.italic`, `GoogleFonts.`, or `withOpacity(` in `lib/core/widgets` and `lib/features`.
 
+## Spec 15 — Landing page, part A (2026-11-27)
+
+- **Font subsetting:** Subsetted Inter v4.1 `InterVariable.woff2` with `fontTools.subset` to Latin + Latin-1 + punctuation/symbols (`99.5 KB`) so the total first-load payload (HTML + CSS + font + hero WebP) is `157.8 KB`, well under the `400 KB` budget. Kept `OFL.txt` beside it.
+- **OG image & visual verification:** Generated `docs/og.png` (`1200x630`) from `tool/og/og.html` and captured `handover/design/landing/built-{desktop,mobile,768,1040,dark}.png` via headless Chromium (Playwright) via `tool/og/render_landing.py`.
+- **Design comparison notes:** Built screenshots at `1440px` and `390px` match the Figma frames in layout, colour tokens, type scale, spacing, and section rhythm. Only intentional differences are the Part A "being built" copy/links and the spec's instruction to use 16/24 body copy on web instead of the app's 15/22.
+
+
 

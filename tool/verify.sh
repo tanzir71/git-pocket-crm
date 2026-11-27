@@ -16,7 +16,10 @@ flutter test
 echo "==> 4/5 flutter build apk --debug"
 flutter build apk --debug
 
-echo "==> 5/5 tool/check_manifest.sh"
+echo "==> 5/6 tool/check_manifest.sh"
 bash tool/check_manifest.sh
+
+echo "==> 6/6 tool/check_landing.sh"
+bash tool/check_landing.sh
 
 echo "==> verify.sh PASSED"

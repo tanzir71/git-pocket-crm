@@ -20,3 +20,9 @@ Record of automated test runs and Android emulator verification runs (date, imag
 - **Command:** `bash tool/verify.sh`
 - **Outcome:** PASSED. `flutter analyze` reported 0 issues; all 31 tests passed (lint guard, component measurements, 4 Inter-rendered golden tests at width 412 in light/dark 1.0x & 1.3x, plus all Spec 01 & 02 tests); `assembleDebug` and `check_manifest.sh` passed.
 
+## 2026-11-27 — Spec 15 part A (Landing page)
+
+- **Environment:** Host Windows 11, Python 3.13.17, Playwright Chromium
+- **Command:** `python tool/og/render_landing.py && bash tool/check_landing.sh`
+- **Outcome:** PASSED. 0 external network requests (6 same-origin requests only); 0 horizontal overflow at 320px (`320/320`) and at 200% font size on 390px (`390/390`); first load payload 157.8 KB (< 400 KB); 1 `<h1>`, all `<img>` have `alt`, `width`, `height`; `.nojekyll` present.
+
