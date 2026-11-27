@@ -63,8 +63,12 @@ final _personScheduledOutboxProvider =
   return ref.watch(historyRepositoryProvider).watchScheduledOutboxForPerson(id);
 });
 
-final _personBalanceProvider = StreamProvider.autoDispose.family<PersonBalance, int>((ref, id) {
-  return ref.watch(paymentsRepositoryProvider).watchBalanceForPerson(id);
+final _personBalancesProvider =
+    StreamProvider.autoDispose.family<List<PersonBalance>, int>((ref, id) {
+  final defaultCurrency = ref.watch(currencyCodeProvider).value ?? 'USD';
+  return ref
+      .watch(paymentsRepositoryProvider)
+      .watchBalancesByCurrency(id, defaultCurrency: defaultCurrency);
 });
 
 final _personAttachmentsProvider =
@@ -180,7 +184,7 @@ class _PersonScreenState extends ConsumerState<PersonScreen> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Padding(
-              padding: const EdgeInsets.fromLTRB(
+              padding: const EdgeInsetsDirectional.fromSTEB(
                 AppTokens.screenPadding,
                 AppTokens.space8,
                 AppTokens.screenPadding,
@@ -284,7 +288,7 @@ class _PersonScreenState extends ConsumerState<PersonScreen> {
           builder: (ctx, setState) {
             final canSave = controller.text.trim().isNotEmpty;
             return Padding(
-              padding: EdgeInsets.fromLTRB(
+              padding: EdgeInsetsDirectional.fromSTEB(
                 AppTokens.screenPadding,
                 AppTokens.space8,
                 AppTokens.screenPadding,
@@ -374,7 +378,7 @@ class _PersonScreenState extends ConsumerState<PersonScreen> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Padding(
-              padding: const EdgeInsets.fromLTRB(
+              padding: const EdgeInsetsDirectional.fromSTEB(
                 AppTokens.screenPadding,
                 AppTokens.space8,
                 AppTokens.screenPadding,
@@ -593,7 +597,7 @@ class _PersonScreenState extends ConsumerState<PersonScreen> {
     final followUps = ref.watch(_personFollowUpsProvider(contact.id)).value ?? const <Task>[];
     final scheduledOutbox =
         ref.watch(_personScheduledOutboxProvider(contact.id)).value ?? const <OutboxMessage>[];
-    final balance = ref.watch(_personBalanceProvider(contact.id)).value ?? PersonBalance.zero;
+    final balances = ref.watch(_personBalancesProvider(contact.id)).value ?? const <PersonBalance>[];
     final attachmentCounts =
         ref.watch(_personAttachmentsProvider(contact.id)).value ?? const <int, int>{};
     final history = ref
@@ -622,7 +626,7 @@ class _PersonScreenState extends ConsumerState<PersonScreen> {
     final subtitle = subtitleParts.join(' · ');
     final showWhatsApp = _isPrimaryMobile(contact, phones);
     final nextCount =
-        followUps.length + scheduledOutbox.length + (balance.hasBalance ? 1 : 0);
+        followUps.length + scheduledOutbox.length + balances.length;
 
     return Scaffold(
       backgroundColor: c.bgCanvas,
@@ -638,7 +642,7 @@ class _PersonScreenState extends ConsumerState<PersonScreen> {
             // Top bar
             SliverToBoxAdapter(
               child: Padding(
-                padding: const EdgeInsets.fromLTRB(
+                padding: const EdgeInsetsDirectional.fromSTEB(
                   AppTokens.space8,
                   AppTokens.space8,
                   AppTokens.space8,
@@ -736,7 +740,7 @@ class _PersonScreenState extends ConsumerState<PersonScreen> {
             // Identity block
             SliverToBoxAdapter(
               child: Padding(
-                padding: const EdgeInsets.fromLTRB(
+                padding: const EdgeInsetsDirectional.fromSTEB(
                   AppTokens.screenPadding,
                   AppTokens.space8,
                   AppTokens.screenPadding,
@@ -897,7 +901,7 @@ class _PersonScreenState extends ConsumerState<PersonScreen> {
                       body: msg.body,
                       timeLine: fmt.formatRelativeDateTime(msg.dueAt, l10n),
                     ),
-                  if (balance.hasBalance)
+                  for (final balance in balances)
                     EventRow(
                       icon: Icons.account_balance_wallet_outlined,
                       title: balance.owesYou
@@ -1042,7 +1046,7 @@ class _PersonScreenState extends ConsumerState<PersonScreen> {
         final c = ctx.colors;
         final tt = Theme.of(ctx).textTheme;
         return Padding(
-          padding: const EdgeInsets.fromLTRB(
+          padding: const EdgeInsetsDirectional.fromSTEB(
             AppTokens.screenPadding,
             AppTokens.space8,
             AppTokens.screenPadding,

@@ -24,3 +24,9 @@ Plain statements of fact for behaviours that cannot be verified automatically or
   - Tecno, Infinix, itel (`Allow Auto-start in Phone Master`)
   - Huawei, Honor (`Set App launch to Manage manually and allow all three switches`)
 
+## Spec 13 — Global readiness
+
+- Cold start-up under 1.5 s and profile-mode 5,000-row People scrolling under 32 ms per frame on a physical mid-range Android phone: headless emulator runs on this machine use software SwiftShader rendering (`-gpu swiftshader_indirect`), where release cold start measured `3422 ms` median; physical GPU frame timing is not measurable on this machine.
+- Bengali translation (`lib/l10n/app_bn.arb`) has not been reviewed by a native Bengali speaker.
+
+

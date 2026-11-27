@@ -353,7 +353,7 @@ class _TodayScreenState extends ConsumerState<TodayScreen> {
             // Header: "Today" + date + search & settings
             SliverToBoxAdapter(
               child: Padding(
-                padding: const EdgeInsets.fromLTRB(
+                padding: const EdgeInsetsDirectional.fromSTEB(
                   AppTokens.screenPadding,
                   AppTokens.space16,
                   AppTokens.space12,

@@ -270,7 +270,7 @@ class _AfterCallSheetBodyState extends ConsumerState<AfterCallSheetBody> {
           children: [
             Flexible(
               child: SingleChildScrollView(
-                padding: const EdgeInsets.fromLTRB(
+                padding: const EdgeInsetsDirectional.fromSTEB(
                   AppTokens.screenPadding,
                   AppTokens.space8,
                   AppTokens.screenPadding,
@@ -404,7 +404,7 @@ class _AfterCallSheetBodyState extends ConsumerState<AfterCallSheetBody> {
 
             // Pinned Save button
             Padding(
-              padding: const EdgeInsets.fromLTRB(
+              padding: const EdgeInsetsDirectional.fromSTEB(
                 AppTokens.screenPadding,
                 AppTokens.space8,
                 AppTokens.screenPadding,

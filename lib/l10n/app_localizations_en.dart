@@ -1570,6 +1570,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get settingsCurrency => 'Currency';
 
   @override
+  String get settingsCurrencySearchHint => 'Search currency code or symbol';
+
+  @override
   String get settingsPhoneRegion => 'Region for phone numbers';
 
   @override

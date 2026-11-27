@@ -127,7 +127,7 @@ class _BackupSettingsScreenState extends ConsumerState<BackupSettingsScreen> {
         final tt = Theme.of(ctx).textTheme;
         final l10n = ctx.l10n;
         return Padding(
-          padding: EdgeInsets.fromLTRB(
+          padding: EdgeInsetsDirectional.fromSTEB(
             AppTokens.screenPadding,
             AppTokens.space8,
             AppTokens.screenPadding,
@@ -383,7 +383,7 @@ class _BackupSettingsScreenState extends ConsumerState<BackupSettingsScreen> {
           ),
           Divider(height: 1, color: c.borderHairline),
           Padding(
-            padding: const EdgeInsets.fromLTRB(
+            padding: const EdgeInsetsDirectional.fromSTEB(
               AppTokens.screenPadding,
               AppTokens.space16,
               AppTokens.screenPadding,
@@ -488,7 +488,7 @@ class _BackupSettingsScreenState extends ConsumerState<BackupSettingsScreen> {
           ),
           Divider(height: 1, color: c.borderHairline),
           Padding(
-            padding: const EdgeInsets.fromLTRB(
+            padding: const EdgeInsetsDirectional.fromSTEB(
               AppTokens.screenPadding,
               AppTokens.space12,
               AppTokens.screenPadding,

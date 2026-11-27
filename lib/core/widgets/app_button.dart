@@ -96,6 +96,7 @@ class AppButton extends StatelessWidget {
     return Semantics(
       button: true,
       enabled: onPressed != null,
+      excludeSemantics: true,
       label: semanticLabel ?? label,
       child: ConstrainedBox(
         constraints: const BoxConstraints(

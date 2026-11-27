@@ -1,8 +1,10 @@
 import 'dart:io';
+import 'dart:ui' show PlatformDispatcher;
 
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:intl/intl.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
@@ -150,18 +152,33 @@ final localeOverrideProvider = StreamProvider<Locale?>((ref) {
   });
 });
 
-/// Watches the saved currency ISO code (defaults to 'USD').
+String _deviceDefaultCurrencyCode() {
+  try {
+    final locale = PlatformDispatcher.instance.locale.toLanguageTag();
+    final code = NumberFormat.simpleCurrency(locale: locale).currencyName;
+    if (code != null && code.length == 3) return code.toUpperCase();
+  } catch (_) {}
+  return 'USD';
+}
+
+String _deviceDefaultPhoneRegion() {
+  final country = PlatformDispatcher.instance.locale.countryCode?.trim().toUpperCase();
+  if (country != null && country.length == 2) return country;
+  return 'US';
+}
+
+/// Watches the saved currency ISO code (initially from device locale).
 final currencyCodeProvider = StreamProvider<String>((ref) {
   return ref.watch(settingsRepositoryProvider).watch('currency_code').map((value) {
-    if (value == null || value.trim().isEmpty) return 'USD';
+    if (value == null || value.trim().isEmpty) return _deviceDefaultCurrencyCode();
     return value.trim().toUpperCase();
   });
 });
 
-/// Watches the saved default phone region ISO code (defaults to 'US').
+/// Watches the saved default phone region ISO code (initially from device/SIM locale).
 final phoneRegionProvider = StreamProvider<String>((ref) {
   return ref.watch(settingsRepositoryProvider).watch('phone_region').map((value) {
-    if (value == null || value.trim().isEmpty) return 'US';
+    if (value == null || value.trim().isEmpty) return _deviceDefaultPhoneRegion();
     return value.trim().toUpperCase();
   });
 });

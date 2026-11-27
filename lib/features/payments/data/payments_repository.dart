@@ -89,6 +89,52 @@ class PaymentsRepository {
     );
   }
 
+  /// Computes separate balances per currency when a person's payments span
+  /// more than one currency code (Spec 13 step 4).
+  static List<PersonBalance> computeBalancesByCurrency(
+    List<TimelineEntry> entries, {
+    String defaultCurrency = 'USD',
+  }) {
+    final grouped = <String, List<TimelineEntry>>{};
+    for (final entry in entries) {
+      if (entry.hidden == 1) continue;
+      final code = (entry.currency != null && entry.currency!.trim().isNotEmpty)
+          ? entry.currency!.trim().toUpperCase()
+          : defaultCurrency.toUpperCase();
+      grouped.putIfAbsent(code, () => <TimelineEntry>[]).add(entry);
+    }
+    final result = <PersonBalance>[];
+    for (final entry in grouped.entries) {
+      final bal = computeBalance(entry.value);
+      if (bal.hasBalance) {
+        result.add(
+          PersonBalance(
+            netAmount: bal.netAmount,
+            hasTrackableEntries: bal.hasTrackableEntries,
+            latestUnpaidNote: bal.latestUnpaidNote,
+            currency: entry.key,
+          ),
+        );
+      }
+    }
+    return result;
+  }
+
+  Stream<List<PersonBalance>> watchBalancesByCurrency(
+    int contactId, {
+    String defaultCurrency = 'USD',
+  }) {
+    return (_db.select(_db.timelineEntries)
+          ..where(
+            (t) =>
+                t.contactId.equals(contactId) &
+                t.type.equals('payment') &
+                t.hidden.equals(0),
+          ))
+        .watch()
+        .map((rows) => computeBalancesByCurrency(rows, defaultCurrency: defaultCurrency));
+  }
+
   Stream<PersonBalance> watchBalanceForPerson(int contactId) {
     return (_db.select(_db.timelineEntries)
           ..where(

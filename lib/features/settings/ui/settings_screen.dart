@@ -47,7 +47,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
         final c = ctx.colors;
         final tt = Theme.of(ctx).textTheme;
         return Padding(
-          padding: EdgeInsets.fromLTRB(
+          padding: EdgeInsetsDirectional.fromSTEB(
             AppTokens.screenPadding,
             AppTokens.space8,
             AppTokens.screenPadding,
@@ -87,41 +87,78 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
     required List<(String value, String label)> options,
     required String current,
     required Future<void> Function(String chosen) onChosen,
+    bool searchable = false,
+    String? searchHint,
   }) async {
+    final searchController = TextEditingController();
     final picked = await showAppSheet<String>(
       context: context,
       bodyBuilder: (ctx) {
         final c = ctx.colors;
         final tt = Theme.of(ctx).textTheme;
-        return Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Text(title, style: tt.titleMedium!.copyWith(color: c.textPrimary)),
-            const SizedBox(height: AppTokens.space8),
-            for (final (value, label) in options)
-              InkWell(
-                onTap: () => Navigator.of(ctx).pop(value),
-                child: ConstrainedBox(
-                  constraints: const BoxConstraints(minHeight: AppTokens.minTouchTarget),
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: Text(
-                          label,
-                          style: tt.bodyLarge!.copyWith(color: c.textPrimary),
-                        ),
-                      ),
-                      if (value == current)
-                        Icon(Icons.check, size: 20, color: c.accentDefault),
-                    ],
+        return StatefulBuilder(
+          builder: (ctx, setSheetState) {
+            final query = searchController.text.trim().toLowerCase();
+            final filtered = query.isEmpty
+                ? options
+                : options
+                    .where(
+                      (o) =>
+                          o.$1.toLowerCase().contains(query) ||
+                          o.$2.toLowerCase().contains(query),
+                    )
+                    .toList();
+            return Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Text(title, style: tt.titleMedium!.copyWith(color: c.textPrimary)),
+                if (searchable) ...[
+                  const SizedBox(height: AppTokens.space12),
+                  AppField(
+                    controller: searchController,
+                    hintText: searchHint,
+                    onChanged: (_) => setSheetState(() {}),
+                  ),
+                ],
+                const SizedBox(height: AppTokens.space8),
+                ConstrainedBox(
+                  constraints: const BoxConstraints(maxHeight: 360),
+                  child: SingleChildScrollView(
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        for (final (value, label) in filtered)
+                          InkWell(
+                            onTap: () => Navigator.of(ctx).pop(value),
+                            child: ConstrainedBox(
+                              constraints:
+                                  const BoxConstraints(minHeight: AppTokens.minTouchTarget),
+                              child: Row(
+                                children: [
+                                  Expanded(
+                                    child: Text(
+                                      label,
+                                      style: tt.bodyLarge!.copyWith(color: c.textPrimary),
+                                    ),
+                                  ),
+                                  if (value == current)
+                                    Icon(Icons.check, size: 20, color: c.accentDefault),
+                                ],
+                              ),
+                            ),
+                          ),
+                      ],
+                    ),
                   ),
                 ),
-              ),
-          ],
+              ],
+            );
+          },
         );
       },
     );
+    searchController.dispose();
     if (picked != null) {
       await onChosen(picked);
     }
@@ -300,6 +337,8 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
             value: currency,
             onTap: () => _pickOption(
               title: l10n.settingsCurrency,
+              searchable: true,
+              searchHint: l10n.settingsCurrencySearchHint,
               options: [
                 for (final code in AppFormatters.currencySymbols.keys)
                   (code, '$code (${AppFormatters.symbolForCurrency(code).trim()})'),
@@ -471,7 +510,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.fromLTRB(
+            padding: const EdgeInsetsDirectional.fromSTEB(
               AppTokens.screenPadding,
               AppTokens.space12,
               AppTokens.screenPadding,

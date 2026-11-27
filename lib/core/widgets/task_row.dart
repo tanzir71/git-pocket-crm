@@ -29,8 +29,8 @@ class TaskRow extends StatelessWidget {
     final textTheme = Theme.of(context).textTheme;
 
     final circle = Semantics(
-      button: true,
       checked: completed,
+      excludeSemantics: true,
       label: checkboxSemanticLabel ?? title,
       child: InkResponse(
         onTap: onToggle,
@@ -69,7 +69,7 @@ class TaskRow extends StatelessWidget {
         child: ConstrainedBox(
           constraints: const BoxConstraints(minHeight: AppTokens.minTouchTarget),
           child: Padding(
-            padding: const EdgeInsets.fromLTRB(
+            padding: const EdgeInsetsDirectional.fromSTEB(
               // 20 screen padding minus the 13px extra touch target padding around the 22px circle
               7,
               4,

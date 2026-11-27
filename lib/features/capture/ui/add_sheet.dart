@@ -551,7 +551,7 @@ class _AddSheetBodyState extends ConsumerState<AddSheetBody> {
           children: [
             // Header
             Padding(
-              padding: const EdgeInsets.fromLTRB(
+              padding: const EdgeInsetsDirectional.fromSTEB(
                 AppTokens.screenPadding,
                 AppTokens.space8,
                 AppTokens.screenPadding,
@@ -737,7 +737,7 @@ class _AddSheetBodyState extends ConsumerState<AddSheetBody> {
 
             // Pinned primary Save button
             Padding(
-              padding: const EdgeInsets.fromLTRB(
+              padding: const EdgeInsetsDirectional.fromSTEB(
                 AppTokens.screenPadding,
                 AppTokens.space8,
                 AppTokens.screenPadding,

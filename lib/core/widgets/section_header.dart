@@ -21,7 +21,7 @@ class SectionHeader extends StatelessWidget {
     final label = count == null ? title : '$title · $count';
 
     return Padding(
-      padding: const EdgeInsets.fromLTRB(
+      padding: const EdgeInsetsDirectional.fromSTEB(
         AppTokens.screenPadding,
         AppTokens.space20,
         AppTokens.screenPadding,

@@ -154,7 +154,7 @@ class CampaignScreen extends ConsumerWidget {
             // Top bar: back + more menu
             SliverToBoxAdapter(
               child: Padding(
-                padding: const EdgeInsets.fromLTRB(
+                padding: const EdgeInsetsDirectional.fromSTEB(
                   AppTokens.space8,
                   AppTokens.space8,
                   AppTokens.space8,
@@ -228,7 +228,7 @@ class CampaignScreen extends ConsumerWidget {
             // Title, state line, progress bar, controls, 4-number summary
             SliverToBoxAdapter(
               child: Padding(
-                padding: const EdgeInsets.fromLTRB(
+                padding: const EdgeInsetsDirectional.fromSTEB(
                   AppTokens.screenPadding,
                   AppTokens.space8,
                   AppTokens.screenPadding,
@@ -261,15 +261,21 @@ class CampaignScreen extends ConsumerWidget {
                     ),
                     const SizedBox(height: AppTokens.space8),
                     Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text(
-                          remainingLabel,
-                          style: tt.bodySmall!.copyWith(color: c.textSecondary),
+                        Flexible(
+                          child: Text(
+                            remainingLabel,
+                            style: tt.bodySmall!.copyWith(color: c.textSecondary),
+                          ),
                         ),
-                        const Spacer(),
-                        Text(
-                          paceLabel,
-                          style: tt.bodySmall!.copyWith(color: c.textSecondary),
+                        const SizedBox(width: AppTokens.space8),
+                        Flexible(
+                          child: Text(
+                            paceLabel,
+                            style: tt.bodySmall!.copyWith(color: c.textSecondary),
+                            textAlign: TextAlign.end,
+                          ),
                         ),
                       ],
                     ),

@@ -251,7 +251,7 @@ class _PeopleScreenState extends ConsumerState<PeopleScreen> {
               // Search field
               SliverToBoxAdapter(
                 child: Padding(
-                  padding: const EdgeInsets.fromLTRB(
+                  padding: const EdgeInsetsDirectional.fromSTEB(
                     AppTokens.screenPadding,
                     AppTokens.space12,
                     AppTokens.screenPadding,
@@ -361,7 +361,7 @@ class _PeopleScreenState extends ConsumerState<PeopleScreen> {
               // Sort bar
               SliverToBoxAdapter(
                 child: Padding(
-                  padding: const EdgeInsets.fromLTRB(
+                  padding: const EdgeInsetsDirectional.fromSTEB(
                     AppTokens.screenPadding,
                     AppTokens.space4,
                     AppTokens.space12,
@@ -369,39 +369,45 @@ class _PeopleScreenState extends ConsumerState<PeopleScreen> {
                   ),
                   child: Row(
                     children: [
-                      PopupMenuButton<PeopleSort>(
-                        initialValue: sort,
-                        onSelected: _setSort,
-                        itemBuilder: (ctx) => [
-                          PopupMenuItem(
-                            value: PeopleSort.recent,
-                            child: Text(l10n.sortRecentlyContacted),
-                          ),
-                          PopupMenuItem(
-                            value: PeopleSort.name,
-                            child: Text(l10n.sortName),
-                          ),
-                          PopupMenuItem(
-                            value: PeopleSort.longest,
-                            child: Text(l10n.sortLongestSinceContact),
-                          ),
-                        ],
-                        child: ConstrainedBox(
-                          constraints: const BoxConstraints(minHeight: AppTokens.minTouchTarget),
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Text(
-                                _sortLabel(sort, context),
-                                style: tt.labelMedium!.copyWith(color: c.textSecondary),
-                              ),
-                              const SizedBox(width: AppTokens.space4),
-                              Icon(
-                                Icons.keyboard_arrow_down,
-                                size: 18,
-                                color: c.textSecondary,
-                              ),
-                            ],
+                      Flexible(
+                        child: PopupMenuButton<PeopleSort>(
+                          initialValue: sort,
+                          onSelected: _setSort,
+                          itemBuilder: (ctx) => [
+                            PopupMenuItem(
+                              value: PeopleSort.recent,
+                              child: Text(l10n.sortRecentlyContacted),
+                            ),
+                            PopupMenuItem(
+                              value: PeopleSort.name,
+                              child: Text(l10n.sortName),
+                            ),
+                            PopupMenuItem(
+                              value: PeopleSort.longest,
+                              child: Text(l10n.sortLongestSinceContact),
+                            ),
+                          ],
+                          child: ConstrainedBox(
+                            constraints: const BoxConstraints(minHeight: AppTokens.minTouchTarget),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Flexible(
+                                  child: Text(
+                                    _sortLabel(sort, context),
+                                    style: tt.labelMedium!.copyWith(color: c.textSecondary),
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                ),
+                                const SizedBox(width: AppTokens.space4),
+                                Icon(
+                                  Icons.keyboard_arrow_down,
+                                  size: 18,
+                                  color: c.textSecondary,
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                       ),
@@ -479,7 +485,7 @@ class _PeopleScreenState extends ConsumerState<PeopleScreen> {
     final tt = Theme.of(context).textTheme;
     final l10n = context.l10n;
     return Padding(
-      padding: const EdgeInsets.fromLTRB(
+      padding: const EdgeInsetsDirectional.fromSTEB(
         AppTokens.screenPadding,
         AppTokens.space16,
         AppTokens.space12,
@@ -525,7 +531,7 @@ class _PeopleScreenState extends ConsumerState<PeopleScreen> {
     final hasSelection = _selectedIds.isNotEmpty;
 
     return Padding(
-      padding: const EdgeInsets.fromLTRB(
+      padding: const EdgeInsetsDirectional.fromSTEB(
         AppTokens.space8,
         AppTokens.space12,
         AppTokens.screenPadding,
@@ -552,7 +558,7 @@ class _PeopleScreenState extends ConsumerState<PeopleScreen> {
           ),
           const SizedBox(height: AppTokens.space8),
           Padding(
-            padding: const EdgeInsets.only(left: AppTokens.space12),
+            padding: const EdgeInsetsDirectional.only(start: AppTokens.space12),
             child: Wrap(
               spacing: AppTokens.space8,
               runSpacing: AppTokens.space8,
@@ -629,7 +635,7 @@ class _PeopleScreenState extends ConsumerState<PeopleScreen> {
     final tt = Theme.of(context).textTheme;
     final l10n = context.l10n;
     return Padding(
-      padding: const EdgeInsets.fromLTRB(
+      padding: const EdgeInsetsDirectional.fromSTEB(
         AppTokens.screenPadding,
         AppTokens.space12,
         AppTokens.screenPadding,

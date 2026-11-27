@@ -31,8 +31,8 @@ class AppChip extends StatelessWidget {
     final border = selected ? null : Border.all(color: c.borderHairline, width: 1);
 
     final pill = Container(
-      height: AppTokens.chipHeight,
-      padding: const EdgeInsets.symmetric(horizontal: AppTokens.space12),
+      constraints: const BoxConstraints(minHeight: AppTokens.chipHeight),
+      padding: const EdgeInsets.symmetric(horizontal: AppTokens.space12, vertical: 4),
       decoration: BoxDecoration(
         color: bg,
         borderRadius: BorderRadius.circular(AppTokens.radiusFull),
@@ -45,11 +45,13 @@ class AppChip extends StatelessWidget {
             Icon(leadingIcon, size: 15, color: fg),
             const SizedBox(width: 6),
           ],
-          Text(
-            label,
-            style: textTheme.labelMedium!.copyWith(color: fg),
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
+          Flexible(
+            child: Text(
+              label,
+              style: textTheme.labelMedium!.copyWith(color: fg),
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+            ),
           ),
         ],
       ),
@@ -58,6 +60,7 @@ class AppChip extends StatelessWidget {
     return Semantics(
       button: onTap != null,
       selected: selected,
+      excludeSemantics: true,
       label: semanticLabel ?? label,
       child: ConstrainedBox(
         constraints: const BoxConstraints(

@@ -234,7 +234,7 @@ class _SingleMessageSheetState extends ConsumerState<_SingleMessageSheet> {
         children: [
           Flexible(
             child: SingleChildScrollView(
-              padding: const EdgeInsets.fromLTRB(
+              padding: const EdgeInsetsDirectional.fromSTEB(
                 AppTokens.screenPadding,
                 AppTokens.space8,
                 AppTokens.screenPadding,
@@ -308,7 +308,7 @@ class _SingleMessageSheetState extends ConsumerState<_SingleMessageSheet> {
           ),
           Divider(height: 1, color: c.borderHairline),
           Padding(
-            padding: const EdgeInsets.fromLTRB(
+            padding: const EdgeInsetsDirectional.fromSTEB(
               AppTokens.screenPadding,
               AppTokens.space12,
               AppTokens.screenPadding,

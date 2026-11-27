@@ -964,6 +964,7 @@
   "settingsYourName": "Your name",
   "settingsNotSet": "Not set",
   "settingsCurrency": "Currency",
+  "settingsCurrencySearchHint": "Search currency code or symbol",
   "settingsPhoneRegion": "Region for phone numbers",
   "settingsTheme": "Theme",
   "settingsThemeSystem": "System",

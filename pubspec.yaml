@@ -1,5 +1,5 @@
 name: pocket_crm
-description: "A new Flutter project."
+description: "Private, on-device relationship manager for Android with automatic call and SMS history, follow-up reminders, and scheduled messaging."
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
@@ -66,6 +66,16 @@ dev_dependencies:
   drift_dev: ^2.32.0
   build_runner: ^2.4.15
   pigeon: ^30.0.4
+  flutter_launcher_icons: ^0.14.4
+
+flutter_launcher_icons:
+  android: true
+  ios: false
+  image_path: "assets/icon/icon_legacy.png"
+  adaptive_icon_background: "#3525CD"
+  adaptive_icon_foreground: "assets/icon/icon_foreground.png"
+  adaptive_icon_monochrome: "assets/icon/icon_monochrome.png"
+  min_sdk_android: 23
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

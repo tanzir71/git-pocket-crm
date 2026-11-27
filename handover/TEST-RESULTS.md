@@ -115,6 +115,17 @@ Record of automated test runs and Android emulator verification runs (date, imag
 - **Command:** `grep -R "Permission.storage\|/storage/emulated" lib; (cd android && ./gradlew :app:testDebugUnitTest) && bash tool/verify.sh`
 - **Outcome:** PASSED. `grep` returned zero matches; `flutter analyze` reported 0 issues; all 94 Flutter tests passed (including encrypted `PCRM1` Argon2id round-trip across every table + 3 binary/text attachment files -> wipe -> restore row-for-row & byte-for-byte + `pocket_crm.before-restore.bak` + future outbox re-enqueue & past-due missed marking; literal v4->v5 schema-upgrade restore; wrong passphrase & truncated plain/encrypted file rejection leaving live data untouched; v1 JSON backup idempotent double-import with zero duplicates; weekly automatic backups keeping last 4 plain archives; RFC 4180 People CSV, vCard 3.0, and Person history CSV exports; `BackupSettingsScreen` widget test; and full-`lib/` lint guards); Kotlin JUnit passed; `assembleDebug`, `check_manifest.sh` (zero `INTERNET`), and `check_landing.sh` passed.
 
+## 2026-11-27 — Spec 13
+
+- **Environment (host):** Host Windows 11, Flutter 3.50.1, Dart 3.14.0, `flutter_launcher_icons` 0.14.4
+- **Command:** `flutter gen-l10n && bash tool/verify.sh && bash tool/build_apk.sh`
+- **Outcome:** PASSED. `flutter analyze` reported 0 issues; all 106 Flutter tests passed (including ARB completeness across all 509 keys and placeholders between `app_en.arb` and `app_bn.arb`, zero hardcoded English `Text` literals in `lib/core/widgets` and `lib/features`, WCAG 2.1 `>= 4.5:1` contrast test across all light & dark text token pairs, multi-currency `computeBalancesByCurrency`, Bengali locale rendering, TalkBack semantics checks across all 9 designed screens, zero `RenderFlex` overflows at `1.0x`/`1.3x`/`2.0x` across all 9 designed screens, 3 RTL goldens (`Today`, `Person`, `New message`), and 18 text-scale `1.3x`/`2.0x` goldens); `assembleDebug`, `check_manifest.sh` (zero `INTERNET`), and `check_landing.sh` passed.
+- **Environment (emulator):** Android Emulator `Pixel_8` (`android-34`, Android 14, `-gpu swiftshader_indirect`, signed M4 release APK `build/PocketCRM.apk`, `sha256: c92f2f1b640d63ee97b40d22262cb669a87a2a778c9225cddf9706eb3e023c0f`)
+- **Command:** Installed M4 release APK via `adb install -r --no-streaming build/PocketCRM.apk`; measured 3 cold starts via `adb shell am start -W -n com.pocketcrm.pocket_crm/com.pocketcrm.pocket_crm.MainActivity`.
+- **Outcome:** Cold start `TotalTime` under software-rendered SwiftShader GPU: `[3290 ms, 4161 ms, 3422 ms]` (median `3422 ms`). Hardware-accelerated cold start (<1.5s) and profile-mode 5,000-row scroll frame time (<32ms) on physical hardware are noted in `handover/UNVERIFIED.md` (single-query 5,000-row People directory performance is verified in `test/people/people_and_person_test.dart`).
+- **M4 Signed APK:** `bash tool/build_apk.sh` produced `build/PocketCRM.apk` (`69.0 MB`, `sha256: c92f2f1b640d63ee97b40d22262cb669a87a2a778c9225cddf9706eb3e023c0f`).
+
+
 
 
 

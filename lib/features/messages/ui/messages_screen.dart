@@ -164,7 +164,7 @@ class _MessagesScreenState extends ConsumerState<MessagesScreen> {
             // Header
             SliverToBoxAdapter(
               child: Padding(
-                padding: const EdgeInsets.fromLTRB(
+                padding: const EdgeInsetsDirectional.fromSTEB(
                   AppTokens.screenPadding,
                   AppTokens.space16,
                   AppTokens.space12,
@@ -536,7 +536,7 @@ class _MessagesScreenState extends ConsumerState<MessagesScreen> {
     return [
       SliverToBoxAdapter(
         child: Padding(
-          padding: const EdgeInsets.fromLTRB(
+          padding: const EdgeInsetsDirectional.fromSTEB(
             AppTokens.screenPadding,
             AppTokens.space8,
             AppTokens.screenPadding,
@@ -958,7 +958,7 @@ class _TemplateEditorScreenState extends ConsumerState<TemplateEditorScreen> {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.fromLTRB(
+              padding: const EdgeInsetsDirectional.fromSTEB(
                 AppTokens.screenPadding,
                 AppTokens.space8,
                 AppTokens.screenPadding,

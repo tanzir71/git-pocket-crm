@@ -310,7 +310,7 @@ class _NewMessageScreenState extends ConsumerState<NewMessageScreen> {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   Padding(
-                    padding: const EdgeInsets.fromLTRB(
+                    padding: const EdgeInsetsDirectional.fromSTEB(
                       AppTokens.screenPadding,
                       AppTokens.space8,
                       AppTokens.screenPadding,
@@ -432,7 +432,7 @@ class _NewMessageScreenState extends ConsumerState<NewMessageScreen> {
                   ),
                   Divider(height: 1, color: c.borderHairline),
                   Padding(
-                    padding: const EdgeInsets.fromLTRB(
+                    padding: const EdgeInsetsDirectional.fromSTEB(
                       AppTokens.screenPadding,
                       AppTokens.space12,
                       AppTokens.screenPadding,
@@ -902,7 +902,7 @@ class _NewMessageScreenState extends ConsumerState<NewMessageScreen> {
           children: [
             // Top bar: Close, "New message", Templates
             Padding(
-              padding: const EdgeInsets.fromLTRB(
+              padding: const EdgeInsetsDirectional.fromSTEB(
                 AppTokens.space8,
                 AppTokens.space8,
                 AppTokens.space12,
@@ -1010,7 +1010,7 @@ class _NewMessageScreenState extends ConsumerState<NewMessageScreen> {
                         borderRadius: BorderRadius.circular(AppTokens.radiusCard),
                         border: Border.all(color: c.borderHairline),
                       ),
-                      padding: const EdgeInsets.fromLTRB(
+                      padding: const EdgeInsetsDirectional.fromSTEB(
                         AppTokens.space16,
                         AppTokens.space12,
                         AppTokens.space16,
@@ -1037,6 +1037,62 @@ class _NewMessageScreenState extends ConsumerState<NewMessageScreen> {
                             onChanged: (_) => setState(() {}),
                           ),
                           const SizedBox(height: AppTokens.space12),
+                          if (MediaQuery.textScalerOf(context).scale(14) > 20) ...[
+                            SingleChildScrollView(
+                              scrollDirection: Axis.horizontal,
+                              child: Row(
+                                children: [
+                                  AppChip(
+                                    label: l10n.mergeChipFirstName,
+                                    onTap: () {
+                                      _bodyController.insertMergeField('first name');
+                                      setState(() {});
+                                    },
+                                  ),
+                                  const SizedBox(width: AppTokens.space8),
+                                  AppChip(
+                                    label: l10n.mergeChipAmountDue,
+                                    onTap: () {
+                                      _bodyController.insertMergeField('amount due');
+                                      setState(() {});
+                                    },
+                                  ),
+                                  const SizedBox(width: AppTokens.space8),
+                                  AppChip(
+                                    label: l10n.mergeChipCompany,
+                                    onTap: () {
+                                      _bodyController.insertMergeField('company');
+                                      setState(() {});
+                                    },
+                                  ),
+                                  const SizedBox(width: AppTokens.space8),
+                                  AppChip(
+                                    label: l10n.mergeChipName,
+                                    onTap: () {
+                                      _bodyController.insertMergeField('name');
+                                      setState(() {});
+                                    },
+                                  ),
+                                  const SizedBox(width: AppTokens.space8),
+                                  AppChip(
+                                    label: l10n.mergeChipMyName,
+                                    onTap: () {
+                                      _bodyController.insertMergeField('my name');
+                                      setState(() {});
+                                    },
+                                  ),
+                                ],
+                              ),
+                            ),
+                            const SizedBox(height: AppTokens.space8),
+                            Align(
+                              alignment: AlignmentDirectional.centerEnd,
+                              child: Text(
+                                counterLabel,
+                                style: tt.bodySmall!.copyWith(color: c.textSecondary),
+                              ),
+                            ),
+                          ] else
                           Row(
                             children: [
                               Expanded(
@@ -1206,7 +1262,7 @@ class _NewMessageScreenState extends ConsumerState<NewMessageScreen> {
                     ),
                     if (!_sendNow && !_exactAlarms)
                       Padding(
-                        padding: const EdgeInsets.fromLTRB(
+                        padding: const EdgeInsetsDirectional.fromSTEB(
                           AppTokens.screenPadding,
                           0,
                           AppTokens.screenPadding,
@@ -1236,7 +1292,7 @@ class _NewMessageScreenState extends ConsumerState<NewMessageScreen> {
 
             // Pinned primary action & send window caption
             Padding(
-              padding: const EdgeInsets.fromLTRB(
+              padding: const EdgeInsetsDirectional.fromSTEB(
                 AppTokens.screenPadding,
                 AppTokens.space8,
                 AppTokens.screenPadding,

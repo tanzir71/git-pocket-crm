@@ -26,7 +26,7 @@ Future<int?> showCreateOrRenameListSheet(
         builder: (ctx, setState) {
           final canSave = controller.text.trim().isNotEmpty;
           return Padding(
-            padding: EdgeInsets.fromLTRB(
+            padding: EdgeInsetsDirectional.fromSTEB(
               AppTokens.screenPadding,
               AppTokens.space8,
               AppTokens.screenPadding,
@@ -94,7 +94,7 @@ Future<void> showListActionsSheet(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Padding(
-            padding: const EdgeInsets.fromLTRB(
+            padding: const EdgeInsetsDirectional.fromSTEB(
               AppTokens.screenPadding,
               AppTokens.space8,
               AppTokens.screenPadding,
@@ -208,7 +208,7 @@ Future<void> showManageListsSheet(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 Padding(
-                  padding: const EdgeInsets.fromLTRB(
+                  padding: const EdgeInsetsDirectional.fromSTEB(
                     AppTokens.screenPadding,
                     AppTokens.space8,
                     AppTokens.screenPadding,
@@ -282,7 +282,7 @@ Future<void> showManageListsSheet(
                     ),
                   ),
                 Padding(
-                  padding: const EdgeInsets.fromLTRB(
+                  padding: const EdgeInsetsDirectional.fromSTEB(
                     AppTokens.screenPadding,
                     AppTokens.space12,
                     AppTokens.screenPadding,

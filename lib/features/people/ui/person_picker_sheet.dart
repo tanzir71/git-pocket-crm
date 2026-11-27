@@ -63,7 +63,7 @@ class _PersonPickerSheetBodyState extends ConsumerState<_PersonPickerSheetBody> 
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Padding(
-            padding: const EdgeInsets.fromLTRB(
+            padding: const EdgeInsetsDirectional.fromSTEB(
               AppTokens.screenPadding,
               AppTokens.space8,
               AppTokens.screenPadding,

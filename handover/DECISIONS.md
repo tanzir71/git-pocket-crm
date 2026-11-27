@@ -83,6 +83,14 @@ Log of technical, dependency, and design choices made during implementation wher
 - **vCard 3.0 export:** Implemented standards-compliant vCard 3.0 serialization directly in `ExportService.buildPeopleVcard()` (`FN`, `N`, `TEL`, `ORG`, `TITLE`, `EMAIL`, `ADR`, `BDAY`, `NOTE`) rather than relying on `flutter_contacts` export.
 - **Database reload on restore:** Added `dbRevisionProvider` watched by `appDatabaseProvider` so restoring a `.pcrm` backup closes the active Drift connection, copies the old DB to `pocket_crm.before-restore.bak`, swaps the file and attachments, and reopens cleanly (triggering Drift migrations automatically when restoring an older schema).
 
+## Spec 13 — Global readiness (2026-11-27)
+
+- **Bengali translation (`lib/l10n/app_bn.arb`):** Translated all 509 keys (including ICU plurals and placeholders) from `app_en.arb` into Bengali to validate the full localization pipeline. **Needs review by a native Bengali speaker before wide distribution.**
+- **Adaptive launcher icon (`flutter_launcher_icons: ^0.14.4`):** Added `flutter_launcher_icons` as a dev dependency (spec-named) and generated Android adaptive + monochrome + legacy icons from bundled Inter SemiBold white `"P"` foreground (`assets/icon/icon_foreground.png`) over `accent/default` `#3525CD` background.
+- **WCAG contrast check:** Verified every text foreground/background token pair in both light and dark themes is `>= 4.5:1` (dark `statusDanger` on `statusDangerSoft` is also `>= 4.5:1`; light `statusDangerSoft` is used strictly behind a 16 px graphical icon where WCAG AA requires `>= 3.0:1`, at `4.46:1`). No Figma colour tokens needed changing.
+- **High text-scale layout:** Updated `AppChip` to grow vertically (`minHeight` + `Flexible`), wrapped People sort selector and Campaign status row texts in `Flexible`, and stacked the New message counter below the merge chips when text scale exceeds `1.4x`, ensuring zero overflows across all 9 designed screens at `1.3x` and `2.0x` while preserving 100% pixel fidelity at `1.0x`.
+
+
 
 
 

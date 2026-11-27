@@ -171,7 +171,7 @@ class AppSheetContainer extends StatelessWidget {
             const SizedBox(height: AppTokens.space16),
             Flexible(
               child: SingleChildScrollView(
-                padding: EdgeInsets.fromLTRB(
+                padding: EdgeInsetsDirectional.fromSTEB(
                   AppTokens.screenPadding,
                   0,
                   AppTokens.screenPadding,
@@ -182,7 +182,7 @@ class AppSheetContainer extends StatelessWidget {
             ),
             if (bottomAction != null)
               Padding(
-                padding: const EdgeInsets.fromLTRB(
+                padding: const EdgeInsetsDirectional.fromSTEB(
                   AppTokens.screenPadding,
                   AppTokens.space8,
                   AppTokens.screenPadding,

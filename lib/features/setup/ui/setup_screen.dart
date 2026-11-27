@@ -124,7 +124,7 @@ class _SetupScreenState extends ConsumerState<SetupScreen>
         final tt = Theme.of(ctx).textTheme;
         final l10n = ctx.l10n;
         return Padding(
-          padding: const EdgeInsets.fromLTRB(
+          padding: const EdgeInsetsDirectional.fromSTEB(
             AppTokens.screenPadding,
             AppTokens.space8,
             AppTokens.screenPadding,
@@ -275,7 +275,7 @@ class _SetupScreenState extends ConsumerState<SetupScreen>
           children: [
             Expanded(
               child: SingleChildScrollView(
-                padding: const EdgeInsets.fromLTRB(
+                padding: const EdgeInsetsDirectional.fromSTEB(
                   AppTokens.screenPadding,
                   AppTokens.space16,
                   AppTokens.screenPadding,
@@ -457,7 +457,7 @@ class _SetupScreenState extends ConsumerState<SetupScreen>
 
             if (!widget.checkMode)
               Padding(
-                padding: const EdgeInsets.fromLTRB(
+                padding: const EdgeInsetsDirectional.fromSTEB(
                   AppTokens.screenPadding,
                   AppTokens.space8,
                   AppTokens.screenPadding,
