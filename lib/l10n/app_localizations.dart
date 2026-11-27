@@ -1498,6 +1498,198 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'just now'**
   String get justNowLabel;
+
+  /// No description provided for @todaySearchTooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'Search people'**
+  String get todaySearchTooltip;
+
+  /// No description provided for @todaySettingsTooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'Settings'**
+  String get todaySettingsTooltip;
+
+  /// No description provided for @promptSpokeWith.
+  ///
+  /// In en, this message translates to:
+  /// **'You spoke with {name}'**
+  String promptSpokeWith(String name);
+
+  /// No description provided for @promptAddNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Add note'**
+  String get promptAddNote;
+
+  /// No description provided for @promptFollowUp.
+  ///
+  /// In en, this message translates to:
+  /// **'Follow up'**
+  String get promptFollowUp;
+
+  /// No description provided for @promptSkip.
+  ///
+  /// In en, this message translates to:
+  /// **'Skip'**
+  String get promptSkip;
+
+  /// No description provided for @sectionNeedsAttention.
+  ///
+  /// In en, this message translates to:
+  /// **'Needs attention'**
+  String get sectionNeedsAttention;
+
+  /// No description provided for @sectionFollowUps.
+  ///
+  /// In en, this message translates to:
+  /// **'Follow-ups'**
+  String get sectionFollowUps;
+
+  /// No description provided for @sectionReconnect.
+  ///
+  /// In en, this message translates to:
+  /// **'Reconnect'**
+  String get sectionReconnect;
+
+  /// No description provided for @sectionGoingOutToday.
+  ///
+  /// In en, this message translates to:
+  /// **'Going out today'**
+  String get sectionGoingOutToday;
+
+  /// No description provided for @sectionComingUp.
+  ///
+  /// In en, this message translates to:
+  /// **'Coming up'**
+  String get sectionComingUp;
+
+  /// No description provided for @showAllAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Show all'**
+  String get showAllAction;
+
+  /// No description provided for @snoozeOneWeek.
+  ///
+  /// In en, this message translates to:
+  /// **'Snooze 1 week'**
+  String get snoozeOneWeek;
+
+  /// No description provided for @changeHowOften.
+  ///
+  /// In en, this message translates to:
+  /// **'Change how often'**
+  String get changeHowOften;
+
+  /// No description provided for @birthdayToday.
+  ///
+  /// In en, this message translates to:
+  /// **'Birthday today'**
+  String get birthdayToday;
+
+  /// No description provided for @birthdayOnDay.
+  ///
+  /// In en, this message translates to:
+  /// **'Birthday on {day}'**
+  String birthdayOnDay(String day);
+
+  /// No description provided for @allCaughtUpTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'All caught up'**
+  String get allCaughtUpTitle;
+
+  /// No description provided for @allCaughtUpMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Follow-ups and people to reconnect with will appear here.'**
+  String get allCaughtUpMessage;
+
+  /// No description provided for @choosePeopleToStayInTouch.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose people to stay in touch with'**
+  String get choosePeopleToStayInTouch;
+
+  /// No description provided for @retryAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Retry'**
+  String get retryAction;
+
+  /// No description provided for @notSentTo.
+  ///
+  /// In en, this message translates to:
+  /// **'Not sent to {name}'**
+  String notSentTo(String name);
+
+  /// No description provided for @notifChannelFollowUps.
+  ///
+  /// In en, this message translates to:
+  /// **'Follow-ups'**
+  String get notifChannelFollowUps;
+
+  /// No description provided for @notifChannelReconnect.
+  ///
+  /// In en, this message translates to:
+  /// **'Reconnect'**
+  String get notifChannelReconnect;
+
+  /// No description provided for @notifChannelAfterCalls.
+  ///
+  /// In en, this message translates to:
+  /// **'After calls'**
+  String get notifChannelAfterCalls;
+
+  /// No description provided for @notifChannelMessages.
+  ///
+  /// In en, this message translates to:
+  /// **'Messages'**
+  String get notifChannelMessages;
+
+  /// No description provided for @notifChannelMorningSummary.
+  ///
+  /// In en, this message translates to:
+  /// **'Morning summary'**
+  String get notifChannelMorningSummary;
+
+  /// No description provided for @notifActionDone.
+  ///
+  /// In en, this message translates to:
+  /// **'Done'**
+  String get notifActionDone;
+
+  /// No description provided for @notifActionTomorrow.
+  ///
+  /// In en, this message translates to:
+  /// **'Tomorrow'**
+  String get notifActionTomorrow;
+
+  /// No description provided for @morningSummaryTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'PocketCRM'**
+  String get morningSummaryTitle;
+
+  /// No description provided for @morningSummaryFollowUps.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 follow-up today} other{{count} follow-ups today}}'**
+  String morningSummaryFollowUps(int count);
+
+  /// No description provided for @morningSummaryReconnect.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 person to reconnect with} other{{count} people to reconnect with}}'**
+  String morningSummaryReconnect(int count);
+
+  /// No description provided for @notifPermissionRationale.
+  ///
+  /// In en, this message translates to:
+  /// **'Allow notifications so PocketCRM can remind you about follow-ups and scheduled messages.'**
+  String get notifPermissionRationale;
 }
 
 class _AppLocalizationsDelegate

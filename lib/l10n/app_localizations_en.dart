@@ -811,4 +811,124 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get justNowLabel => 'just now';
+
+  @override
+  String get todaySearchTooltip => 'Search people';
+
+  @override
+  String get todaySettingsTooltip => 'Settings';
+
+  @override
+  String promptSpokeWith(String name) {
+    return 'You spoke with $name';
+  }
+
+  @override
+  String get promptAddNote => 'Add note';
+
+  @override
+  String get promptFollowUp => 'Follow up';
+
+  @override
+  String get promptSkip => 'Skip';
+
+  @override
+  String get sectionNeedsAttention => 'Needs attention';
+
+  @override
+  String get sectionFollowUps => 'Follow-ups';
+
+  @override
+  String get sectionReconnect => 'Reconnect';
+
+  @override
+  String get sectionGoingOutToday => 'Going out today';
+
+  @override
+  String get sectionComingUp => 'Coming up';
+
+  @override
+  String get showAllAction => 'Show all';
+
+  @override
+  String get snoozeOneWeek => 'Snooze 1 week';
+
+  @override
+  String get changeHowOften => 'Change how often';
+
+  @override
+  String get birthdayToday => 'Birthday today';
+
+  @override
+  String birthdayOnDay(String day) {
+    return 'Birthday on $day';
+  }
+
+  @override
+  String get allCaughtUpTitle => 'All caught up';
+
+  @override
+  String get allCaughtUpMessage =>
+      'Follow-ups and people to reconnect with will appear here.';
+
+  @override
+  String get choosePeopleToStayInTouch => 'Choose people to stay in touch with';
+
+  @override
+  String get retryAction => 'Retry';
+
+  @override
+  String notSentTo(String name) {
+    return 'Not sent to $name';
+  }
+
+  @override
+  String get notifChannelFollowUps => 'Follow-ups';
+
+  @override
+  String get notifChannelReconnect => 'Reconnect';
+
+  @override
+  String get notifChannelAfterCalls => 'After calls';
+
+  @override
+  String get notifChannelMessages => 'Messages';
+
+  @override
+  String get notifChannelMorningSummary => 'Morning summary';
+
+  @override
+  String get notifActionDone => 'Done';
+
+  @override
+  String get notifActionTomorrow => 'Tomorrow';
+
+  @override
+  String get morningSummaryTitle => 'PocketCRM';
+
+  @override
+  String morningSummaryFollowUps(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count follow-ups today',
+      one: '1 follow-up today',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String morningSummaryReconnect(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count people to reconnect with',
+      one: '1 person to reconnect with',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get notifPermissionRationale =>
+      'Allow notifications so PocketCRM can remind you about follow-ups and scheduled messages.';
 }

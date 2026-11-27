@@ -72,6 +72,41 @@ class TaskWithPersonRow {
   final String personName;
 }
 
+/// Recent unreviewed call joined with its saved contact for the Today prompt card.
+class PromptCallRow {
+  const PromptCallRow({
+    required this.entry,
+    required this.contact,
+  });
+
+  final TimelineEntry entry;
+  final Contact contact;
+}
+
+/// Outbox message joined with its contact name for Today sections.
+class OutboxWithPersonRow {
+  const OutboxWithPersonRow({
+    required this.message,
+    required this.personName,
+  });
+
+  final OutboxMessage message;
+  final String personName;
+}
+
+/// Contact + comma-separated list cadence days + last interaction type for Reconnect.
+class ReconnectCandidateRow {
+  const ReconnectCandidateRow({
+    required this.contact,
+    required this.listCadenceDays,
+    required this.lastInteractionType,
+  });
+
+  final Contact contact;
+  final List<int> listCadenceDays;
+  final String? lastInteractionType;
+}
+
 /// Centralizes all custom SQL queries inside `lib/core/db/` so feature
 /// repositories and UI files never embed raw SQL strings.
 class CrmQueries {
@@ -530,6 +565,181 @@ class CrmQueries {
               .map(
                 (r) => TaskWithPersonRow(
                   task: _db.tasks.map(r.data),
+                  personName: r.read<String>('person_name'),
+                ),
+              )
+              .toList(),
+        );
+  }
+
+  /// Watches the single most recent unreviewed call since [sinceMs] with a saved
+  /// contact, obeying [afterCallMode] (`all`, `starred`, `never`).
+  Stream<PromptCallRow?> watchPromptCall({
+    required int sinceMs,
+    required String afterCallMode,
+  }) {
+    if (afterCallMode == 'never') {
+      return Stream.value(null);
+    }
+    final starredFilter = afterCallMode == 'starred' ? 'AND c.is_starred = 1' : '';
+    return _db
+        .customSelect(
+          '''
+          SELECT
+            t.id AS t_id,
+            c.id AS c_id
+          FROM timeline t
+          JOIN contacts c ON c.id = t.contact_id
+          WHERE t.type IN ('call_incoming', 'call_outgoing', 'call_missed')
+            AND t.timestamp >= ?
+            AND t.reviewed_at IS NULL
+            AND (t.note IS NULL OR TRIM(t.note) = '')
+            AND COALESCE(t.hidden, 0) = 0
+            $starredFilter
+          ORDER BY t.timestamp DESC
+          LIMIT 1
+          ''',
+          variables: [Variable<int>(sinceMs)],
+          readsFrom: {_db.timelineEntries, _db.contacts},
+        )
+        .watch()
+        .asyncMap((rows) async {
+      if (rows.isEmpty) return null;
+      final tId = rows.first.read<int>('t_id');
+      final cId = rows.first.read<int>('c_id');
+      final entry = await (_db.select(_db.timelineEntries)..where((t) => t.id.equals(tId)))
+          .getSingleOrNull();
+      final contact = await (_db.select(_db.contacts)..where((t) => t.id.equals(cId)))
+          .getSingleOrNull();
+      if (entry == null || contact == null) return null;
+      return PromptCallRow(entry: entry, contact: contact);
+    });
+  }
+
+  /// Watches all contacts that have either their own cadence or a list cadence.
+  Stream<List<ReconnectCandidateRow>> watchReconnectCandidates() {
+    return _db
+        .customSelect(
+          '''
+          SELECT
+            c.*,
+            (
+              SELECT GROUP_CONCAT(cl.cadence_days)
+              FROM contact_lists cl
+              JOIN contact_list_members clm ON clm.list_id = cl.id
+              WHERE clm.contact_id = c.id AND cl.cadence_days IS NOT NULL AND cl.cadence_days > 0
+            ) AS list_cadences,
+            (
+              SELECT t.type
+              FROM timeline t
+              WHERE t.contact_id = c.id
+                AND COALESCE(t.hidden, 0) = 0
+                AND (
+                  (t.type IN ('call_incoming', 'call_outgoing') AND COALESCE(t.duration_seconds, 0) > 0)
+                  OR t.type IN ('sms_incoming', 'sms_outgoing', 'visit')
+                )
+              ORDER BY t.timestamp DESC
+              LIMIT 1
+            ) AS last_interaction_type
+          FROM contacts c
+          WHERE (c.cadence_days IS NOT NULL AND c.cadence_days > 0)
+             OR EXISTS (
+               SELECT 1 FROM contact_list_members clm
+               JOIN contact_lists cl ON cl.id = clm.list_id
+               WHERE clm.contact_id = c.id AND cl.cadence_days IS NOT NULL AND cl.cadence_days > 0
+             )
+          ''',
+          readsFrom: {
+            _db.contacts,
+            _db.contactLists,
+            _db.contactListMembers,
+            _db.timelineEntries,
+          },
+        )
+        .watch()
+        .map((rows) {
+      return rows.map((r) {
+        final contact = _db.contacts.map(r.data);
+        final rawList = r.readNullable<String>('list_cadences') ?? '';
+        final parsedCadences = rawList
+            .split(',')
+            .map((s) => int.tryParse(s.trim()))
+            .whereType<int>()
+            .where((d) => d > 0)
+            .toList();
+        return ReconnectCandidateRow(
+          contact: contact,
+          listCadenceDays: parsedCadences,
+          lastInteractionType: r.readNullable<String>('last_interaction_type'),
+        );
+      }).toList();
+    });
+  }
+
+  /// Watches whether at least one person or list currently has a cadence set.
+  Stream<bool> watchHasAnyCadence() {
+    return _db
+        .customSelect(
+          '''
+          SELECT (
+            EXISTS (SELECT 1 FROM contacts WHERE cadence_days IS NOT NULL AND cadence_days > 0)
+            OR EXISTS (SELECT 1 FROM contact_lists WHERE cadence_days IS NOT NULL AND cadence_days > 0)
+          ) AS has_any
+          ''',
+          readsFrom: {_db.contacts, _db.contactLists},
+        )
+        .watchSingle()
+        .map((r) => (r.readNullable<int>('has_any') ?? 0) != 0);
+  }
+
+  /// Watches failed or missed outbox messages for Today's "Needs attention" section.
+  Stream<List<OutboxWithPersonRow>> watchNeedsAttentionOutbox() {
+    return _db
+        .customSelect(
+          '''
+          SELECT o.*, COALESCE(c.display_name, o.address) AS person_name
+          FROM outbox_messages o
+          LEFT JOIN contacts c ON c.id = o.contact_id
+          WHERE o.status IN ('failed', 'missed')
+          ORDER BY o.due_at DESC
+          ''',
+          readsFrom: {_db.outboxMessages, _db.contacts},
+        )
+        .watch()
+        .map(
+          (rows) => rows
+              .map(
+                (r) => OutboxWithPersonRow(
+                  message: _db.outboxMessages.map(r.data),
+                  personName: r.read<String>('person_name'),
+                ),
+              )
+              .toList(),
+        );
+  }
+
+  /// Watches scheduled outbox messages due today for Today's "Going out today" section.
+  Stream<List<OutboxWithPersonRow>> watchGoingOutTodayOutbox(int startMs, int endMs) {
+    return _db
+        .customSelect(
+          '''
+          SELECT o.*, COALESCE(c.display_name, o.address) AS person_name
+          FROM outbox_messages o
+          LEFT JOIN contacts c ON c.id = o.contact_id
+          WHERE o.status IN ('queued', 'sending')
+            AND o.due_at >= ?
+            AND o.due_at <= ?
+          ORDER BY o.due_at ASC
+          ''',
+          variables: [Variable<int>(startMs), Variable<int>(endMs)],
+          readsFrom: {_db.outboxMessages, _db.contacts},
+        )
+        .watch()
+        .map(
+          (rows) => rows
+              .map(
+                (r) => OutboxWithPersonRow(
+                  message: _db.outboxMessages.map(r.data),
                   personName: r.read<String>('person_name'),
                 ),
               )

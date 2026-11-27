@@ -15,6 +15,8 @@ import '../features/settings/data/settings_repository.dart';
 import '../features/sync/data/amount_parser.dart';
 import '../features/sync/data/sync_service.dart';
 import '../features/sync/data/sync_state_repository.dart';
+import '../features/today/data/notifications_service.dart';
+import '../features/today/data/today_repository.dart';
 import 'db/app_database.dart';
 import 'files/file_store.dart';
 import 'phone/phone_service.dart';
@@ -207,4 +209,20 @@ final afterCallModeProvider = StreamProvider<String>((ref) {
     if (v == 'starred' || v == 'never') return v!;
     return 'all';
   });
+});
+
+final todayRepositoryProvider = Provider<TodayRepository>((ref) {
+  return TodayRepository(ref.watch(appDatabaseProvider));
+});
+
+final notificationsBackendProvider = Provider<NotificationsBackend>((ref) {
+  return FlutterLocalNotificationsBackend();
+});
+
+final notificationsServiceProvider = Provider<NotificationsService>((ref) {
+  return NotificationsService(
+    db: ref.watch(appDatabaseProvider),
+    backend: ref.watch(notificationsBackendProvider),
+    clock: ref.watch(clockProvider),
+  );
 });

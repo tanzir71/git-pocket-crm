@@ -52,6 +52,12 @@ Log of technical, dependency, and design choices made during implementation wher
 - **Voice input decision:** Left the in-field microphone button out and rely on Android's system keyboard voice typing. Existing Flutter speech-recognition plugins (`speech_to_text`) pull `android.permission.INTERNET` into the merged Android manifest, which violates Hard Rule 2 (`tool/check_manifest.sh`).
 - **Location:** Uses Android's native `LocationManager` (`ACCESS_COARSE_LOCATION`, 5-second timeout) via Pigeon `DeviceApi.currentLocation()`, storing coordinates only with no reverse geocoding and no network permission.
 
+## Spec 08 — Today and reminders (2026-11-27)
+
+- **Packages:** Added `flutter_local_notifications` (spec-named) and `timezone` (required by `flutter_local_notifications`'s `zonedSchedule` API) plus Android `desugar_jdk_libs:2.1.5` in `android/app/build.gradle.kts`.
+- **Rescheduling:** Single idempotent `NotificationsService.rescheduleAll()` cancels and recreates all future follow-up reminders (including legacy `tasks.reminder_time` rows) and the optional daily morning summary from the database so notifications never drift from stored data.
+
+
 
 
 

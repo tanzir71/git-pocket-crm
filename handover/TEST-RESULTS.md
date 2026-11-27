@@ -56,6 +56,17 @@ Record of automated test runs and Android emulator verification runs (date, imag
 - **Command:** Installed debug APK, granted `READ_CONTACTS`, `READ_CALL_LOG`, `READ_PHONE_STATE`, `POST_NOTIFICATIONS`, saved contact "Amara Okafor" (`+14155550100`), killed background process with `adb shell am kill`, simulated incoming call `adb emu gsm call 4155550100` -> `gsm cancel 4155550100`, inspected `dumpsys notification --noredact` and verified `pocketcrm://after-call?number=4155550100` deep link intent resolution.
 - **Outcome:** PASSED. `PhoneStateReceiver` detected RINGING->IDLE transition, resolved `"Amara Okafor"` via `ContactsContract.PhoneLookup`, and posted high-importance notification id `7100` on channel `after_calls` titled `"Add a note about your call with Amara Okafor"` with 2 actions (`Add note`, `Follow up`) within 3 seconds. Deep link `pocketcrm://after-call?number=4155550100` resolved cleanly to `MainActivity`.
 
+## 2026-11-27 — Spec 08
+
+- **Environment (host):** Host Windows 11, Flutter 3.50.1, Dart 3.14.0, `flutter_local_notifications` 21.0.0, `timezone` 0.11.2
+- **Command:** `bash tool/verify.sh && flutter test --dart-define=V2=true`
+- **Outcome:** PASSED. `flutter analyze` reported 0 issues; all 69 tests passed in both `V2=false` and `V2=true` modes (including `CadenceCalculator` own-vs-list precedence, smallest list cadence, new interaction moving due date, snooze, no-interaction fallback, upcoming birthdays; `NotificationsService` with `FakeNotificationsBackend` verifying follow-up scheduling with `Done`/`Tomorrow` actions, cancel on complete, `Done` completing task in DB, `Tomorrow` rescheduling +1 day, and morning summary skipped when counts are 0; `TodayScreen` Figma section order, Skip action, and `"All caught up"` empty state; and 2 committed 412x917 light/dark Today goldens visually verified against Figma frame `7:30`); `assembleDebug`, `check_manifest.sh` (zero `INTERNET` permission), and `check_landing.sh` passed.
+- **Environment (emulator):** Android Emulator `Pixel_8` (`android-34`, Android 14, debug APK `--dart-define=V2=true`)
+- **Command:** Installed debug APK, granted `POST_NOTIFICATIONS` and `READ_CONTACTS`, seeded contact "Amara Okafor" + future follow-ups, launched app so `NotificationsService.rescheduleAll()` armed alarms, backgrounded + `adb shell am kill com.pocketcrm.pocket_crm` + `adb shell dumpsys deviceidle force-idle`, verified notification in `dumpsys notification --noredact`; then seeded a +130s follow-up, ran `adb reboot`, and verified `ScheduledNotificationBootReceiver` re-armed both follow-up (`id=100003`, `Done`/`Tomorrow` actions) and daily 09:00 morning summary (`id=90001`) in `dumpsys alarm`.
+- **Outcome:** PASSED. All 5 channels (`follow_ups`, `reconnect`, `after_calls`, `messages`, `morning_summary`) created; Follow-up 1 (`"Send invoice to Amara"`) fired while app was killed and device was in Doze `IDLE` state; after `adb reboot`, `ScheduledNotificationBootReceiver` automatically ran without launching the app and re-armed both `AlarmManager` `RTC_WAKEUP` alarms (`100003` and `90001`).
+- **M2 Signed APK:** `bash tool/build_apk.sh --dart-define=V2=true` produced `build/PocketCRM.apk` (`63.9 MB`, `sha256: dc041d98ec96caec46e75a667b01fdc68a60db2aeba075ab13ca89f73080e85c`).
+
+
 
 
 

@@ -476,5 +476,73 @@
       }
     }
   },
-  "justNowLabel": "just now"
+  "justNowLabel": "just now",
+
+  "todaySearchTooltip": "Search people",
+  "todaySettingsTooltip": "Settings",
+  "promptSpokeWith": "You spoke with {name}",
+  "@promptSpokeWith": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "promptAddNote": "Add note",
+  "promptFollowUp": "Follow up",
+  "promptSkip": "Skip",
+  "sectionNeedsAttention": "Needs attention",
+  "sectionFollowUps": "Follow-ups",
+  "sectionReconnect": "Reconnect",
+  "sectionGoingOutToday": "Going out today",
+  "sectionComingUp": "Coming up",
+  "showAllAction": "Show all",
+  "snoozeOneWeek": "Snooze 1 week",
+  "changeHowOften": "Change how often",
+  "birthdayToday": "Birthday today",
+  "birthdayOnDay": "Birthday on {day}",
+  "@birthdayOnDay": {
+    "placeholders": {
+      "day": {
+        "type": "String"
+      }
+    }
+  },
+  "allCaughtUpTitle": "All caught up",
+  "allCaughtUpMessage": "Follow-ups and people to reconnect with will appear here.",
+  "choosePeopleToStayInTouch": "Choose people to stay in touch with",
+  "retryAction": "Retry",
+  "notSentTo": "Not sent to {name}",
+  "@notSentTo": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "notifChannelFollowUps": "Follow-ups",
+  "notifChannelReconnect": "Reconnect",
+  "notifChannelAfterCalls": "After calls",
+  "notifChannelMessages": "Messages",
+  "notifChannelMorningSummary": "Morning summary",
+  "notifActionDone": "Done",
+  "notifActionTomorrow": "Tomorrow",
+  "morningSummaryTitle": "PocketCRM",
+  "morningSummaryFollowUps": "{count, plural, =1{1 follow-up today} other{{count} follow-ups today}}",
+  "@morningSummaryFollowUps": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "morningSummaryReconnect": "{count, plural, =1{1 person to reconnect with} other{{count} people to reconnect with}}",
+  "@morningSummaryReconnect": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "notifPermissionRationale": "Allow notifications so PocketCRM can remind you about follow-ups and scheduled messages."
 }

@@ -23,7 +23,7 @@ void main() {
         overrides: [
           appDatabaseProvider.overrideWithValue(db),
         ],
-        child: const PocketCrmV2App(),
+        child: const PocketCrmV2App(enableBackgroundSync: false),
       ),
     );
     await tester.pumpAndSettle();
@@ -44,9 +44,9 @@ void main() {
     expect(find.text('Messages will be built in spec 10.'), findsOneWidget);
 
     // Tap Today destination
-    await tester.tap(find.text('Today'));
+    await tester.tap(find.text('Today').last);
     await tester.pumpAndSettle();
-    expect(find.text('Today will be built in spec 08.'), findsOneWidget);
+    expect(find.text('All caught up'), findsOneWidget);
 
     await tester.pumpWidget(const SizedBox.shrink());
     await tester.pumpAndSettle();
@@ -62,7 +62,7 @@ void main() {
         overrides: [
           appDatabaseProvider.overrideWithValue(db),
         ],
-        child: const PocketCrmV2App(),
+        child: const PocketCrmV2App(enableBackgroundSync: false),
       ),
     );
     await tester.pumpAndSettle();
@@ -72,7 +72,7 @@ void main() {
     await tester.tap(find.text('Do this later'));
     await tester.pumpAndSettle();
 
-    expect(find.text('Today will be built in spec 08.'), findsOneWidget);
+    expect(find.text('All caught up'), findsOneWidget);
 
     await tester.pumpWidget(const SizedBox.shrink());
     await tester.pumpAndSettle();

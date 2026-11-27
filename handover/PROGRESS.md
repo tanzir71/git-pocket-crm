@@ -34,8 +34,23 @@ Milestone-by-milestone log of what shipped, key decisions, and what remains unve
 ### What is in UNVERIFIED.md
 - Permanent device/network items only (real mobile network behaviour, dual-SIM selection, Android "Allow restricted settings" sideload flow, and per-maker battery management).
 
-## In progress — M2: Everyday workflow
+## 2026-11-27 — M2: Everyday workflow
 
-- **Spec 04 (2026-11-27):** Added `flutter_riverpod` 3.5.0, `go_router` 18.1.4, and ARB localization (`l10n.yaml`, `app_en.arb`); moved legacy screens to `lib/legacy/`; built three-tab `AppShell` behind `--dart-define=V2=true` with `StatefulShellRoute.indexedStack`, `PopScope` back handling, `pocketcrm://` deep links, first-run `/setup` redirect, and dual-mode tests.
+### What shipped
+- **Spec 04:** Added `flutter_riverpod` 3.5.0, `go_router` 18.1.4, and ARB localization (`l10n.yaml`, `app_en.arb`); moved legacy screens to `lib/legacy/`; built three-tab `AppShell` behind `--dart-define=V2=true` with `StatefulShellRoute.indexedStack`, `PopScope` back handling, `pocketcrm://` deep links, and first-run `/setup` redirect.
+- **Spec 05:** Implemented native Kotlin batched `CallLog` and `Telephony.Sms` reader via Pigeon (`DeviceApi` / `DeviceEvents`, 2s debounced `ContentObserver`s), international E.164 phone normalisation (`phone_numbers_parser` 9.2.3), upgraded `flutter_contacts` 2.6.0, removed `SpamFilter` from new sync, converted incoming SMS monetary mentions into non-intrusive payment suggestions, and verified live sync on an Android 14 emulator.
+- **Spec 06:** Centralised all SQL in `lib/core/db/crm_queries.dart` (enforced zero SQL in `lib/features/`), built `AppFormatters` (clock-injectable locale-aware dates, durations, currency), single-query `PeopleScreen` (smooth with 5,000 rows, debounced search, filters, persisted sort, selection mode, duplicate merge, add/edit/list/cadence/person-picker sheets), `PersonScreen` (actions, Next section, paged History with month headers and suggested-payment confirmation), and light/dark goldens.
+- **Spec 07:** Added `image_picker` 1.2.4, `FileStore`, native coarse `currentLocation()` and `PhoneStateReceiver` (verified posting `"Add a note about your call with ..."` on Android 14 with the app killed), unified 6-type `AddSheet` with atomic save + 5s Undo, and `AfterCallSheet` editing existing call rows in place.
+- **Spec 08:** Added `flutter_local_notifications` 21.0.0 + `timezone` 0.11.2, pure `CadenceCalculator`, full 6-section `TodayScreen` with light/dark goldens, and `NotificationsService` (5 Android channels, follow-up reminders with `Done`/`Tomorrow` actions, morning summary, verified under Doze deep idle and post-reboot re-arming on Android 14).
+- Built signed M2 preview APK (`build/PocketCRM.apk`, `--dart-define=V2=true`, `sha256: dc041d98ec96caec46e75a667b01fdc68a60db2aeba075ab13ca89f73080e85c`) and published GitHub pre-release `m2`.
+
+### What was decided
+- Kept voice note input on the system keyboard rather than adding a speech plugin that pulls `android.permission.INTERNET` into the merged release manifest.
+- Kept `ContentObserver`s registered across `AppLifecycleState.paused` (stopping only on `detached`) so incoming calls pausing the activity under Android's InCallUI still sync immediately.
+- Guarded `FlutterLocalNotificationsBackend` calls gracefully on non-Android/test hosts while using `FakeNotificationsBackend` in unit/widget tests.
+
+### What is in UNVERIFIED.md
+- Permanent device/network items only (real mobile network behaviour, dual-SIM selection, Android "Allow restricted settings" sideload flow, and per-maker battery management).
+
 
 
